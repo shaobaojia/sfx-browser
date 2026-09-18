@@ -4,7 +4,7 @@
 GitHub: https://github.com/shaobaojia/sfx-browser （本目录即仓库）
 
 - 服务：用户级 systemd `sfx-browser.service`（开机自启），端口 **8093**
-- 代码：`/volume1/主目录/Hermes/read/sfx-browser/`（Hermes 容器同路径可见）
+- 代码：`/volume1/主目录/Hermes/read/Projects/sfx-browser/`（Hermes 容器同路径可见）
 - 音效库：`/volume1/主目录/Collection/素材&模板&音库/音效`（21 万+ 条 / 480GB+，**容器看不到，走 `ssh nas`**）
 - 入口：http://192.168.3.65:8093
 
@@ -17,7 +17,7 @@ GitHub: https://github.com/shaobaojia/sfx-browser （本目录即仓库）
 - （无）
 
 ## 下一步
-- 下载任务收尾后重扫索引：`ssh nas "cd /volume1/主目录/Hermes/read/sfx-browser && python3 build_index.py"`
+- 下载任务收尾后重扫索引：`ssh nas "cd /volume1/主目录/Hermes/read/Projects/sfx-browser && python3 build_index.py"`
 - 候选（未定）：语义搜索二期（需 PC 批跑声学向量）、导出进度条、手机端细节
 
 ## 坑

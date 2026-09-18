@@ -116,7 +116,7 @@ except Exception as e:
 
 try:
     import shutil as _sh
-    test_dest = '/volume1/主目录/Hermes/read/sfx-browser/_smoke_export'
+    test_dest = '/volume1/主目录/Hermes/read/Projects/sfx-browser/_smoke_export'
     _sh.rmtree(test_dest, ignore_errors=True)
     r = search('耳鸣')
     ids = [x['id'] for x in r['results'][:2]]

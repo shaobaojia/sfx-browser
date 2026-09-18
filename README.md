@@ -19,7 +19,7 @@
 ## 运维（在 NAS 上执行）
 - 状态：`systemctl --user status sfx-browser`
 - 重启：`systemctl --user restart sfx-browser`
-- 重建索引（库更新后，几秒钟）：`cd /volume1/主目录/Hermes/read/sfx-browser && python3 build_index.py`
+- 重建索引（库更新后，几秒钟）：`cd /volume1/主目录/Hermes/read/Projects/sfx-browser && python3 build_index.py`
 - 日志：`journalctl --user -u sfx-browser -n 50`
 - 冒烟测试：`python3 smoke_test.py`（任意能访问 8093 的机器）
 
