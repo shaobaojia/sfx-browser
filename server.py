@@ -367,8 +367,16 @@ class Handler(BaseHTTPRequestHandler):
         zpath = os.path.join(EXPORT_DIR, 'sfx_%d.zip' % int(time.time()))
         zf = zipfile.ZipFile(zpath, 'w', zipfile.ZIP_STORED)
         try:
+            used = set()
             for r in rows:
-                zf.write(os.path.join(LIB, r['rel']), arcname=r['rel'])
+                name = r['name']
+                stem, ext = os.path.splitext(name)
+                k = 2
+                while name in used:
+                    name = '%s_%d%s' % (stem, k, ext)
+                    k += 1
+                used.add(name)
+                zf.write(os.path.join(LIB, r['rel']), arcname=name)
         finally:
             zf.close()
         try:

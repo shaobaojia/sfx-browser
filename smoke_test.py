@@ -97,10 +97,20 @@ except Exception as e:
     check('aiff', False, repr(e))
 
 try:
+    import io as _io
+    import zipfile as _zfl
     r = search('耳鸣')
-    ids = ','.join(str(x['id']) for x in r['results'][:2])
+    top = r['results'][:2]
+    ids = ','.join(str(x['id']) for x in top)
     s, h, b = get('/api/zip?ids=' + ids)
-    check('basket zip', s == 200 and b[:2] == b'PK', '%d bytes' % len(b))
+    ok = s == 200 and b[:2] == b'PK'
+    names = []
+    if ok:
+        with _zfl.ZipFile(_io.BytesIO(b)) as z:
+            names = z.namelist()
+    check('basket zip 平铺', ok and len(names) == len(top)
+          and all(('/' not in n and '\\' not in n) for n in names),
+          'names=%s' % names)
 except Exception as e:
     check('zip', False, repr(e))
 

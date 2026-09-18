@@ -18,7 +18,7 @@ header{padding:12px 16px 8px;border-bottom:1px solid var(--line);flex:none}
 #chips span:hover{border-color:#3b6fd4;color:#cfe0ff}
 #hint{color:var(--dim2)}
 main{flex:1;display:flex;min-height:0}
-#list{flex:1;overflow:auto;padding:6px 8px}
+#list{flex:1;overflow:auto;padding:6px 8px 44px}
 .row{display:flex;align-items:center;gap:10px;padding:4px 8px;border-radius:6px;border:1px solid transparent}
 .row:hover{background:#161d2a}
 .row.sel{background:var(--sel);border-color:var(--selbd)}
@@ -32,7 +32,7 @@ main{flex:1;display:flex;min-height:0}
 .row .acts a,.row .acts b{color:#8fa3c4;cursor:pointer;text-decoration:none;font-weight:400;font-size:13px}
 .row .acts a:hover,.row .acts b:hover{color:#cfe0ff}
 #empty{display:none;padding:40px 20px;color:var(--dim2);text-align:center;line-height:2}
-aside{width:340px;flex:none;border-left:1px solid var(--line);display:flex;flex-direction:column;gap:12px;padding:10px 12px;overflow:auto}
+aside{width:340px;flex:none;border-left:1px solid var(--line);display:flex;flex-direction:column;gap:12px;padding:10px 12px 52px;overflow:auto}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px}
 #curName{font-size:13px;color:#e8eefb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #curMeta{font-size:11px;color:var(--dim2);margin:2px 0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -58,7 +58,10 @@ aside{width:340px;flex:none;border-left:1px solid var(--line);display:flex;flex-
 #bactions{display:flex;gap:6px;flex-wrap:wrap}
 #bexp{border-color:#2f5aa8;color:#9fc3ff}
 #bexp:hover{border-color:#3b6fd4;color:#cfe0ff}
-#toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#22304a;color:#dbe7ff;padding:8px 16px;border-radius:8px;font-size:13px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:9;max-width:80vw;text-align:center}
+#playToggle{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:10;padding:6px 16px;border-radius:999px;border:1px solid #2a3444;background:#151b26e6;color:#a9b8d0;font-size:12px;cursor:pointer;box-shadow:0 4px 16px #00000088;font-family:inherit}
+#playToggle:hover{border-color:#3b6fd4;color:#cfe0ff}
+#playToggle.off{border-color:#5a2f2f;color:#ff9a9a;background:#1f1518e6}
+#toast{position:fixed;left:50%;bottom:64px;transform:translateX(-50%);background:#22304a;color:#dbe7ff;padding:8px 16px;border-radius:8px;font-size:13px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:9;max-width:80vw;text-align:center}
 #toast.show{opacity:1}
 @media(max-width:860px){main{flex-direction:column}aside{width:auto;border-left:none;border-top:1px solid var(--line)}#list{min-height:40vh}}
 </style>
@@ -70,7 +73,7 @@ aside{width:340px;flex:none;border-left:1px solid var(--line);display:flex;flex-
     <div id="chips"></div>
     <div id="subinfo"></div>
   </div>
-  <div class="subbar"><div id="hint">↑↓ 自动试听 · 空格 暂停/继续 · 回车 入篮 · L 循环 · Esc 清空</div><div id="stats"></div></div>
+  <div class="subbar"><div id="hint">↑↓ 自动试听 · 空格 暂停/继续 · 回车 入篮 · L 循环 · M 播放开关 · Esc 清空</div><div id="stats"></div></div>
 </header>
 <main>
   <div id="list"><div id="empty">输入关键词开始搜索<br>支持中文 / 英文 / 中英混合 · 例：耳鸣 · 金属 撞击 · door slam</div></div>
@@ -96,7 +99,7 @@ aside{width:340px;flex:none;border-left:1px solid var(--line);display:flex;flex-
       </div>
       <div id="bactions">
         <button class="btn" id="bexp" title="把篮子里的文件直接复制到 NAS 目标文件夹（共享盘里马上能看到）">导出到文件夹</button>
-        <button class="btn" id="bzip" title="打包成一个 ZIP 下载（落到浏览器下载目录）">下载 ZIP</button>
+        <button class="btn" id="bzip" title="打包成一个 ZIP 下载：解压后所有文件都在同一目录（重名自动加后缀）">下载 ZIP</button>
         <button class="btn" id="bcopy">复制路径</button>
         <button class="btn" id="bclear">清空</button>
       </div>
@@ -105,12 +108,13 @@ aside{width:340px;flex:none;border-left:1px solid var(--line);display:flex;flex-
 </main>
 <audio id="au"></audio>
 <div id="toast"></div>
+<button id="playToggle" title="全局播放开关：关掉后悬停/点击/键盘都不会出声；可按 M 切换">🔊 播放开</button>
 <script>
 "use strict";
 var API="";
 var UNC_BASE="\\\\192.168.3.65\\主目录\\";
 var CHIPS=["耳鸣","爆炸","转场","脚步","风","雨","金属","心跳","whoosh","impact"];
-var results=[],sel=-1,curId=null,playSrc=null,loop=false,hintShown=false,reqSeq=0,hoverT=0,stopT=0;
+var results=[],sel=-1,curId=null,playSrc=null,loop=false,muted=false,hintShown=false,reqSeq=0,hoverT=0,stopT=0;
 var $=function(s){return document.querySelector(s)};
 var au=$("#au");
 
@@ -184,11 +188,12 @@ function playRow(i,toggle,src){
   var w=$("#wave");w.style.display="block";w.src="/api/wave?id="+it.id+"&v="+it.mtime;
   if(curId!==it.id){
     curId=it.id;playSrc=src||"click";
-    au.src="/api/audio?id="+it.id;
-    au.play().catch(function(){showHint()});
+    if(muted){au.pause();if(src==="click")muteGate();}
+    else{au.src="/api/audio?id="+it.id;au.play().catch(function(){showHint()});}
   }else{
     if(src)playSrc=src;
-    if(toggle){au.paused?au.play().catch(function(){showHint()}):au.pause();}
+    if(muted){if(toggle)muteGate();}
+    else if(toggle){au.paused?au.play().catch(function(){showHint()}):au.pause();}
     else if(au.paused){au.play().catch(function(){showHint()});}
   }
   syncPlayBtn();
@@ -225,27 +230,30 @@ list.addEventListener("click",function(e){
 /* ---------- 键盘 ---------- */
 document.addEventListener("keydown",function(e){
   if(e.isComposing)return;
-  var inq=document.activeElement&&document.activeElement.id==="q";
-  if(e.key==="ArrowDown"||e.key==="ArrowUp"){
+  var ae=document.activeElement||{};
+  var inq=ae.id==="q";
+  var inOtherInput=(ae.tagName==="INPUT"||ae.tagName==="TEXTAREA")&&!inq;
+  if((e.key==="ArrowDown"||e.key==="ArrowUp")&&!inOtherInput){
     e.preventDefault();
     if(!results.length)return;
     sel=Math.max(0,Math.min(results.length-1,sel+(e.key==="ArrowDown"?1:-1)));
     playRow(sel,false,"kb");
     return;
   }
-  if(e.key==="Enter"){
+  if(e.key==="Enter"&&!inOtherInput){
     if(sel>=0){addBasket(results[sel]);}
     else if(results.length){toast("↑↓ 选一条，回车入篮");}
     return;
   }
-  if(e.key===" "){if(inq)return;e.preventDefault();if(curId){au.paused?au.play().catch(function(){showHint()}):au.pause();}return;}
-  if((e.key==="l"||e.key==="L")&&!inq){loop=!loop;au.loop=loop;$("#btnLoop").classList.toggle("on",loop);return;}
-  if(e.key==="Escape"){if(inq){document.activeElement.blur();}else{$("#q").value="";search();}return;}
-  if(e.key==="/"&&!inq){e.preventDefault();$("#q").focus();return;}
+  if(e.key===" "){if(inq||inOtherInput)return;e.preventDefault();if(curId){if(muted){muteGate();}else{au.paused?au.play().catch(function(){showHint()}):au.pause();}}return;}
+  if((e.key==="l"||e.key==="L")&&!inq&&!inOtherInput){loop=!loop;au.loop=loop;$("#btnLoop").classList.toggle("on",loop);return;}
+  if((e.key==="m"||e.key==="M")&&!inq&&!inOtherInput){toggleMute();return;}
+  if(e.key==="Escape"){if(inq||inOtherInput){ae.blur();}else{$("#q").value="";search();}return;}
+  if(e.key==="/"&&!inq&&!inOtherInput){e.preventDefault();$("#q").focus();return;}
 });
 
 /* ---------- 播放器面板 ---------- */
-$("#btnPlay").onclick=function(){if(!curId)return;au.paused?au.play().catch(function(){showHint()}):au.pause();};
+$("#btnPlay").onclick=function(){if(!curId)return;if(muted){muteGate();return;}au.paused?au.play().catch(function(){showHint()}):au.pause();};
 $("#btnLoop").onclick=function(){loop=!loop;au.loop=loop;this.classList.toggle("on",loop);};
 $("#btnDl").onclick=function(){if(curId)location.href="/api/audio?id="+curId+"&dl=1";};
 $("#btnCp").onclick=function(){if(sel>=0)copyText(uncFor(results[sel].rel),"已复制路径");};
@@ -300,6 +308,28 @@ $("#bexp").onclick=function(){
   }).catch(function(e){btn.disabled=false;btn.textContent=old;toast("导出失败："+e,4000);});
 };
 
+/* ---------- 全局播放开关 ---------- */
+var muteHintShown=false;
+try{muted=localStorage.getItem("sfxplay")==="0";}catch(e){}
+function syncMute(){
+  var b=$("#playToggle");
+  b.textContent=muted?"🔇 播放关":"🔊 播放开";
+  b.classList.toggle("off",muted);
+}
+function toggleMute(){
+  muted=!muted;
+  try{localStorage.setItem("sfxplay",muted?"0":"1");}catch(e){}
+  if(muted){au.pause();toast("已关闭播放");muteHintShown=false;}
+  else{toast("播放已打开");}
+  syncMute();
+}
+function muteGate(){
+  if(!muted)return false;
+  if(!muteHintShown){muteHintShown=true;toast("播放开关已关（点底部开关 或 按 M 打开）",2600);}
+  return true;
+}
+$("#playToggle").onclick=toggleMute;
+
 /* ---------- 初始化 ---------- */
 (function(){
   var chips=$("#chips");
@@ -315,6 +345,7 @@ $("#bexp").onclick=function(){
   var t=0;
   $("#q").addEventListener("input",function(){clearTimeout(t);t=setTimeout(search,140);});
   renderB();
+  syncMute();
   $("#q").focus();
 })();
 </script>
