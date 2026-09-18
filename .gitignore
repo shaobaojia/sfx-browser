@@ -1,0 +1,4 @@
+data/*.db*
+cache/
+__pycache__/
+_smoke_export/

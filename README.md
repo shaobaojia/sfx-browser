@@ -1,0 +1,37 @@
+# sfx-browser — 局域网音效库浏览器
+
+20 万+ 音效素材的秒搜 / 试听 / 波形 / 篮子导出，纯 Python 标准库零依赖，跑在 NAS 上。
+
+- 库路径：`/volume1/主目录/Collection/素材&模板&音库/音效`
+- 访问：`http://192.168.3.65:8093`（局域网任意设备浏览器；服务开机自启）
+- GitHub：https://github.com/shaobaojia/sfx-browser
+
+## 功能
+- **打字即搜**：文件名 + 路径；中文 / 英文 / 中英混合。内置「中英桥」同义词（耳鸣→tinnitus/ringing）和中文复合词拆解（金属撞击 → metal/impact…），毫秒级返回
+- **试听**：鼠标悬停即播（移开自动停）；点一下 = 持续播放；↑↓ 键盘上下刷着听；空格暂停；L 循环
+- **波形**：每条懒生成迷你波形（一眼分短击 / 长音），生成后缓存
+- **篮子**：
+  - `导出到文件夹`：把选中的文件直接复制到 NAS 指定目录（限 `/volume1/主目录/` 下，重名自动加 `_2` 后缀）——共享盘里马上能用
+  - `下载 ZIP`：打包成一个 ZIP 下载到浏览器下载目录
+  - `复制路径`：Windows UNC 格式（`\\192.168.3.65\主目录\...`），可直接贴资源管理器
+- 单条操作：⬇ 下载 / ⧉ 复制 UNC 路径 / ＋ 入篮
+
+## 运维（在 NAS 上执行）
+- 状态：`systemctl --user status sfx-browser`
+- 重启：`systemctl --user restart sfx-browser`
+- 重建索引（库更新后，几秒钟）：`cd /volume1/主目录/Hermes/read/sfx-browser && python3 build_index.py`
+- 日志：`journalctl --user -u sfx-browser -n 50`
+- 冒烟测试：`python3 smoke_test.py`（任意能访问 8093 的机器）
+
+## 结构
+- `server.py` — 服务本体（纯 stdlib：搜索 / 试听 / 波形 / 转码 / ZIP / 导出）
+- `build_index.py` — 索引构建（先写临时库再原子替换，服务无感）
+- `index.html` — 单页前端（零依赖）
+- `smoke_test.py` — 端到端冒烟测试（协议级，18 项断言）
+- `data/sfx.db` — 索引（~52MB，git 排除）；`cache/` — 波形与转码缓存（可随时删）
+
+## 已知边界
+- 浏览器无法把文件直接拖进剪辑软件时间线：用「下载 / 导出到文件夹 / 复制路径」中转
+- AIFF / WMA 首次试听需服务端转码（约 1 秒），之后有缓存
+- 导出目标限 `/volume1/主目录/` 下（安全边界）；无账号体系（局域网内部工具）
+- 首次出声需点一下页面（浏览器自动播放策略）
