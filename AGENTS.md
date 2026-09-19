@@ -9,6 +9,7 @@ GitHub: https://github.com/shaobaojia/sfx-browser （本目录即仓库）
 - 入口：http://192.168.3.65:8093
 
 ## 刚做完
+- **2026-09-19 面包屑 v3 ›-门 · 用户状态入库（r9）**：①面包屑重做——「点段名」跳层；点「›」出下一层目录列表（路径延续项加粗；取代 r8 段内▾方案，用户拍板：分隔符即入口，不额外挂▾）；**路尾「▾」下钻当前目录**（补断头路，用户明确要求保留）；门悬停高亮、切门不残留；②**全部用户状态迁入服务端** `data/user.db`（state 表，WAL）——视图滑杆/播放开关/导出目录/收藏/篮子，**零 localStorage**；旧值首开自动迁移（数组键并集去重、标量服务端优先、**上报成功才清本地**）；服务端 `GET/POST /api/state`；首页服务端注入 `window.__STATE__`（无异步启动闪动）；写带 3 次退避重试（实测踩到过首开 6 连发偶发丢一条）；③server_version 1.3→1.4；冒烟 30 项全过；浏览器：迁移 3 轮 + 面包屑全链路全绿
 - **2026-09-19 目录浏览（r6）**：右上「📁 目录」面板（懒加载树：数量/体积，点名字进入）+ 面包屑（全库›…›✕）+ 列表分页（加载更多）＋排序（默认/路径/大小/时间/随机）。服务端：`GET /api/dirs?under=`（内存树，按 db mtime 缓存）；`/api/search` 扩展 dir/offset/sort（空 q+dir=浏览模式；选中目录后搜索=目录内搜）。冒烟 18→27 项；波形生成 Semaphore(2) 限流（防冷目录首览 ffmpeg 风暴卡交互）；「加载更多」带加载中反馈
 - **2026-09-19 目录浏览增强（r6.1）**：面包屑每层 ▾ 三角＝该层兄弟目录下拉直换路径（复用 /api/dirs）；搜索结果条目 📂 一键进入所在目录（清空搜索词＋面包屑定位）；目录树 ⭐ 收藏（localStorage sfxdirfavs，收藏区置顶）；dirRow 行工厂三处复用（面板/收藏/面包屑下拉）；浏览器全链路实测＋冒烟 27/27
 - **2026-09-19 代码重构 r7（内聚/低耦合）**：后端抽 _int / _cached_media（波形+转码共用缓存器）/ dir_kids / make_zip / parse_export_req / export_files（zip·导出业务移出 Handler）；前端模块化（U/Store/api + ViewZoom/Favs/DirPick/Search/Player/Basket/Mute 各自持有状态与 API）；行为零变化——冒烟 27/27 + 浏览器全链路回归；server_version 1.2→1.3
@@ -36,9 +37,10 @@ GitHub: https://github.com/shaobaojia/sfx-browser （本目录即仓库）
 ## 坑
 - **NAS 无 git**：仓库操作都在 Hermes 容器里对同一路径执行（已设 `git config --global --add safe.directory`）
 - 改文件走 `ssh nas "cat > '路径'" < 本地文件`（共享卷 write_file/patch 会被 Hermes 守卫拦）；批量推送用 `base64 -w0 本地文件 | ssh nas "base64 -d > 目标"`（最稳）
+- ⚠️ **用户状态在 `data/user.db`（独立小库），别混进 sfx.db**——build_index 重建索引是整文件 os.replace，塞进去的用户数据会被清掉；迁移逻辑=「上报成功才清 localStorage」+上报自带重试，改这段别退回"先清后传"
 - 服务操作：`ssh nas 'export XDG_RUNTIME_DIR=/run/user/1000; systemctl --user restart sfx-browser'`
 - 前端快捷键（m/l/空格/方向键）在输入框内被有意屏蔽（防误触），属预期
-- 波形交互（v1.3.2）：缩略图尺寸=顶部「波形」滑杆（水平，120–800px，宽高 10:1）+「行间距」滑杆（垂直，0–30px，行 margin-bottom）；CSS 变量 --wavew/--rowgap，localStorage: sfx_wavew/sfx_rowgap（rAF 合并，松手才写）；拖动滑杆 body.vdrag=屏外行 content-visibility 跳过（contain-intrinsic-size 校准 -6px 保滚动条精确）；列表背景 #161b24（=条目 #0f1218 ×1.5 亮度），hover #1d2433。缩略图与面板波形支持点击跳播 + 拖动扫播（跨文件跳播用 pendingSeek/loadedmetadata）；播放头红线随播放走（rAF）；波形底图 960×96（cache 键 _v960；前端 URL 带 &r=2 破旧缓存）
+- 波形交互（v1.3.2）：缩略图尺寸=顶部「波形」滑杆（水平，120–800px，宽高 10:1）+「行间距」滑杆（垂直，0–30px，行 margin-bottom）；CSS 变量 --wavew/--rowgap，状态存服务端 user.db（键 sfx_wavew/sfx_rowgap；rAF 合并，松手才写）；拖动滑杆 body.vdrag=屏外行 content-visibility 跳过（contain-intrinsic-size 校准 -6px 保滚动条精确）；列表背景 #161b24（=条目 #0f1218 ×1.5 亮度），hover #1d2433。缩略图与面板波形支持点击跳播 + 拖动扫播（跨文件跳播用 pendingSeek/loadedmetadata）；播放头红线随播放走（rAF）；波形底图 960×96（cache 键 _v960；前端 URL 带 &r=2 破旧缓存）
 - 搜索索引存相对路径（相对库根）；波形色 0x6ea8fe
 - 端口：8093=本品；8008/9090/9119/9443/9999 已被占用
 - 全量重扫很便宜（纯元数据，几秒）；但任何“内容级”全库操作（解码/转码/分析）是小时级——别乱来

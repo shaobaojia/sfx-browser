@@ -186,9 +186,32 @@ except Exception as e:
 
 try:
     s, h, b = get('/')
-    check('index page', s == 200 and '音效库' in b.decode('utf-8', 'ignore'), '%d bytes' % len(b))
+    tb = b.decode('utf-8', 'ignore')
+    check('index page', s == 200 and '音效库' in tb, '%d bytes' % len(b))
+    check('index 注入状态', 'window.__STATE__' in tb, '')
 except Exception as e:
     check('index', False, repr(e))
+
+try:
+    s, h, b = get('/api/state')
+    st0 = json.loads(b)
+    check('state 读取', s == 200 and isinstance(st0.get('state'), dict), 'keys=%d' % len(st0.get('state') or {}))
+
+    def post_state(key, value):
+        req = urllib.request.Request(
+            BASE + '/api/state',
+            data=json.dumps({'key': key, 'value': value}).encode('utf-8'),
+            headers={'Content-Type': 'application/json'}, method='POST')
+        return json.loads(urllib.request.urlopen(req, timeout=30).read())
+
+    j = post_state('_smoke_t', '42')
+    st1 = json.loads(get('/api/state')[2]).get('state') or {}
+    check('state 写入', bool(j.get('ok')) and st1.get('_smoke_t') == '42', 'got=%r' % st1.get('_smoke_t'))
+    post_state('_smoke_t', '7')
+    st2 = json.loads(get('/api/state')[2]).get('state') or {}
+    check('state 覆盖', st2.get('_smoke_t') == '7', 'got=%r' % st2.get('_smoke_t'))
+except Exception as e:
+    check('state', False, repr(e))
 
 print()
 print('FAILED: ' + (', '.join(fails) if fails else 'none — all good'))

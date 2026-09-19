@@ -42,18 +42,19 @@ header{padding:12px 16px 8px;border-bottom:1px solid var(--line);flex:none}
 #crumbbar{display:none;padding:2px 0 0;font-size:12px;color:var(--dim)}
 #crumbbar.on{display:flex}
 #crumb{display:flex;align-items:center;gap:2px;flex-wrap:wrap}
-#crumb .cseg{display:inline-flex;align-items:center;padding:1px 5px;border-radius:4px;cursor:pointer;color:#93a1b8}
-#crumb .cseg:hover{background:#1d2433;color:#cfe0ff}
+#crumb .cseg{padding:1px 5px;border-radius:4px;cursor:pointer;color:#93a1b8}
+#crumb .cseg:not(.last):hover{background:#1d2433;color:#cfe0ff}
 #crumb .cseg.last{cursor:default;color:#c6d2e6}
-#crumb .csep{color:#3a465a}
-#crumb #cclear{cursor:pointer;color:#7c8798;margin-left:2px}
+#crumb .csep{padding:1px 5px;border-radius:4px;color:#3a465a;cursor:pointer;user-select:none}
+#crumb .csep:hover,#crumb .csep.opensel{background:#1d2433;color:#9fc3ff}
+#crumb .ctri{font-style:normal;opacity:.5;font-size:10px;padding:1px 4px;border-radius:4px;color:#7c8798;cursor:pointer;user-select:none}
+#crumb .ctri:hover,#crumb .ctri.opensel{opacity:1;color:#cfe0ff;background:#1d2433}
+#crumb #cclear{cursor:pointer;color:#7c8798;margin-left:2px;padding:1px 4px}
 #crumb #cclear:hover{color:#ff9a9a}
 .sright{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 #zsort{background:var(--panel);color:#a9b8d0;border:1px solid #2a3444;border-radius:6px;font-size:12px;padding:2px 6px;font-family:inherit;outline:none}
 #more{display:none;padding:12px;text-align:center}
 #more.on{display:block}
-#crumb .cseg .ctri{font-style:normal;opacity:.45;font-size:9px;color:#7c8798;padding-left:2px;cursor:pointer;user-select:none}
-#crumb .cseg .ctri:hover,#crumb .cseg.opensel .ctri{opacity:1;color:#cfe0ff}
 #crumbsel{display:none;position:fixed;z-index:35;min-width:280px;max-width:430px;max-height:52vh;overflow:auto;background:#121826;border:1px solid #2a3444;border-radius:10px;box-shadow:0 12px 40px #000000aa;padding:6px}
 #crumbsel.on{display:block}
 .dstar{flex:none;color:#5a6a82;cursor:pointer;font-size:13px;padding-left:2px}
@@ -206,18 +207,54 @@ var U = {
 };
 document.addEventListener("click",function(){hintShown=false;});
 
-/* ---------- Store：localStorage 封装（JSON 读写，异常静默，兼容旧原始值） ---------- */
+/* ---------- Store：服务端状态（data/user.db，零 localStorage；写=内存即时+重试上报） ---------- */
+function postState(k,s){
+  var attempt=function(n){
+    return api("/api/state",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:k,value:s})})
+      .catch(function(err){if(n<3)return new Promise(function(res){setTimeout(res,400*n)}).then(function(){return attempt(n+1)});throw err;});
+  };
+  return attempt(1);
+}
 var Store = {
+  data: (window.__STATE__ && typeof window.__STATE__==="object") ? window.__STATE__ : {},
   get: function(k,d){
-    try{
-      var v=localStorage.getItem(k);
-      if(v===null)return d;
-      try{return JSON.parse(v)}catch(e){return v}
-    }catch(e){return d}
+    var v=Object.prototype.hasOwnProperty.call(this.data,k)?this.data[k]:undefined;
+    if(v===undefined||v===null)return d;
+    if(typeof v!=="string")return v;
+    try{return JSON.parse(v)}catch(e){return v}
   },
-  set: function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+  set: function(k,v){
+    var s=(typeof v==="string")?v:JSON.stringify(v);
+    this.data[k]=s;
+    postState(k,s).catch(function(){});
+  }
 };
 function api(p,opts){return fetch(API+p,opts).then(function(r){return r.json()})}
+/* 一次性迁移：旧 localStorage → 服务端（数组键合并去重，标量以服务端为准）；上报成功才清本地 */
+(function(){
+  var keys=["sfx_wavew","sfx_rowgap","sfxplay","sfxdest","sfxdirfavs","sfxbasket"],did=false;
+  var drop=function(k){try{localStorage.removeItem(k);}catch(e){}};
+  keys.forEach(function(k){
+    var raw=null;try{raw=localStorage.getItem(k);}catch(e){}
+    if(raw===null)return;
+    if(!Object.prototype.hasOwnProperty.call(Store.data,k)){
+      did=true;Store.data[k]=raw;
+      postState(k,raw).then(function(){drop(k);},function(){});
+    }else if(k==="sfxdirfavs"||k==="sfxbasket"){
+      try{
+        var mine=JSON.parse(raw),theirs=Store.get(k,[]);
+        if(Array.isArray(mine)&&Array.isArray(theirs)){
+          var seen={},out=[];
+          theirs.concat(mine).forEach(function(x){var kk=(k==="sfxdirfavs")?x.p:x.id;if(!seen[kk]){seen[kk]=1;out.push(x);}});
+          if(out.length!==theirs.length){did=true;Store.data[k]=JSON.stringify(out);
+            postState(k,Store.data[k]).then(function(){drop(k);},function(){});}
+          else drop(k);
+        }else drop(k);
+      }catch(e){drop(k);}
+    }else drop(k);
+  });
+  if(did)U.toast("已把本地收藏/设置迁移到服务端 ✓");
+})();
 
 /* ---------- ViewZoom：视图缩放（波形大小 / 行间距，自包含） ---------- */
 (function(){
@@ -263,7 +300,7 @@ function dirRow(k,opts){
   return {row:row,arrow:ar};
 }
 
-/* ---------- Favs：目录收藏（localStorage） ---------- */
+/* ---------- Favs：目录收藏（服务端 user.db） ---------- */
 var Favs = {
   list: (function(){var v=Store.get("sfxdirfavs",[]);return Array.isArray(v)?v:[];})(),
   save: function(){Store.set("sfxdirfavs",this.list);},
@@ -386,38 +423,39 @@ var DirPick = {
     }
   },
   closePanel: function(){$("#dirpanel").classList.remove("on");},
-  openSel: function(level,el){
+  openSel: function(k,el){
     var segs=this.curDir?this.curDir.split("/"):[];
-    var parent=level===0?"":segs.slice(0,level-1).join("/");
-    var current=level===0?"":segs[level-1];
+    var dir=segs.slice(0,k).join("/");                        // k=0→根（桶）；k=N→当前目录（下钻）
+    var cont=(k<segs.length)?segs.slice(0,k+1).join("/"):"";  // 路径延续项（加粗）
     this.selAnchor=el;
-    this.fetch(parent,function(list){
+    this.fetch(dir,function(list){
       if(DirPick.selAnchor!==el)return;
       var box=$("#crumbsel");
       box.innerHTML="";
       if(!list.length){
         var d=document.createElement("div");d.className="drow";d.textContent="（没有下级目录）";box.appendChild(d);
       }
-      list.forEach(function(k){
-        var r=dirRow(k,{arrow:false,star:false}).row;
-        if(k.path===current)r.classList.add("cur");
-        r.onclick=function(){DirPick.setDir(k.path);};
+      list.forEach(function(kk){
+        var r=dirRow(kk,{arrow:false,star:false}).row;
+        if(cont&&kk.path===cont)r.classList.add("cur");
+        r.onclick=function(){DirPick.setDir(kk.path);};
         box.appendChild(r);
       });
       var rect=el.getBoundingClientRect();
       box.style.left=Math.max(8,Math.min(rect.left,window.innerWidth-430))+"px";
       box.style.top=(rect.bottom+4)+"px";
-      var seg=el.closest(".cseg");if(seg)seg.classList.add("opensel");
+      el.classList.add("opensel");
       box.classList.add("on");
     });
   },
   closeSel: function(){
     $("#crumbsel").classList.remove("on");
-    document.querySelectorAll("#crumb .cseg.opensel").forEach(function(x){x.classList.remove("opensel");});
+    document.querySelectorAll("#crumb .opensel").forEach(function(x){x.classList.remove("opensel");});
     this.selAnchor=null;
   },
   toggleSel: function(level,el){
     if($("#crumbsel").classList.contains("on")&&this.selAnchor===el){this.closeSel();return;}
+    this.closeSel();
     this.openSel(level,el);
   },
   updateCrumb: function(){
@@ -425,26 +463,28 @@ var DirPick = {
     if(!this.curDir){cb.classList.remove("on");c.innerHTML="";this.closeSel();return;}
     cb.classList.add("on");c.innerHTML="";
     var segs=this.curDir.split("/");
-    var mk=function(label,path,level,isLast,tip){
+    var name=function(label,path,isLast){
       var s=document.createElement("span");
       s.className="cseg"+(isLast?" last":"");
-      s.appendChild(document.createTextNode(label));
-      var t=document.createElement("i");t.className="ctri";t.textContent="▾";t.title=tip;
-      s.appendChild(t);
-      s.onclick=(function(p,lv,last){
-        return function(e){
-          if(e.target.closest(".ctri")){e.stopPropagation();DirPick.toggleSel(lv,e.target);return;}
-          if(!last)DirPick.setDir(p);
-        };
-      })(path,level,isLast);
+      s.textContent=label;
+      s.onclick=function(){if(!isLast)DirPick.setDir(path);};
       return s;
     };
-    c.appendChild(mk("全库","",0,false,"同级目录（桶）"));
+    var door=function(k){
+      var d=document.createElement("span");
+      d.className="csep door";d.textContent="›";d.title="选择下一层目录";
+      d.onclick=function(e){e.stopPropagation();DirPick.toggleSel(k,d);};
+      return d;
+    };
+    c.appendChild(name("全库","",false));
     segs.forEach(function(sg,i){
-      var sep=document.createElement("span");sep.className="csep";sep.textContent="›";c.appendChild(sep);
-      var last=(i===segs.length-1);
-      c.appendChild(mk(sg,segs.slice(0,i+1).join("/"),i+1,last,"换一个目录"));
+      c.appendChild(door(i));
+      c.appendChild(name(sg,segs.slice(0,i+1).join("/"),i===segs.length-1));
     });
+    var dw=document.createElement("i");
+    dw.className="ctri";dw.textContent="▾";dw.title="选择下级目录（往下钻）";
+    dw.onclick=function(e){e.stopPropagation();DirPick.toggleSel(segs.length,dw);};
+    c.appendChild(dw);
     var x=document.createElement("b");x.id="cclear";x.textContent="✕";x.title="回到全库搜索";
     x.onclick=function(){DirPick.setDir("");};
     c.appendChild(x);

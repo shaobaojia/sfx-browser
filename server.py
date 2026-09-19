@@ -25,6 +25,7 @@ except Exception:
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 DB = os.path.join(BASE, 'data', 'sfx.db')
+USER_DB = os.path.join(BASE, 'data', 'user.db')   # 用户状态独立小库（sfx.db 重建索引会被整库替换，不能混）
 CACHE = os.path.join(BASE, 'cache')
 WAVE_CACHE = os.path.join(CACHE, 'wave')
 AUDIO_CACHE = os.path.join(CACHE, 'audio')
@@ -206,6 +207,37 @@ def db():
     c = sqlite3.connect('file:%s?mode=ro' % DB, uri=True)
     c.row_factory = sqlite3.Row
     return c
+
+
+_user_lock = threading.Lock()
+
+
+def user_init():
+    """用户状态库（收藏/篮子/视图/开关/导出目录；独立于 sfx.db，重建索引不受影响）"""
+    os.makedirs(os.path.dirname(USER_DB), exist_ok=True)
+    c = sqlite3.connect(USER_DB)
+    c.execute('PRAGMA journal_mode=WAL')
+    with c:
+        c.execute('CREATE TABLE IF NOT EXISTS state(key TEXT PRIMARY KEY, value TEXT NOT NULL)')
+    c.close()
+
+
+def user_all():
+    try:
+        c = sqlite3.connect(USER_DB)
+        rows = c.execute('SELECT key, value FROM state').fetchall()
+        c.close()
+        return {r[0]: r[1] for r in rows}
+    except Exception:
+        return {}
+
+
+def user_set(key, value):
+    with _user_lock:
+        c = sqlite3.connect(USER_DB)
+        with c:
+            c.execute('INSERT OR REPLACE INTO state(key, value) VALUES(?, ?)', (key, value))
+        c.close()
 
 
 def like_pat(s):
@@ -472,7 +504,7 @@ def export_files(ids, dest):
 
 
 class Handler(BaseHTTPRequestHandler):
-    server_version = 'sfx-browser/1.3'
+    server_version = 'sfx-browser/1.4'
     protocol_version = 'HTTP/1.1'
     timeout = 60
 
@@ -541,9 +573,24 @@ class Handler(BaseHTTPRequestHandler):
         try:
             u = urlparse(self.path)
             path, qs = u.path, parse_qs(u.query)
-            if path == '/':
+            if path in ('/', '/index.html'):
                 fp = os.path.join(BASE, 'index.html')
-                return self.serve_path(fp, 'text/html; charset=utf-8')
+                try:
+                    with open(fp, encoding='utf-8') as f:
+                        t = f.read()
+                except OSError:
+                    return self.json({'error': 'index.html missing'}, 500)
+                inject = '<script>window.__STATE__=%s;</script>\n' % \
+                         json.dumps(user_all(), ensure_ascii=False).replace('</', '<\\/')
+                t = t.replace('</head>', inject + '</head>', 1)
+                b = t.encode('utf-8')
+                self.send_response(200)
+                self.send_header('Content-Type', 'text/html; charset=utf-8')
+                self.send_header('Content-Length', str(len(b)))
+                self.send_header('Cache-Control', 'no-cache')
+                self.end_headers()
+                self.wfile.write(b)
+                return
             if path == '/api/dirs':
                 under = qs.get('under', [''])[0][:400].strip().strip('/')
                 return self.json({'under': under, 'kids': dir_kids(under)})
@@ -565,6 +612,8 @@ class Handler(BaseHTTPRequestHandler):
                 c.close()
                 mtime = int(os.path.getmtime(DB)) if os.path.exists(DB) else 0
                 return self.json({'files': row['n'], 'bytes': row['sz'], 'db_mtime': mtime})
+            if path == '/api/state':
+                return self.json({'ok': True, 'state': user_all()})
             if path == '/api/wave':
                 fid = _int(qs, 'id', 0)
                 r = self.get_row(fid)
@@ -626,6 +675,29 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         try:
             u = urlparse(self.path)
+            if u.path == '/api/state':
+                try:
+                    ln = int(self.headers.get('Content-Length') or 0)
+                except ValueError:
+                    ln = 0
+                if ln > 2_000_000:
+                    self.close_connection = True
+                    return self.json({'error': 'payload too big'}, 413)
+                body = self.rfile.read(ln) if ln else b''
+                try:
+                    data = json.loads(body.decode('utf-8'))
+                    key = str(data.get('key') or '')
+                    val = data.get('value')
+                except Exception:
+                    return self.json({'error': 'bad json'}, 400)
+                if not (0 < len(key) <= 64):
+                    return self.json({'error': 'bad key'}, 400)
+                if not isinstance(val, str):
+                    val = json.dumps(val, ensure_ascii=False)
+                if len(val) > 1_900_000:
+                    return self.json({'error': 'value too big'}, 400)
+                user_set(key, val)
+                return self.json({'ok': True})
             if u.path == '/api/export':
                 try:
                     ln = int(self.headers.get('Content-Length') or 0)
@@ -661,6 +733,7 @@ class Srv(ThreadingHTTPServer):
 
 
 def main():
+    user_init()
     os.makedirs(EXPORT_DIR, exist_ok=True)
     try:
         now = time.time()
