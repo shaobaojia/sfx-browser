@@ -52,6 +52,16 @@ header{padding:12px 16px 8px;border-bottom:1px solid var(--line);flex:none}
 #zsort{background:var(--panel);color:#a9b8d0;border:1px solid #2a3444;border-radius:6px;font-size:12px;padding:2px 6px;font-family:inherit;outline:none}
 #more{display:none;padding:12px;text-align:center}
 #more.on{display:block}
+#crumb .ctri{cursor:pointer;color:#4a5a72;font-size:10px;padding:0 1px;user-select:none}
+#crumb .ctri:hover{color:#cfe0ff}
+#crumbsel{display:none;position:fixed;z-index:35;min-width:280px;max-width:430px;max-height:52vh;overflow:auto;background:#121826;border:1px solid #2a3444;border-radius:10px;box-shadow:0 12px 40px #000000aa;padding:6px}
+#crumbsel.on{display:block}
+.dstar{flex:none;color:#5a6a82;cursor:pointer;font-size:13px;padding-left:2px}
+.dstar:hover{color:#e8c76a}
+.dstar.on{color:#e8c76a}
+#dirtfav{display:none;border-bottom:1px solid #1f2733;margin-bottom:4px;padding-bottom:4px}
+#dirtfav.on{display:block}
+.dfavhdr{font-size:11px;color:var(--dim2);padding:4px 8px 2px}
 main{flex:1;display:flex;min-height:0}
 #list{flex:1;overflow:auto;padding:6px 8px 44px;background:#161b24}
 .row{display:flex;align-items:center;gap:10px;padding:2px 8px;border-radius:6px;border:1px solid transparent;margin-bottom:var(--rowgap,8px);background:#0f1218}
@@ -115,7 +125,7 @@ aside{width:340px;flex:none;border-left:1px solid var(--line);display:flex;flex-
     <input id="q" placeholder="打字即搜：耳鸣 / explosion / 脚步 / whoosh …" autofocus autocomplete="off" spellcheck="false">
     <div id="dirwrap">
       <button id="dirbtn" title="按目录浏览：商业包 / 合集 / 音乐…">📁 目录 ▾</button>
-      <div id="dirpanel"><div id="dirtree"></div></div>
+      <div id="dirpanel"><div id="dirtfav"></div><div id="dirtree"></div></div>
     </div>
   </div>
   <div class="subbar">
@@ -139,6 +149,7 @@ aside{width:340px;flex:none;border-left:1px solid var(--line);display:flex;flex-
         <button class="btn" id="btnDl">⬇ 下载</button>
         <button class="btn" id="btnCp">⧉ 复制路径</button>
         <button class="btn" id="btnAdd">＋ 入篮</button>
+        <button class="btn" id="btnDir">📂 到目录</button>
       </div>
     </div>
     <div class="card" id="basket">
@@ -157,6 +168,7 @@ aside{width:340px;flex:none;border-left:1px solid var(--line);display:flex;flex-
     </div>
   </aside>
 </main>
+<div id="crumbsel"></div>
 <audio id="au"></audio>
 <div id="toast"></div>
 <button id="playToggle" title="全局播放开关：关掉后悬停/点击/键盘都不会出声；可按 M 切换">🔊 播放开</button>
@@ -256,7 +268,7 @@ function renderPage(items,startI,fresh){
     d.innerHTML='<div class="wbox"><img class="w" loading="lazy" alt="" src="/api/wave?id='+it.id+"&v="+it.mtime+'&r=2"><i class="ph"></i></div>'+
       '<div class="meta"><div class="nm"></div><div class="dr"></div></div>'+
       '<div class="sz">'+fmtSize(it.size)+'</div>'+
-      '<div class="acts"><a href="/api/audio?id='+it.id+"&dl=1"+'" title="下载">⬇</a><b class="cp" title="复制 UNC 路径">⧉</b><b class="add" title="入篮">＋</b></div>';
+      '<div class="acts"><a href="/api/audio?id='+it.id+"&dl=1"+'" title="下载">⬇</a><b class="cp" title="复制 UNC 路径">⧉</b><b class="add" title="入篮">＋</b><b class="gone" title="进入所在目录">📂</b></div>';
     d.querySelector(".nm").textContent=it.name;
     d.querySelector(".dr").textContent=it.dir;
     var w=d.querySelector(".w");w.onerror=function(){this.style.visibility="hidden"};
@@ -294,17 +306,32 @@ function fetchDirs(under,cb){
     cb(dirKids[under]);
   }).catch(function(){toast("目录加载失败");});
 }
+/* 目录行工厂：面板 / 收藏 / 面包屑下拉 共用 */
+function dirRow(k,opts){
+  opts=opts||{};
+  var row=document.createElement("div");
+  row.className="drow"+(k.path===curDir?" cur":"");
+  row.dataset.path=k.path;
+  var ar=null;
+  if(opts.arrow!==false){
+    ar=document.createElement("span");ar.className="darrow";ar.textContent=k.has?"▸":"·";
+    row.appendChild(ar);
+  }
+  var nm=document.createElement("span");nm.className="dname";nm.textContent=k.name;row.appendChild(nm);
+  var mt=document.createElement("span");mt.className="dmeta";mt.textContent=k.n.toLocaleString()+" · "+fmtSize(k.s);row.appendChild(mt);
+  if(opts.star){
+    var on=isFav(k.path);
+    var st=document.createElement("span");st.className="dstar"+(on?" on":"");st.textContent=on?"★":"☆";st.title="收藏 / 取消收藏";
+    st.onclick=function(e){e.stopPropagation();toggleFav(k);};
+    row.appendChild(st);
+  }
+  return {row:row,arrow:ar};
+}
 function renderDirKids(box,kids){
   kids.forEach(function(k){
-    var row=document.createElement("div");
-    row.className="drow"+(k.path===curDir?" cur":"");
-    row.dataset.path=k.path;
-    var ar=document.createElement("span");ar.className="darrow";ar.textContent=k.has?"▸":"·";
-    var nm=document.createElement("span");nm.className="dname";nm.textContent=k.name;
-    var mt=document.createElement("span");mt.className="dmeta";mt.textContent=k.n.toLocaleString()+" · "+fmtSize(k.s);
-    row.appendChild(ar);row.appendChild(nm);row.appendChild(mt);
+    var rr=dirRow(k,{star:true}),row=rr.row,ar=rr.arrow;
     var kidsBox=null;
-    if(k.has){
+    if(k.has&&ar){
       kidsBox=document.createElement("div");kidsBox.className="dkids hide";
       ar.onclick=function(e){
         e.stopPropagation();
@@ -333,6 +360,7 @@ function renderDirKids(box,kids){
 }
 function openDirPanel(){
   $("#dirpanel").classList.add("on");
+  renderFavs();
   if(!dirRootLoaded){
     fetchDirs("",function(list){
       dirRootLoaded=true;
@@ -341,8 +369,71 @@ function openDirPanel(){
   }
 }
 function closeDirPanel(){$("#dirpanel").classList.remove("on");}
+/* ---------- 目录收藏（localStorage） ---------- */
+var favs=[];
+try{favs=JSON.parse(localStorage.getItem("sfxdirfavs")||"[]")||[];}catch(e){favs=[];}
+function saveFavs(){try{localStorage.setItem("sfxdirfavs",JSON.stringify(favs));}catch(e){}}
+function isFav(p){return favs.some(function(x){return x.p===p;});}
+function toggleFav(k){
+  var i=favs.findIndex(function(x){return x.p===k.path;});
+  if(i>=0){favs.splice(i,1);toast("已取消收藏");}
+  else{favs.push({p:k.path,n:k.n,s:k.s});toast("已收藏 ✓");}
+  saveFavs();renderFavs();syncStars();
+}
+function syncStars(){
+  document.querySelectorAll("#dirpanel .drow[data-path]").forEach(function(r){
+    var st=r.querySelector(".dstar");if(!st)return;
+    var on=isFav(r.dataset.path);st.classList.toggle("on",on);st.textContent=on?"★":"☆";
+  });
+}
+function renderFavs(){
+  var box=$("#dirtfav");
+  if(!favs.length){box.classList.remove("on");box.innerHTML="";return;}
+  box.classList.add("on");box.innerHTML="";
+  var h=document.createElement("div");h.className="dfavhdr";h.textContent="⭐ 收藏";box.appendChild(h);
+  favs.slice().sort(function(a,b){return a.p<b.p?-1:1;}).forEach(function(f){
+    var k={path:f.p,name:f.p.split("/").pop(),n:f.n||0,s:f.s||0,has:false};
+    var r=dirRow(k,{arrow:false,star:true}).row;
+    r.onclick=function(){setDir(f.p);closeDirPanel();};
+    box.appendChild(r);
+  });
+}
+/* ---------- 面包屑逐层换路径 ---------- */
+var crumbSelAnchor=null;
+function openCrumbSel(level,el){
+  var segs=curDir?curDir.split("/"):[];
+  var parent=level===0?"":segs.slice(0,level-1).join("/");
+  var current=level===0?"":segs[level-1];
+  crumbSelAnchor=el;
+  fetchDirs(parent,function(list){
+    if(crumbSelAnchor!==el)return;
+    var box=$("#crumbsel");
+    box.innerHTML="";
+    if(!list.length){
+      var d=document.createElement("div");d.className="drow";d.textContent="（没有下级目录）";box.appendChild(d);
+    }
+    list.forEach(function(k){
+      var r=dirRow(k,{arrow:false,star:false}).row;
+      if(k.path===current)r.classList.add("cur");
+      r.onclick=function(){setDir(k.path);};
+      box.appendChild(r);
+    });
+    var rect=el.getBoundingClientRect();
+    box.style.left=Math.max(8,Math.min(rect.left,window.innerWidth-430))+"px";
+    box.style.top=(rect.bottom+4)+"px";
+    box.classList.add("on");
+  });
+}
+function closeCrumbSel(){$("#crumbsel").classList.remove("on");crumbSelAnchor=null;}
+function toggleCrumbSel(level,el){
+  if($("#crumbsel").classList.contains("on")&&crumbSelAnchor===el){closeCrumbSel();return;}
+  openCrumbSel(level,el);
+}
 $("#dirbtn").onclick=function(e){e.stopPropagation();$("#dirpanel").classList.contains("on")?closeDirPanel():openDirPanel();};
-document.addEventListener("click",function(e){if(!e.target.closest("#dirwrap"))closeDirPanel();});
+document.addEventListener("click",function(e){
+  if(!e.target.closest("#dirwrap"))closeDirPanel();
+  if(!e.target.closest("#crumbsel")&&!e.target.closest("#crumb"))closeCrumbSel();
+});
 $("#zsort").addEventListener("change",function(){sortMode=this.value;runSearch(true);});
 function updatePlaceholder(){
   var el=$("#q");
@@ -351,12 +442,15 @@ function updatePlaceholder(){
 }
 function updateCrumb(){
   var cb=$("#crumbbar"),c=$("#crumb");
-  if(!curDir){cb.classList.remove("on");c.innerHTML="";return;}
+  if(!curDir){cb.classList.remove("on");c.innerHTML="";closeCrumbSel();return;}
   cb.classList.add("on");c.innerHTML="";
   var segs=curDir.split("/");
   var root=document.createElement("span");root.className="cseg";root.textContent="全库";
   root.onclick=function(){setDir("");};
   c.appendChild(root);
+  var rt=document.createElement("span");rt.className="ctri";rt.textContent="▾";rt.title="换一个桶";
+  rt.onclick=(function(lv){return function(e){e.stopPropagation();toggleCrumbSel(lv,this);};})(0);
+  c.appendChild(rt);
   segs.forEach(function(sg,i){
     var sep=document.createElement("span");sep.className="csep";sep.textContent="›";c.appendChild(sep);
     var s=document.createElement("span");
@@ -365,6 +459,9 @@ function updateCrumb(){
     s.textContent=sg;
     if(!last){s.onclick=(function(p){return function(){setDir(p);};})(segs.slice(0,i+1).join("/"));}
     c.appendChild(s);
+    var tr=document.createElement("span");tr.className="ctri";tr.textContent="▾";tr.title="换一个目录";
+    tr.onclick=(function(lv){return function(e){e.stopPropagation();toggleCrumbSel(lv,this);};})(i+1);
+    c.appendChild(tr);
   });
   var x=document.createElement("b");x.id="cclear";x.textContent="✕";x.title="回到全库搜索";
   x.onclick=function(){setDir("");};
@@ -372,10 +469,18 @@ function updateCrumb(){
 }
 function setDir(p){
   curDir=p||"";
+  closeCrumbSel();
   updateCrumb();updatePlaceholder();
   $("#dirbtn").classList.toggle("act",!!curDir);
   document.querySelectorAll("#dirpanel .drow").forEach(function(r){r.classList.toggle("cur",r.dataset.path===curDir);});
   runSearch(true);
+}
+function enterDirOf(it){
+  if(!it)return;
+  var d=it.dir||"";
+  if(!d){toast("该文件直接在库根下");return;}
+  $("#q").value="";
+  setDir(d);
 }
 
 function paintSel(){
@@ -495,6 +600,7 @@ list.addEventListener("click",function(e){
   var i=+row.dataset.i;
   if(e.target.closest(".cp")){copyText(uncFor(results[i].rel),"已复制路径");return;}
   if(e.target.closest(".add")){addBasket(results[i]);return;}
+  if(e.target.closest(".gone")){enterDirOf(results[i]);return;}
   if(e.target.closest("a"))return;
   if(e.target.closest(".wbox"))return;
   playRow(i,true,"click");
@@ -536,6 +642,7 @@ document.addEventListener("keydown",function(e){
   if((e.key==="l"||e.key==="L")&&!inq&&!inOtherInput){loop=!loop;au.loop=loop;$("#btnLoop").classList.toggle("on",loop);return;}
   if((e.key==="m"||e.key==="M")&&!inq&&!inOtherInput){toggleMute();return;}
   if(e.key==="Escape"){
+    if($("#crumbsel").classList.contains("on")){closeCrumbSel();return;}
     if($("#dirpanel").classList.contains("on")){closeDirPanel();return;}
     if(inq||inOtherInput){ae.blur();}else{$("#q").value="";runSearch(true);}
     return;
@@ -549,6 +656,7 @@ $("#btnLoop").onclick=function(){loop=!loop;au.loop=loop;this.classList.toggle("
 $("#btnDl").onclick=function(){if(curId)location.href="/api/audio?id="+curId+"&dl=1";};
 $("#btnCp").onclick=function(){if(sel>=0)copyText(uncFor(results[sel].rel),"已复制路径");};
 $("#btnAdd").onclick=function(){if(sel>=0)addBasket(results[sel]);};
+$("#btnDir").onclick=function(){if(sel>=0)enterDirOf(results[sel]);};
 
 /* ---------- 篮子 ---------- */
 var basket=[];
