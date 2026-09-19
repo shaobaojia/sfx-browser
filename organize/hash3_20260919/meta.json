@@ -1,0 +1,12 @@
+{
+ "roots": {
+  "main": "/volume1/主目录/Collection/素材&模板&音库/音效",
+  "sib_1": "/volume1/主目录/Collection/素材&模板&音库/音乐&音效库",
+  "sib_2": "/volume1/主目录/Collection/素材&模板&音库/音库"
+ },
+ "sib_names": [
+  "音乐&音效库",
+  "音库"
+ ],
+ "started": "2026-09-19 11:13:45"
+}
