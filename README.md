@@ -26,9 +26,9 @@
 - 冒烟测试：`python3 smoke_test.py`（任意能访问 8093 的机器）
 
 ## 结构
-- `server.py` — 服务本体（纯 stdlib：搜索 / 试听 / 波形 / 转码 / ZIP / 导出）
+- `server.py` — 服务本体（纯 stdlib；分层：语言桥 / 数据查询 / 媒体缓存 / HTTP）
 - `build_index.py` — 索引构建（先写临时库再原子替换，服务无感）
-- `index.html` — 单页前端（零依赖）
+- `index.html` — 单页前端（零依赖；模块化：U/Store/ViewZoom/DirPick/Search/Player/Basket/Mute 各自持有状态）
 - `smoke_test.py` — 端到端冒烟测试（协议级，27 项断言）
 - `data/sfx.db` — 索引（~52MB，git 排除）；`cache/` — 波形与转码缓存（可随时删）
 

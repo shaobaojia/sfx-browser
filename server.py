@@ -220,6 +220,19 @@ def pref_pat(s):
     return s.replace('\\', '\\\\').replace('%', '\\%').replace('_', '\\_') + '/%'
 
 
+def _int(qs, key, default, lo=None, hi=None):
+    """GET 参数安全取整数（带范围钳制；缺失/非法回退默认值）"""
+    try:
+        v = int(qs.get(key, [str(default)])[0])
+    except (ValueError, TypeError):
+        v = default
+    if lo is not None:
+        v = max(v, lo)
+    if hi is not None:
+        v = min(v, hi)
+    return v
+
+
 def do_search(q, limit, offset=0, direc='', sort=''):
     toks = [t for t in q.split() if t.strip()]
     conds, params = [], []
@@ -301,49 +314,41 @@ def dir_tree():
     return tree
 
 
+def dir_kids(under):
+    """某目录的子目录列表（名称 / 路径 / 递归数量 / 体积 / 有无下级）"""
+    tree = dir_tree()
+    nd = tree.get(under)
+    kids = []
+    if nd:
+        for name in sorted(nd['kids']):
+            full = nd['kids'][name]
+            ch = tree.get(full) or {'n': 0, 's': 0, 'kids': {}}
+            kids.append({'name': name, 'path': full, 'n': ch['n'], 's': ch['s'],
+                         'has': bool(ch['kids'])})
+    return kids
+
+
 _WAVE_SEM = threading.Semaphore(2)   # 并发限流：最多 2 个 ffmpeg 同时跑（防"波形风暴"卡交互）
 
 
-def wave_for(fid, mtime, src):
-    key = '%d_%d_v960.png' % (fid, mtime)
-    fp = os.path.join(WAVE_CACHE, key)
-    if os.path.exists(fp):
-        return fp
-    os.makedirs(WAVE_CACHE, exist_ok=True)
-    fd, tmp = tempfile.mkstemp(dir=WAVE_CACHE, suffix='.png')
-    os.close(fd)
-    cmd = ['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-threads', '1', '-i', src,
-           '-filter_complex', 'showwavespic=s=960x96:colors=0x6ea8fe', '-frames:v', '1', tmp]
-    try:
-        with _WAVE_SEM:
-            r = subprocess.run(cmd, timeout=90, capture_output=True)
-    except subprocess.TimeoutExpired:
-        r = None
-    if r is None or r.returncode != 0 or not os.path.exists(tmp):
-        try:
-            os.remove(tmp)
-        except Exception:
-            pass
-        return None
-    os.replace(tmp, fp)
-    return fp
-
-
-def transcode(fid, mtime, src):
-    key = '%d_%d.wav' % (fid, mtime)
-    dst = os.path.join(AUDIO_CACHE, key)
+def _cached_media(cache_dir, key, suffix, cmd_fn, timeout, sem=None):
+    """通用媒体缓存：命中直接返回；否则 mkstemp → ffmpeg → 原子替换"""
+    dst = os.path.join(cache_dir, key)
     if os.path.exists(dst):
         return dst
-    os.makedirs(AUDIO_CACHE, exist_ok=True)
-    fd, tmp = tempfile.mkstemp(dir=AUDIO_CACHE, suffix='.wav')
+    os.makedirs(cache_dir, exist_ok=True)
+    fd, tmp = tempfile.mkstemp(dir=cache_dir, suffix=suffix)
     os.close(fd)
-    cmd = ['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-i', src,
-           '-ac', '2', '-ar', '48000', '-c:a', 'pcm_s16le', tmp]
+    r = None
     try:
-        r = subprocess.run(cmd, timeout=180, capture_output=True)
+        if sem is None:
+            r = subprocess.run(cmd_fn(tmp), timeout=timeout, capture_output=True)
+        else:
+            with sem:
+                r = subprocess.run(cmd_fn(tmp), timeout=timeout, capture_output=True)
     except subprocess.TimeoutExpired:
-        r = None
-    if r is None or r.returncode != 0:
+        pass
+    if r is None or r.returncode != 0 or not os.path.exists(tmp):
         try:
             os.remove(tmp)
         except Exception:
@@ -353,8 +358,121 @@ def transcode(fid, mtime, src):
     return dst
 
 
+def wave_for(fid, mtime, src):
+    return _cached_media(
+        WAVE_CACHE, '%d_%d_v960.png' % (fid, mtime), '.png',
+        lambda tmp: ['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-threads', '1', '-i', src,
+                     '-filter_complex', 'showwavespic=s=960x96:colors=0x6ea8fe', '-frames:v', '1', tmp],
+        90, sem=_WAVE_SEM)
+
+
+def transcode(fid, mtime, src):
+    return _cached_media(
+        AUDIO_CACHE, '%d_%d.wav' % (fid, mtime), '.wav',
+        lambda tmp: ['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-i', src,
+                     '-ac', '2', '-ar', '48000', '-c:a', 'pcm_s16le', tmp],
+        180)
+
+
+def make_zip(ids):
+    """给一组 id 打包平铺 zip → (路径, None)；不可行时 (None, (错误信息, 状态码))"""
+    c = db()
+    rows = c.execute('SELECT id, rel, name, size FROM files WHERE id IN (%s)'
+                     % ','.join('?' * len(ids)), ids).fetchall()
+    c.close()
+    rows = [r for r in rows if os.path.exists(os.path.join(LIB, r['rel']))]
+    if not rows:
+        return None, ('no valid files', 404)
+    tot = sum(r['size'] for r in rows)
+    if tot > 2_500_000_000:
+        return None, ('选中的文件太大(%dMB)，请分批导出' % (tot // 10 ** 6), 400)
+    os.makedirs(EXPORT_DIR, exist_ok=True)
+    zpath = os.path.join(EXPORT_DIR, 'sfx_%d.zip' % int(time.time()))
+    zf = zipfile.ZipFile(zpath, 'w', zipfile.ZIP_STORED)
+    try:
+        used = set()
+        for r in rows:
+            name = r['name']
+            stem, ext = os.path.splitext(name)
+            k = 2
+            while name in used:
+                name = '%s_%d%s' % (stem, k, ext)
+                k += 1
+            used.add(name)
+            zf.write(os.path.join(LIB, r['rel']), arcname=name)
+    finally:
+        zf.close()
+    return zpath, None
+
+
+def parse_export_req(body):
+    """解析导出请求体 → ((ids, dest), None) 或 (None, (错误信息, 状态码))"""
+    try:
+        data = json.loads(body.decode('utf-8'))
+    except Exception:
+        return None, ('bad json', 400)
+    ids = []
+    for x in (data.get('ids') or []):
+        try:
+            ids.append(int(x))
+        except (TypeError, ValueError):
+            pass
+    ids = ids[:300]
+    dest = (data.get('dest') or '').strip()
+    if not ids:
+        return None, ('篮子为空', 400)
+    if not dest:
+        return None, ('请填写目标文件夹', 400)
+    return (ids, dest), None
+
+
+def export_files(ids, dest):
+    """把文件复制到 dest（限 DEST_ROOT 下且禁库内）→ (统计, None) 或 (None, (错误信息, 状态码))"""
+    dest_norm = os.path.normpath(dest)
+    root = os.path.normpath(DEST_ROOT)
+    lib_norm = os.path.normpath(LIB)
+    if not (dest_norm + os.sep).startswith(root + os.sep):
+        return None, ('目标必须在 %s/ 下' % root, 400)
+    if dest_norm == lib_norm or (dest_norm + os.sep).startswith(lib_norm + os.sep):
+        return None, ('目标不能是音效库内部', 400)
+    try:
+        os.makedirs(dest_norm, exist_ok=True)
+    except OSError as e:
+        return None, ('无法创建目标目录: %s' % e, 500)
+    c = db()
+    rows = c.execute('SELECT id, rel, name FROM files WHERE id IN (%s)'
+                     % ','.join('?' * len(ids)), ids).fetchall()
+    c.close()
+    got = {r['id']: r for r in rows}
+    copied = renamed = missing = 0
+    for i in ids:
+        r = got.get(i)
+        if not r:
+            missing += 1
+            continue
+        src = os.path.join(LIB, r['rel'])
+        if not os.path.exists(src):
+            missing += 1
+            continue
+        stem, ext = os.path.splitext(r['name'])
+        tgt = os.path.join(dest_norm, r['name'])
+        k = 2
+        while os.path.exists(tgt):
+            tgt = os.path.join(dest_norm, '%s_%d%s' % (stem, k, ext))
+            k += 1
+        if os.path.basename(tgt) != r['name']:
+            renamed += 1
+        try:
+            shutil.copy2(src, tgt)
+            copied += 1
+        except OSError:
+            missing += 1
+    print('export %d files -> %s (renamed %d, missing %d)' % (copied, dest_norm, renamed, missing))
+    return {'copied': copied, 'renamed': renamed, 'missing': missing, 'dest': dest_norm}, None
+
+
 class Handler(BaseHTTPRequestHandler):
-    server_version = 'sfx-browser/1.2'
+    server_version = 'sfx-browser/1.3'
     protocol_version = 'HTTP/1.1'
     timeout = 60
 
@@ -418,41 +536,6 @@ class Handler(BaseHTTPRequestHandler):
         c.close()
         return r
 
-    def serve_zip(self, ids):
-        c = db()
-        rows = c.execute('SELECT id, rel, name, size FROM files WHERE id IN (%s)'
-                         % ','.join('?' * len(ids)), ids).fetchall()
-        c.close()
-        rows = [r for r in rows if os.path.exists(os.path.join(LIB, r['rel']))]
-        if not rows:
-            return self.json({'error': 'no valid files'}, 404)
-        tot = sum(r['size'] for r in rows)
-        if tot > 2_500_000_000:
-            return self.json({'error': '选中的文件太大(%dMB)，请分批导出' % (tot // 10 ** 6)}, 400)
-        os.makedirs(EXPORT_DIR, exist_ok=True)
-        zpath = os.path.join(EXPORT_DIR, 'sfx_%d.zip' % int(time.time()))
-        zf = zipfile.ZipFile(zpath, 'w', zipfile.ZIP_STORED)
-        try:
-            used = set()
-            for r in rows:
-                name = r['name']
-                stem, ext = os.path.splitext(name)
-                k = 2
-                while name in used:
-                    name = '%s_%d%s' % (stem, k, ext)
-                    k += 1
-                used.add(name)
-                zf.write(os.path.join(LIB, r['rel']), arcname=name)
-        finally:
-            zf.close()
-        try:
-            self.serve_path(zpath, 'application/zip', dl=True, fname='sfx_selection.zip')
-        finally:
-            try:
-                os.remove(zpath)
-            except Exception:
-                pass
-
     # ---------- routes ----------
     def do_GET(self):
         try:
@@ -463,30 +546,15 @@ class Handler(BaseHTTPRequestHandler):
                 return self.serve_path(fp, 'text/html; charset=utf-8')
             if path == '/api/dirs':
                 under = qs.get('under', [''])[0][:400].strip().strip('/')
-                tree = dir_tree()
-                nd = tree.get(under)
-                kids = []
-                if nd:
-                    for name in sorted(nd['kids']):
-                        full = nd['kids'][name]
-                        ch = tree.get(full) or {'n': 0, 's': 0, 'kids': {}}
-                        kids.append({'name': name, 'path': full, 'n': ch['n'], 's': ch['s'],
-                                     'has': bool(ch['kids'])})
-                return self.json({'under': under, 'kids': kids})
+                return self.json({'under': under, 'kids': dir_kids(under)})
             if path == '/api/search':
                 q = qs.get('q', [''])[0][:200]
                 direc = qs.get('dir', [''])[0][:400].strip().strip('/')
                 sort = qs.get('sort', [''])[0]
                 if sort not in ('name', 'size', 'mtime', 'rand'):
                     sort = ''
-                try:
-                    limit = min(max(int(qs.get('limit', ['300'])[0] or '300'), 1), 1000)
-                except ValueError:
-                    limit = 300
-                try:
-                    offset = max(int(qs.get('offset', ['0'])[0] or '0'), 0)
-                except ValueError:
-                    offset = 0
+                limit = _int(qs, 'limit', 300, 1, 1000)
+                offset = _int(qs, 'offset', 0, 0)
                 total, res = do_search(q, limit, offset, direc, sort)
                 if q or direc:
                     print('search q=%r dir=%r -> %d (offset %d)' % (q, direc, total, offset))
@@ -498,7 +566,7 @@ class Handler(BaseHTTPRequestHandler):
                 mtime = int(os.path.getmtime(DB)) if os.path.exists(DB) else 0
                 return self.json({'files': row['n'], 'bytes': row['sz'], 'db_mtime': mtime})
             if path == '/api/wave':
-                fid = int(qs.get('id', ['0'])[0] or 0)
+                fid = _int(qs, 'id', 0)
                 r = self.get_row(fid)
                 if not r:
                     return self.json({'error': 'not found'}, 404)
@@ -507,7 +575,7 @@ class Handler(BaseHTTPRequestHandler):
                     return self.json({'error': 'wave failed'}, 500)
                 return self.serve_path(fp, 'image/png', cache='max-age=604800')
             if path == '/api/audio':
-                fid = int(qs.get('id', ['0'])[0] or 0)
+                fid = _int(qs, 'id', 0)
                 r = self.get_row(fid)
                 if not r:
                     return self.json({'error': 'not found'}, 404)
@@ -528,7 +596,17 @@ class Handler(BaseHTTPRequestHandler):
                 ids = [int(x) for x in qs.get('ids', [''])[0].split(',') if x.strip().isdigit()][:300]
                 if not ids:
                     return self.json({'error': 'empty ids'}, 400)
-                return self.serve_zip(ids)
+                zpath, err = make_zip(ids)
+                if err:
+                    return self.json({'error': err[0]}, err[1])
+                try:
+                    self.serve_path(zpath, 'application/zip', dl=True, fname='sfx_selection.zip')
+                finally:
+                    try:
+                        os.remove(zpath)
+                    except Exception:
+                        pass
+                return
             if path == '/favicon.ico':
                 self.send_response(204)
                 self.send_header('Content-Length', '0')
@@ -557,7 +635,14 @@ class Handler(BaseHTTPRequestHandler):
                     self.close_connection = True
                     return self.json({'error': 'payload too big'}, 413)
                 body = self.rfile.read(ln) if ln else b''
-                return self.export_basket(body)
+                parsed, err = parse_export_req(body)
+                if err:
+                    return self.json({'error': err[0]}, err[1])
+                ids, dest = parsed
+                stats, err = export_files(ids, dest)
+                if err:
+                    return self.json({'error': err[0]}, err[1])
+                return self.json(stats)
             return self.json({'error': 'not found'}, 404)
         except (BrokenPipeError, ConnectionResetError):
             pass
@@ -568,66 +653,6 @@ class Handler(BaseHTTPRequestHandler):
                 self.json({'error': str(e)}, 500)
             except Exception:
                 pass
-
-    def export_basket(self, body):
-        """篮子批量导出：把选中的文件复制到 /volume1/主目录/ 下的目标文件夹（重名自动加 _2 后缀）"""
-        try:
-            data = json.loads(body.decode('utf-8'))
-        except Exception:
-            return self.json({'error': 'bad json'}, 400)
-        ids = []
-        for x in (data.get('ids') or []):
-            try:
-                ids.append(int(x))
-            except (TypeError, ValueError):
-                pass
-        ids = ids[:300]
-        dest = (data.get('dest') or '').strip()
-        if not ids:
-            return self.json({'error': '篮子为空'}, 400)
-        if not dest:
-            return self.json({'error': '请填写目标文件夹'}, 400)
-        dest_norm = os.path.normpath(dest)
-        root = os.path.normpath(DEST_ROOT)
-        lib_norm = os.path.normpath(LIB)
-        if not (dest_norm + os.sep).startswith(root + os.sep):
-            return self.json({'error': '目标必须在 %s/ 下' % root}, 400)
-        if dest_norm == lib_norm or (dest_norm + os.sep).startswith(lib_norm + os.sep):
-            return self.json({'error': '目标不能是音效库内部'}, 400)
-        try:
-            os.makedirs(dest_norm, exist_ok=True)
-        except OSError as e:
-            return self.json({'error': '无法创建目标目录: %s' % e}, 500)
-        c = db()
-        rows = c.execute('SELECT id, rel, name FROM files WHERE id IN (%s)'
-                         % ','.join('?' * len(ids)), ids).fetchall()
-        c.close()
-        got = {r['id']: r for r in rows}
-        copied = renamed = missing = 0
-        for i in ids:
-            r = got.get(i)
-            if not r:
-                missing += 1
-                continue
-            src = os.path.join(LIB, r['rel'])
-            if not os.path.exists(src):
-                missing += 1
-                continue
-            stem, ext = os.path.splitext(r['name'])
-            tgt = os.path.join(dest_norm, r['name'])
-            k = 2
-            while os.path.exists(tgt):
-                tgt = os.path.join(dest_norm, '%s_%d%s' % (stem, k, ext))
-                k += 1
-            if os.path.basename(tgt) != r['name']:
-                renamed += 1
-            try:
-                shutil.copy2(src, tgt)
-                copied += 1
-            except OSError:
-                missing += 1
-        print('export %d files -> %s (renamed %d, missing %d)' % (copied, dest_norm, renamed, missing))
-        return self.json({'copied': copied, 'renamed': renamed, 'missing': missing, 'dest': dest_norm})
 
 
 class Srv(ThreadingHTTPServer):
