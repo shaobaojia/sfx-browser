@@ -1,0 +1,28 @@
+{
+ "Vol3": {
+  "members": 1120,
+  "extracted": 1120,
+  "matched": 1120,
+  "pct": 100.0,
+  "no_crc": [],
+  "unmatched": [],
+  "extracted_only_count": 0,
+  "extracted_only_sample": []
+ },
+ "CHPTRS": {
+  "members": 884,
+  "extracted": 880,
+  "matched": 883,
+  "pct": 99.8868778280543,
+  "no_crc": [],
+  "unmatched": [
+   [
+    "3.CHPTRS Film Score Collection/无忧客丨官方站点（全资源发布）.url",
+    116,
+    "64b8207d"
+   ]
+  ],
+  "extracted_only_count": 0,
+  "extracted_only_sample": []
+ }
+}
