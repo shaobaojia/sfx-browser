@@ -22,6 +22,36 @@ header{padding:12px 16px 8px;border-bottom:1px solid var(--line);flex:none}
 #viewctl input[type=range]{width:84px;accent-color:#6ea8fe}
 #viewctl .zr{cursor:pointer;color:var(--dim);padding:0 2px;font-size:13px}
 #viewctl .zr:hover{color:#cfe0ff}
+#qrow{display:flex;gap:8px;align-items:center}
+#qrow #q{flex:1}
+#dirwrap{position:relative;flex:none}
+#dirbtn{flex:none;padding:9px 12px;font-size:13px;border-radius:8px;border:1px solid #2a3444;background:var(--panel);color:#a9b8d0;cursor:pointer;font-family:inherit;white-space:nowrap}
+#dirbtn:hover{border-color:#3b6fd4;color:#cfe0ff}
+#dirbtn.act{border-color:#3b6fd4;color:#9fc3ff}
+#dirpanel{display:none;position:absolute;right:0;top:calc(100% + 6px);width:430px;max-width:92vw;max-height:62vh;overflow:auto;background:#121826;border:1px solid #2a3444;border-radius:10px;box-shadow:0 12px 40px #000000aa;padding:6px;z-index:30}
+#dirpanel.on{display:block}
+.drow{display:flex;align-items:center;gap:6px;padding:4px 8px;border-radius:6px;font-size:13px;color:#c6d2e6;cursor:pointer;white-space:nowrap}
+.drow:hover{background:#1d2433}
+.drow.cur{background:var(--sel);color:#cfe0ff}
+.darrow{width:14px;flex:none;color:#7c8798;font-size:10px;text-align:center;cursor:pointer}
+.darrow:hover{color:#cfe0ff}
+.dname{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.dmeta{flex:none;font-size:11px;color:var(--dim2);font-variant-numeric:tabular-nums}
+.dkids{margin-left:14px;border-left:1px solid #1f2733}
+.dkids.hide{display:none}
+#crumbbar{display:none;padding:2px 0 0;font-size:12px;color:var(--dim)}
+#crumbbar.on{display:flex}
+#crumb{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+#crumb .cseg{cursor:pointer;color:#93a1b8}
+#crumb .cseg:hover{color:#cfe0ff}
+#crumb .cseg.last{color:#c6d2e6;cursor:default}
+#crumb .csep{color:#3a465a}
+#crumb #cclear{cursor:pointer;color:#7c8798;margin-left:2px}
+#crumb #cclear:hover{color:#ff9a9a}
+.sright{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+#zsort{background:var(--panel);color:#a9b8d0;border:1px solid #2a3444;border-radius:6px;font-size:12px;padding:2px 6px;font-family:inherit;outline:none}
+#more{display:none;padding:12px;text-align:center}
+#more.on{display:block}
 main{flex:1;display:flex;min-height:0}
 #list{flex:1;overflow:auto;padding:6px 8px 44px;background:#161b24}
 .row{display:flex;align-items:center;gap:10px;padding:2px 8px;border-radius:6px;border:1px solid transparent;margin-bottom:var(--rowgap,8px);background:#0f1218}
@@ -81,15 +111,22 @@ aside{width:340px;flex:none;border-left:1px solid var(--line);display:flex;flex-
 </head>
 <body>
 <header>
-  <input id="q" placeholder="打字即搜：耳鸣 / explosion / 脚步 / whoosh …" autofocus autocomplete="off" spellcheck="false">
+  <div id="qrow">
+    <input id="q" placeholder="打字即搜：耳鸣 / explosion / 脚步 / whoosh …" autofocus autocomplete="off" spellcheck="false">
+    <div id="dirwrap">
+      <button id="dirbtn" title="按目录浏览：商业包 / 合集 / 音乐…">📁 目录 ▾</button>
+      <div id="dirpanel"><div id="dirtree"></div></div>
+    </div>
+  </div>
   <div class="subbar">
     <div id="chips"></div>
-    <div id="subinfo"></div>
+    <div class="sright"><div id="subinfo"></div><div>排序 <select id="zsort"><option value="">默认</option><option value="name">路径</option><option value="size">大小</option><option value="mtime">时间</option><option value="rand">随机</option></select></div></div>
   </div>
+  <div class="subbar" id="crumbbar"><div id="crumb"></div></div>
   <div class="subbar"><div id="hint">↑↓ 自动试听 · 空格 暂停/继续 · 回车 入篮 · L 循环 · M 播放开关 · Esc 清空 · 点波形跳播</div><div id="viewctl"><label>波形 <input type="range" id="zw" min="120" max="800" step="10" value="150"></label><label>行间距 <input type="range" id="zh" min="0" max="30" step="2" value="8"></label><span class="zr" id="zreset" title="恢复默认大小">↺</span></div><div id="stats"></div></div>
 </header>
 <main>
-  <div id="list"><div id="empty">输入关键词开始搜索<br>支持中文 / 英文 / 中英混合 · 例：耳鸣 · 金属 撞击 · door slam</div></div>
+  <div id="list"><div id="empty">输入关键词开始搜索<br>支持中文 / 英文 / 中英混合 · 例：耳鸣 · 金属 撞击 · door slam<br>或点右上「📁 目录」按库浏览</div><div id="more"><button class="btn" id="morebtn">加载更多</button></div></div>
   <aside>
     <div class="card" id="player">
       <div id="curName">—</div>
@@ -187,28 +224,35 @@ function legacy(t,done){
   ta.remove();
 }
 
-/* ---------- 搜索 ---------- */
-function search(){
+/* ---------- 搜索 / 目录浏览 ---------- */
+var curDir="",sortMode="";
+var EMPTY_HTML=$("#empty").innerHTML;
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function runSearch(fresh){
   var q=$("#q").value.trim(),seq=++reqSeq;
-  if(!q){results=[];sel=-1;render({total:0,shown:0});return;}
-  fetch(API+"/api/search?q="+encodeURIComponent(q)).then(function(r){return r.json()}).then(function(resp){
+  if(fresh&&!q&&!curDir){results=[];sel=-1;renderPage([],0,true);updateInfo(0,0);setMore(false,0,0);setEmptyState();return;}
+  var offset=fresh?0:results.length;
+  if(!fresh)$("#morebtn").textContent="加载中…";
+  var url=API+"/api/search?q="+encodeURIComponent(q)+"&dir="+encodeURIComponent(curDir)+"&offset="+offset+"&sort="+encodeURIComponent(sortMode);
+  fetch(url).then(function(r){return r.json()}).then(function(resp){
     if(seq!==reqSeq)return;
-    results=resp.results||[];sel=-1;
+    var items=resp.results||[],startI;
+    if(fresh){results=items;startI=0;}
+    else{startI=results.length;results=results.concat(items);}
     sel=results.findIndex(function(x){return x.id===curId});
-    render(resp);
-  }).catch(function(){});
+    renderPage(items,startI,fresh);
+    updateInfo(resp.total,results.length);
+    setMore(items.length>0&&results.length<resp.total,resp.total,results.length);
+    setEmptyState();
+  }).catch(function(){if(!fresh)$("#morebtn").textContent="加载失败，点击重试";});
 }
-function render(resp){
+function renderPage(items,startI,fresh){
   var list=$("#list");
-  list.querySelectorAll(".row").forEach(function(x){x.remove()});
-  var qv=$("#q").value.trim();
-  $("#subinfo").textContent=qv?("共 "+resp.total.toLocaleString()+" 条"+(resp.shown<resp.total?"（显示前 "+resp.shown+" 条）":"")):"";
-  if(!results.length){$("#empty").style.display=qv?"none":"block";return;}
-  $("#empty").style.display="none";
+  if(fresh)list.querySelectorAll(".row").forEach(function(x){x.remove()});
   var frag=document.createDocumentFragment();
-  results.forEach(function(it,i){
+  items.forEach(function(it,i){
     var d=document.createElement("div");
-    d.className="row";d.dataset.i=i;d.dataset.id=it.id;
+    d.className="row";d.dataset.i=startI+i;d.dataset.id=it.id;
     d.innerHTML='<div class="wbox"><img class="w" loading="lazy" alt="" src="/api/wave?id='+it.id+"&v="+it.mtime+'&r=2"><i class="ph"></i></div>'+
       '<div class="meta"><div class="nm"></div><div class="dr"></div></div>'+
       '<div class="sz">'+fmtSize(it.size)+'</div>'+
@@ -218,10 +262,122 @@ function render(resp){
     var w=d.querySelector(".w");w.onerror=function(){this.style.visibility="hidden"};
     frag.appendChild(d);
   });
-  list.appendChild(frag);
+  list.insertBefore(frag,$("#more"));
   paintSel();
   phBind();
 }
+function updateInfo(total,shown){
+  var q=$("#q").value.trim(),parts=[];
+  if(curDir)parts.push("📁 "+curDir.split("/").pop());
+  if(q||curDir){parts.push("共 "+total.toLocaleString()+" 条");if(shown<total)parts.push("已显示 "+shown.toLocaleString());}
+  $("#subinfo").textContent=parts.join(" · ");
+}
+function setMore(show,total,shown){
+  var m=$("#more");
+  m.classList.toggle("on",!!show);
+  if(show)$("#morebtn").textContent="加载更多（还有 "+(total-shown).toLocaleString()+" 条）";
+}
+function setEmptyState(){
+  var q=$("#q").value.trim(),e=$("#empty");
+  if(results.length){e.style.display="none";return;}
+  if(!q&&!curDir){e.innerHTML=EMPTY_HTML;}
+  else{e.innerHTML="没有找到结果"+(q?("："+esc(q)):"")+(curDir?("<br>范围：📁 "+esc(curDir)):"");}
+  e.style.display="block";
+}
+$("#morebtn").onclick=function(){runSearch(false);};
+/* ---------- 目录选择器 ---------- */
+var dirKids={},dirRootLoaded=false;
+function fetchDirs(under,cb){
+  if(dirKids[under]){cb(dirKids[under]);return;}
+  fetch(API+"/api/dirs?under="+encodeURIComponent(under)).then(function(r){return r.json()}).then(function(resp){
+    dirKids[under]=resp.kids||[];
+    cb(dirKids[under]);
+  }).catch(function(){toast("目录加载失败");});
+}
+function renderDirKids(box,kids){
+  kids.forEach(function(k){
+    var row=document.createElement("div");
+    row.className="drow"+(k.path===curDir?" cur":"");
+    row.dataset.path=k.path;
+    var ar=document.createElement("span");ar.className="darrow";ar.textContent=k.has?"▸":"·";
+    var nm=document.createElement("span");nm.className="dname";nm.textContent=k.name;
+    var mt=document.createElement("span");mt.className="dmeta";mt.textContent=k.n.toLocaleString()+" · "+fmtSize(k.s);
+    row.appendChild(ar);row.appendChild(nm);row.appendChild(mt);
+    var kidsBox=null;
+    if(k.has){
+      kidsBox=document.createElement("div");kidsBox.className="dkids hide";
+      ar.onclick=function(e){
+        e.stopPropagation();
+        if(kidsBox.dataset.loaded==="1"){
+          kidsBox.classList.toggle("hide");
+          ar.textContent=kidsBox.classList.contains("hide")?"▸":"▾";
+          return;
+        }
+        ar.textContent="…";
+        fetchDirs(k.path,function(list){
+          kidsBox.dataset.loaded="1";
+          renderDirKids(kidsBox,list);
+          kidsBox.classList.remove("hide");
+          ar.textContent="▾";
+        });
+      };
+    }
+    row.onclick=function(e){
+      if(e.target===ar)return;
+      setDir(k.path);
+      closeDirPanel();
+    };
+    box.appendChild(row);
+    if(kidsBox)box.appendChild(kidsBox);
+  });
+}
+function openDirPanel(){
+  $("#dirpanel").classList.add("on");
+  if(!dirRootLoaded){
+    fetchDirs("",function(list){
+      dirRootLoaded=true;
+      renderDirKids($("#dirtree"),list);
+    });
+  }
+}
+function closeDirPanel(){$("#dirpanel").classList.remove("on");}
+$("#dirbtn").onclick=function(e){e.stopPropagation();$("#dirpanel").classList.contains("on")?closeDirPanel():openDirPanel();};
+document.addEventListener("click",function(e){if(!e.target.closest("#dirwrap"))closeDirPanel();});
+$("#zsort").addEventListener("change",function(){sortMode=this.value;runSearch(true);});
+function updatePlaceholder(){
+  var el=$("#q");
+  if(curDir){el.placeholder="在 "+curDir.split("/").pop()+" 内搜索…（留空=浏览该目录全部）";}
+  else{el.placeholder="打字即搜：耳鸣 / explosion / 脚步 / whoosh …";}
+}
+function updateCrumb(){
+  var cb=$("#crumbbar"),c=$("#crumb");
+  if(!curDir){cb.classList.remove("on");c.innerHTML="";return;}
+  cb.classList.add("on");c.innerHTML="";
+  var segs=curDir.split("/");
+  var root=document.createElement("span");root.className="cseg";root.textContent="全库";
+  root.onclick=function(){setDir("");};
+  c.appendChild(root);
+  segs.forEach(function(sg,i){
+    var sep=document.createElement("span");sep.className="csep";sep.textContent="›";c.appendChild(sep);
+    var s=document.createElement("span");
+    var last=(i===segs.length-1);
+    s.className="cseg"+(last?" last":"");
+    s.textContent=sg;
+    if(!last){s.onclick=(function(p){return function(){setDir(p);};})(segs.slice(0,i+1).join("/"));}
+    c.appendChild(s);
+  });
+  var x=document.createElement("b");x.id="cclear";x.textContent="✕";x.title="回到全库搜索";
+  x.onclick=function(){setDir("");};
+  c.appendChild(x);
+}
+function setDir(p){
+  curDir=p||"";
+  updateCrumb();updatePlaceholder();
+  $("#dirbtn").classList.toggle("act",!!curDir);
+  document.querySelectorAll("#dirpanel .drow").forEach(function(r){r.classList.toggle("cur",r.dataset.path===curDir);});
+  runSearch(true);
+}
+
 function paintSel(){
   document.querySelectorAll("#list .row").forEach(function(r){r.classList.toggle("sel",+r.dataset.i===sel)});
 }
@@ -379,7 +535,11 @@ document.addEventListener("keydown",function(e){
   if(e.key===" "){if(inq||inOtherInput)return;e.preventDefault();if(curId){if(muted){muteGate();}else{au.paused?au.play().catch(function(){showHint()}):au.pause();}}return;}
   if((e.key==="l"||e.key==="L")&&!inq&&!inOtherInput){loop=!loop;au.loop=loop;$("#btnLoop").classList.toggle("on",loop);return;}
   if((e.key==="m"||e.key==="M")&&!inq&&!inOtherInput){toggleMute();return;}
-  if(e.key==="Escape"){if(inq||inOtherInput){ae.blur();}else{$("#q").value="";search();}return;}
+  if(e.key==="Escape"){
+    if($("#dirpanel").classList.contains("on")){closeDirPanel();return;}
+    if(inq||inOtherInput){ae.blur();}else{$("#q").value="";runSearch(true);}
+    return;
+  }
   if(e.key==="/"&&!inq&&!inOtherInput){e.preventDefault();$("#q").focus();return;}
 });
 
@@ -467,7 +627,7 @@ $("#playToggle").onclick=toggleMute;
   var chips=$("#chips");
   CHIPS.forEach(function(c){
     var s=document.createElement("span");s.textContent=c;
-    s.onclick=function(){$("#q").value=c;$("#q").focus();search();};
+    s.onclick=function(){$("#q").value=c;$("#q").focus();runSearch(true);};
     chips.appendChild(s);
   });
   fetch(API+"/api/stats").then(function(r){return r.json()}).then(function(s){
@@ -475,7 +635,7 @@ $("#playToggle").onclick=toggleMute;
     $("#stats").textContent="索引 "+s.files.toLocaleString()+" 条 · "+fmtSize(s.bytes)+" · 更新于 "+(s.db_mtime?(d.getMonth()+1)+"/"+d.getDate()+" "+String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0"):"—");
   }).catch(function(){});
   var t=0;
-  $("#q").addEventListener("input",function(){clearTimeout(t);t=setTimeout(search,140);});
+  $("#q").addEventListener("input",function(){clearTimeout(t);t=setTimeout(function(){runSearch(true);},140);});
   renderB();
   syncMute();
   $("#q").focus();

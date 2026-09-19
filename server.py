@@ -11,6 +11,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import zipfile
 import sqlite3
@@ -215,28 +216,92 @@ LIKE_REL = "rel LIKE ? ESCAPE '\\'"
 LIKE_NAME = "name LIKE ? ESCAPE '\\'"
 
 
-def do_search(q, limit):
+def pref_pat(s):
+    return s.replace('\\', '\\\\').replace('%', '\\%').replace('_', '\\_') + '/%'
+
+
+def do_search(q, limit, offset=0, direc='', sort=''):
     toks = [t for t in q.split() if t.strip()]
-    if not toks:
-        return 0, []
-    groups, params = [], []
+    conds, params = [], []
+    if direc:
+        conds.append("rel LIKE ? ESCAPE '\\'")
+        params.append(pref_pat(direc))
+    groups = []
     for t in toks:
         ex = expand_token(t)
         if not ex:
             continue
         groups.append('(' + ' OR '.join([LIKE_REL] * len(ex)) + ')')
         params += [like_pat(e) for e in ex]
-    if not groups:
+    if toks and not groups:
         return 0, []
-    where = ' AND '.join(groups)
+    if not conds and not groups:
+        return 0, []
+    if groups:
+        conds.append(' AND '.join(groups))
+    where = ' AND '.join(conds)
+    if sort == 'size':
+        order, oparams = 'size DESC, rel', []
+    elif sort == 'mtime':
+        order, oparams = 'mtime DESC, rel', []
+    elif sort == 'rand':
+        order, oparams = 'RANDOM()', []
+    elif sort == 'name' or not toks:
+        order, oparams = 'rel', []
+    else:
+        order = 'CASE WHEN ' + LIKE_NAME + ' THEN 0 ELSE 1 END, LENGTH(rel), id'
+        oparams = [like_pat(toks[0])]
     sql = ('SELECT id, rel, name, dir, ext, size, mtime, COUNT(*) OVER () AS total '
-           'FROM files WHERE ' + where +
-           ' ORDER BY CASE WHEN ' + LIKE_NAME + ' THEN 0 ELSE 1 END, LENGTH(rel), id LIMIT ?')
+           'FROM files WHERE ' + where + ' ORDER BY ' + order + ' LIMIT ? OFFSET ?')
     c = db()
-    rows = c.execute(sql, params + [like_pat(toks[0]), limit]).fetchall()
+    rows = c.execute(sql, params + oparams + [limit, offset]).fetchall()
     c.close()
     total = rows[0]['total'] if rows else 0
     return total, [dict(r) for r in rows]
+
+
+_DIRS = {'mtime': 0, 'tree': None}
+
+
+def dir_tree():
+    """目录树（按 db mtime 缓存）：每个节点 = 该目录下递归音频数/体积 + 子目录"""
+    try:
+        mtime = int(os.path.getmtime(DB))
+    except OSError:
+        mtime = 0
+    if _DIRS['tree'] is not None and _DIRS['mtime'] == mtime:
+        return _DIRS['tree']
+    c = db()
+    rows = c.execute('SELECT dir, COUNT(*) n, COALESCE(SUM(size),0) s FROM files GROUP BY dir').fetchall()
+    c.close()
+    tree = {}
+
+    def node(p):
+        x = tree.get(p)
+        if x is None:
+            x = {'n': 0, 's': 0, 'kids': {}}
+            tree[p] = x
+        return x
+
+    for r in rows:
+        d = (r['dir'] or '').strip('/')
+        if not d:
+            continue
+        cnt, sz = r['n'], r['s']
+        parts = d.split('/')
+        for i in range(1, len(parts) + 1):
+            nd = node('/'.join(parts[:i]))
+            nd['n'] += cnt
+            nd['s'] += sz
+        for i in range(len(parts)):
+            nd = node('/'.join(parts[:i]))
+            nd['kids'][parts[i]] = '/'.join(parts[:i + 1])
+    _DIRS['mtime'] = mtime
+    _DIRS['tree'] = tree
+    return tree
+
+
+_WAVE_SEM = threading.Semaphore(2)   # 并发限流：最多 2 个 ffmpeg 同时跑（防"波形风暴"卡交互）
 
 
 def wave_for(fid, mtime, src):
@@ -250,7 +315,8 @@ def wave_for(fid, mtime, src):
     cmd = ['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-threads', '1', '-i', src,
            '-filter_complex', 'showwavespic=s=960x96:colors=0x6ea8fe', '-frames:v', '1', tmp]
     try:
-        r = subprocess.run(cmd, timeout=90, capture_output=True)
+        with _WAVE_SEM:
+            r = subprocess.run(cmd, timeout=90, capture_output=True)
     except subprocess.TimeoutExpired:
         r = None
     if r is None or r.returncode != 0 or not os.path.exists(tmp):
@@ -288,7 +354,7 @@ def transcode(fid, mtime, src):
 
 
 class Handler(BaseHTTPRequestHandler):
-    server_version = 'sfx-browser/1.1'
+    server_version = 'sfx-browser/1.2'
     protocol_version = 'HTTP/1.1'
     timeout = 60
 
@@ -395,16 +461,36 @@ class Handler(BaseHTTPRequestHandler):
             if path == '/':
                 fp = os.path.join(BASE, 'index.html')
                 return self.serve_path(fp, 'text/html; charset=utf-8')
+            if path == '/api/dirs':
+                under = qs.get('under', [''])[0][:400].strip().strip('/')
+                tree = dir_tree()
+                nd = tree.get(under)
+                kids = []
+                if nd:
+                    for name in sorted(nd['kids']):
+                        full = nd['kids'][name]
+                        ch = tree.get(full) or {'n': 0, 's': 0, 'kids': {}}
+                        kids.append({'name': name, 'path': full, 'n': ch['n'], 's': ch['s'],
+                                     'has': bool(ch['kids'])})
+                return self.json({'under': under, 'kids': kids})
             if path == '/api/search':
                 q = qs.get('q', [''])[0][:200]
+                direc = qs.get('dir', [''])[0][:400].strip().strip('/')
+                sort = qs.get('sort', [''])[0]
+                if sort not in ('name', 'size', 'mtime', 'rand'):
+                    sort = ''
                 try:
-                    limit = min(int(qs.get('limit', ['300'])[0] or '300'), 1000)
+                    limit = min(max(int(qs.get('limit', ['300'])[0] or '300'), 1), 1000)
                 except ValueError:
                     limit = 300
-                total, res = do_search(q, limit)
-                if q:
-                    print('search %r -> %d' % (q, total))
-                return self.json({'total': total, 'shown': len(res), 'results': res})
+                try:
+                    offset = max(int(qs.get('offset', ['0'])[0] or '0'), 0)
+                except ValueError:
+                    offset = 0
+                total, res = do_search(q, limit, offset, direc, sort)
+                if q or direc:
+                    print('search q=%r dir=%r -> %d (offset %d)' % (q, direc, total, offset))
+                return self.json({'total': total, 'shown': len(res), 'offset': offset, 'results': res})
             if path == '/api/stats':
                 c = db()
                 row = c.execute('SELECT COUNT(*) n, COALESCE(SUM(size),0) sz FROM files').fetchone()

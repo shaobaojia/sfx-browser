@@ -63,6 +63,40 @@ try:
 except Exception as e:
     check('search set', False, repr(e))
 
+try:
+    def getj(path):
+        s, h, b = get(path)
+        return json.loads(b)
+
+    r = getj('/api/dirs')
+    tops = [k['name'] for k in r['kids']]
+    check('dirs 顶层', '01_商业音效包' in tops and len(tops) >= 4, 'tops=%s' % tops)
+    r = getj('/api/dirs?under=' + urllib.parse.quote('01_商业音效包'))
+    ld = [k for k in r['kids'] if k['name'] == 'Lens Distortions']
+    check('dirs 二级目录', len(r['kids']) >= 20 and bool(ld), 'kids=%d' % len(r['kids']))
+    if ld:
+        check('dirs LD 计数', ld[0]['n'] >= 2000 and ld[0]['s'] > 1e10,
+              'n=%d s=%.1fG' % (ld[0]['n'], ld[0]['s'] / 1e9))
+    d = urllib.parse.quote('01_商业音效包/Lens Distortions')
+    r = getj('/api/search?dir=' + d + '&limit=300')
+    check('browse 浏览模式', r['total'] >= 2000 and r['shown'] == 300,
+          'total=%d shown=%d' % (r['total'], r['shown']))
+    ids1 = set(x['id'] for x in r['results'])
+    r2 = getj('/api/search?dir=' + d + '&limit=300&offset=300')
+    ids2 = set(x['id'] for x in r2['results'])
+    check('browse 分页无重叠', r2['total'] == r['total'] and len(r2['results']) == 300 and not (ids1 & ids2),
+          'page2=%d' % len(r2['results']))
+    r3 = getj('/api/search?dir=' + d + '&limit=50&sort=size')
+    sizes = [x['size'] for x in r3['results']]
+    check('browse 大小排序', sizes == sorted(sizes, reverse=True), 'top=%.1fM' % (sizes[0] / 1e6))
+    r4 = getj('/api/search?q=dark&dir=' + d + '&limit=50')
+    inside = all(x['rel'].startswith('01_商业音效包/Lens Distortions/') for x in r4['results'])
+    check('目录内搜索', r4['total'] >= 1 and inside, 'total=%d' % r4['total'])
+    r5 = getj('/api/search?dir=' + d + '&limit=10&sort=rand')
+    check('browse 随机排序', len(r5['results']) == 10, 'n=%d' % len(r5['results']))
+except Exception as e:
+    check('dirs/browse', False, repr(e))
+
 if fid:
     try:
         s, h, b = get('/api/wave?id=%d' % fid)
