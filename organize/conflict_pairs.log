@@ -1,0 +1,27 @@
+冲突文件总数: 200
+分类: {'diff': 200}
+按桶: {'01_商业音效包': 169, '03_项目素材': 29, '02_中文音效合集': 2}
+
+== 字节完全相同（纯冗余）: 0 件 ==
+
+== 内容不同（真·多版本）: 200 件，样例 ==
+   冲突区 0 B  vs  目标区 1959448 B | 03_项目素材/预告/Sound Morph - Sinematic/18. Source Recordings Whoosh/Sinematic - Source Recordings - Whoosh Bys - z Highway Pass_07.wav
+   冲突区 705718 B  vs  目标区 873356 B | 03_项目素材/LTT_V30All/转场_7 - swoosh - normal.wav
+   冲突区 2742088 B  vs  目标区 2575484 B | 01_商业音效包/Pro Sound Effect/28.Crashes,Creak,Scraping,Impacts,Fire,Еxplosions,Footsteps/14 Fire; Flame Whoosh Swift.wav
+   冲突区 450390 B  vs  目标区 607194 B | 01_商业音效包/Pro Sound Effect/Explosions - 5.1 Surround/Set 01/5.1 Explosion Set 01 - R.wav
+   冲突区 3480053 B  vs  目标区 3616877 B | 03_项目素材/LTT_V30All/04. Gom Jabbar.mp3
+   冲突区 4329596 B  vs  目标区 4466279 B | 03_项目素材/LTT_V30All/14. Invasion Of Asgard.mp3
+   冲突区 17671472 B  vs  目标区 17805720 B | 01_商业音效包/[Blastwave.FX]Collection/[Blastwave.FX]Imaging Elements 5.1 Library Stereo Mixdowns/DRON_SSFX_ MUSICAL_DR01.72.wav
+   冲突区 2065608 B  vs  目标区 2195974 B | 01_商业音效包/[WHO05]/ColdDarkWind WHO05_31_7.wav
+   冲突区 885848 B  vs  目标区 1015686 B | 01_商业音效包/Pro Sound Effect/Hits & Tones/Bowed Vibe 03.wav
+   冲突区 2775488 B  vs  目标区 2892083 B | 03_项目素材/LTT_V30All/27 Knife Bow.mp3
+   冲突区 2657834 B  vs  目标区 2773073 B | 03_项目素材/LTT_V30All/John Paesano - The Junkyard.mp3
+   冲突区 3549509 B  vs  目标区 3655895 B | 03_项目素材/LTT_V30All/Harry Gregson-Williams - Mulan & Honghui Fight (From ＂Mulan＂／Score).mp3
+   冲突区 5467452 B  vs  目标区 5573360 B | 03_项目素材/LTT_V30All/SP 15 Quick Whoosh A.wav
+   冲突区 20179176 B  vs  目标区 20284694 B | 03_项目素材/预告/Sound Morph - Sinematic/6. Risers/Sinematic - Risers_05.wav
+   冲突区 1392428 B  vs  目标区 1492126 B | 01_商业音效包/Pro Sound Effect/38.Foley;Cloth,Nylon,Leather,Velcro,Zippers,Bag/33 Cloth,Heavy,Flaps,Sheets Flapping.wav
+   冲突区 20521244 B  vs  目标区 20610940 B | 01_商业音效包/Pro Sound Effect/19 Beeps,Bells,Buzzers,Rumbles,Tools/49 Avalanche Rumble With Rocks Rolling And Debris.wav
+   冲突区 2096398 B  vs  目标区 2185570 B | 01_商业音效包/[WHOBonus]/RaspyExhale_Bonus 86.wav
+   冲突区 25032380 B  vs  目标区 25120924 B | 01_商业音效包/Pro Sound Effect/19 Beeps,Bells,Buzzers,Rumbles,Tools/48 Very Low Frequency, Ominous, Underwater Rumble.wav
+
+已写 conflict_pairs.csv
