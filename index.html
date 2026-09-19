@@ -41,10 +41,10 @@ header{padding:12px 16px 8px;border-bottom:1px solid var(--line);flex:none}
 .dkids.hide{display:none}
 #crumbbar{display:none;padding:2px 0 0;font-size:12px;color:var(--dim)}
 #crumbbar.on{display:flex}
-#crumb{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
-#crumb .cseg{cursor:pointer;color:#93a1b8}
-#crumb .cseg:hover{color:#cfe0ff}
-#crumb .cseg.last{color:#c6d2e6;cursor:default}
+#crumb{display:flex;align-items:center;gap:2px;flex-wrap:wrap}
+#crumb .cseg{display:inline-flex;align-items:center;padding:1px 5px;border-radius:4px;cursor:pointer;color:#93a1b8}
+#crumb .cseg:hover{background:#1d2433;color:#cfe0ff}
+#crumb .cseg.last{cursor:default;color:#c6d2e6}
 #crumb .csep{color:#3a465a}
 #crumb #cclear{cursor:pointer;color:#7c8798;margin-left:2px}
 #crumb #cclear:hover{color:#ff9a9a}
@@ -52,8 +52,8 @@ header{padding:12px 16px 8px;border-bottom:1px solid var(--line);flex:none}
 #zsort{background:var(--panel);color:#a9b8d0;border:1px solid #2a3444;border-radius:6px;font-size:12px;padding:2px 6px;font-family:inherit;outline:none}
 #more{display:none;padding:12px;text-align:center}
 #more.on{display:block}
-#crumb .ctri{cursor:pointer;color:#4a5a72;font-size:10px;padding:0 1px;user-select:none}
-#crumb .ctri:hover{color:#cfe0ff}
+#crumb .cseg .ctri{font-style:normal;opacity:.45;font-size:9px;color:#7c8798;padding-left:2px;cursor:pointer;user-select:none}
+#crumb .cseg .ctri:hover,#crumb .cseg.opensel .ctri{opacity:1;color:#cfe0ff}
 #crumbsel{display:none;position:fixed;z-index:35;min-width:280px;max-width:430px;max-height:52vh;overflow:auto;background:#121826;border:1px solid #2a3444;border-radius:10px;box-shadow:0 12px 40px #000000aa;padding:6px}
 #crumbsel.on{display:block}
 .dstar{flex:none;color:#5a6a82;cursor:pointer;font-size:13px;padding-left:2px}
@@ -288,7 +288,7 @@ var Favs = {
     this.list.slice().sort(function(a,b){return a.p<b.p?-1:1;}).forEach(function(f){
       var k={path:f.p,name:f.p.split("/").pop(),n:f.n||0,s:f.s||0,has:false};
       var r=dirRow(k,{arrow:false,star:true}).row;
-      r.onclick=function(){DirPick.setDir(f.p);DirPick.closePanel();};
+      r.onclick=function(){DirPick.setDir(f.p);};
       box.appendChild(r);
     });
   }
@@ -320,23 +320,57 @@ var DirPick = {
             ar.textContent=kidsBox.classList.contains("hide")?"▸":"▾";
             return;
           }
-          ar.textContent="…";
-          DirPick.fetch(k.path,function(list){
-            kidsBox.dataset.loaded="1";
-            DirPick.renderKids(kidsBox,list);
-            kidsBox.classList.remove("hide");
-            ar.textContent="▾";
-          });
+          DirPick.loadKids(row,kidsBox);
         };
       }
       row.onclick=function(e){
         if(e.target===ar)return;
         DirPick.setDir(k.path);
-        DirPick.closePanel();
       };
       box.appendChild(row);
       if(kidsBox)box.appendChild(kidsBox);
     });
+  },
+  showKids: function(row,box){
+    box.classList.remove("hide");
+    var a=row.querySelector(".darrow");if(a)a.textContent="▾";
+  },
+  loadKids: function(row,box,cb){
+    if(box.dataset.loaded==="1"){this.showKids(row,box);if(cb)cb();return;}
+    var a=row.querySelector(".darrow");if(a)a.textContent="…";
+    DirPick.fetch(row.dataset.path,function(list){
+      box.dataset.loaded="1";
+      DirPick.renderKids(box,list);
+      DirPick.showKids(row,box);
+      if(cb)cb();
+    });
+  },
+  syncSeq: 0,
+  syncTree: function(){
+    var seq=++this.syncSeq;
+    if(!this.rootLoaded)return;
+    var segs=this.curDir?this.curDir.split("/"):[];
+    var step=function(level){
+      if(seq!==DirPick.syncSeq)return;
+      if(level>=segs.length){DirPick.focusCur();return;}
+      var prefix=segs.slice(0,level+1).join("/"),row=null;
+      document.querySelectorAll("#dirtree .drow").forEach(function(x){if(x.dataset.path===prefix)row=x;});
+      if(!row){DirPick.focusCur();return;}
+      var box=row.nextElementSibling;
+      if(!(box&&box.classList&&box.classList.contains("dkids"))){DirPick.focusCur();return;}
+      DirPick.loadKids(row,box,function(){step(level+1);});
+    };
+    step(0);
+  },
+  focusCur: function(){
+    var hit=null,treeRow=null;
+    document.querySelectorAll("#dirpanel .drow").forEach(function(x){
+      var on=x.dataset.path===DirPick.curDir;
+      x.classList.toggle("cur",on);
+      if(on){hit=x;if(x.closest("#dirtree"))treeRow=x;}
+    });
+    var r=treeRow||hit;
+    if(r)r.scrollIntoView({block:"nearest"});
   },
   openPanel: function(){
     $("#dirpanel").classList.add("on");
@@ -345,7 +379,10 @@ var DirPick = {
       this.fetch("",function(list){
         DirPick.rootLoaded=true;
         DirPick.renderKids($("#dirtree"),list);
+        DirPick.syncTree();
       });
+    }else{
+      this.syncTree();
     }
   },
   closePanel: function(){$("#dirpanel").classList.remove("on");},
@@ -370,10 +407,15 @@ var DirPick = {
       var rect=el.getBoundingClientRect();
       box.style.left=Math.max(8,Math.min(rect.left,window.innerWidth-430))+"px";
       box.style.top=(rect.bottom+4)+"px";
+      var seg=el.closest(".cseg");if(seg)seg.classList.add("opensel");
       box.classList.add("on");
     });
   },
-  closeSel: function(){$("#crumbsel").classList.remove("on");this.selAnchor=null;},
+  closeSel: function(){
+    $("#crumbsel").classList.remove("on");
+    document.querySelectorAll("#crumb .cseg.opensel").forEach(function(x){x.classList.remove("opensel");});
+    this.selAnchor=null;
+  },
   toggleSel: function(level,el){
     if($("#crumbsel").classList.contains("on")&&this.selAnchor===el){this.closeSel();return;}
     this.openSel(level,el);
@@ -383,23 +425,25 @@ var DirPick = {
     if(!this.curDir){cb.classList.remove("on");c.innerHTML="";this.closeSel();return;}
     cb.classList.add("on");c.innerHTML="";
     var segs=this.curDir.split("/");
-    var root=document.createElement("span");root.className="cseg";root.textContent="全库";
-    root.onclick=function(){DirPick.setDir("");};
-    c.appendChild(root);
-    var rt=document.createElement("span");rt.className="ctri";rt.textContent="▾";rt.title="换一个桶";
-    rt.onclick=(function(lv){return function(e){e.stopPropagation();DirPick.toggleSel(lv,this);};})(0);
-    c.appendChild(rt);
+    var mk=function(label,path,level,isLast,tip){
+      var s=document.createElement("span");
+      s.className="cseg"+(isLast?" last":"");
+      s.appendChild(document.createTextNode(label));
+      var t=document.createElement("i");t.className="ctri";t.textContent="▾";t.title=tip;
+      s.appendChild(t);
+      s.onclick=(function(p,lv,last){
+        return function(e){
+          if(e.target.closest(".ctri")){e.stopPropagation();DirPick.toggleSel(lv,e.target);return;}
+          if(!last)DirPick.setDir(p);
+        };
+      })(path,level,isLast);
+      return s;
+    };
+    c.appendChild(mk("全库","",0,false,"同级目录（桶）"));
     segs.forEach(function(sg,i){
       var sep=document.createElement("span");sep.className="csep";sep.textContent="›";c.appendChild(sep);
-      var s=document.createElement("span");
       var last=(i===segs.length-1);
-      s.className="cseg"+(last?" last":"");
-      s.textContent=sg;
-      if(!last){s.onclick=(function(p){return function(){DirPick.setDir(p);};})(segs.slice(0,i+1).join("/"));}
-      c.appendChild(s);
-      var tr=document.createElement("span");tr.className="ctri";tr.textContent="▾";tr.title="换一个目录";
-      tr.onclick=(function(lv){return function(e){e.stopPropagation();DirPick.toggleSel(lv,this);};})(i+1);
-      c.appendChild(tr);
+      c.appendChild(mk(sg,segs.slice(0,i+1).join("/"),i+1,last,"换一个目录"));
     });
     var x=document.createElement("b");x.id="cclear";x.textContent="✕";x.title="回到全库搜索";
     x.onclick=function(){DirPick.setDir("");};
@@ -416,6 +460,7 @@ var DirPick = {
     this.updateCrumb();this.updatePlaceholder();
     $("#dirbtn").classList.toggle("act",!!this.curDir);
     document.querySelectorAll("#dirpanel .drow").forEach(function(r){r.classList.toggle("cur",r.dataset.path===DirPick.curDir);});
+    if($("#dirpanel").classList.contains("on"))this.syncTree();
     Search.refresh(true);
   },
   enterDirOf: function(it){
@@ -428,7 +473,7 @@ var DirPick = {
   init: function(){
     $("#dirbtn").onclick=function(e){e.stopPropagation();$("#dirpanel").classList.contains("on")?DirPick.closePanel():DirPick.openPanel();};
     document.addEventListener("click",function(e){
-      if(!e.target.closest("#dirwrap"))DirPick.closePanel();
+      if(!e.target.closest("#dirwrap")&&!e.target.closest("#crumb")&&!e.target.closest("#crumbsel"))DirPick.closePanel();
       if(!e.target.closest("#crumbsel")&&!e.target.closest("#crumb"))DirPick.closeSel();
     });
   }
