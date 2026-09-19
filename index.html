@@ -24,7 +24,7 @@ header{padding:12px 16px 8px;border-bottom:1px solid var(--line);flex:none}
 #viewctl .zr:hover{color:#cfe0ff}
 main{flex:1;display:flex;min-height:0}
 #list{flex:1;overflow:auto;padding:6px 8px 44px}
-.row{display:flex;align-items:center;gap:10px;padding:2px 8px;border-radius:6px;border:1px solid transparent;min-height:var(--rowh,26px)}
+.row{display:flex;align-items:center;gap:10px;padding:2px 8px;border-radius:6px;border:1px solid transparent;margin-bottom:var(--rowgap,8px)}
 .row:hover{background:#161d2a}
 .row.sel{background:var(--sel);border-color:var(--selbd)}
 .row .wbox{position:relative;flex:none;width:var(--wavew,150px);height:calc(var(--wavew,150px)/10);background:#0b0f16;border-radius:3px;overflow:hidden;cursor:crosshair;touch-action:none;user-select:none;-webkit-user-select:none}
@@ -85,7 +85,7 @@ aside{width:340px;flex:none;border-left:1px solid var(--line);display:flex;flex-
     <div id="chips"></div>
     <div id="subinfo"></div>
   </div>
-  <div class="subbar"><div id="hint">↑↓ 自动试听 · 空格 暂停/继续 · 回车 入篮 · L 循环 · M 播放开关 · Esc 清空 · 点波形跳播</div><div id="viewctl"><label>波形 <input type="range" id="zw" min="120" max="800" step="10" value="150"></label><label>行高 <input type="range" id="zh" min="18" max="72" step="2" value="26"></label><span class="zr" id="zreset" title="恢复默认大小">↺</span></div><div id="stats"></div></div>
+  <div class="subbar"><div id="hint">↑↓ 自动试听 · 空格 暂停/继续 · 回车 入篮 · L 循环 · M 播放开关 · Esc 清空 · 点波形跳播</div><div id="viewctl"><label>波形 <input type="range" id="zw" min="120" max="800" step="10" value="150"></label><label>行间距 <input type="range" id="zh" min="0" max="30" step="2" value="8"></label><span class="zr" id="zreset" title="恢复默认大小">↺</span></div><div id="stats"></div></div>
 </header>
 <main>
   <div id="list"><div id="empty">输入关键词开始搜索<br>支持中文 / 英文 / 中英混合 · 例：耳鸣 · 金属 撞击 · door slam</div></div>
@@ -131,20 +131,20 @@ var results=[],sel=-1,curId=null,playSrc=null,loop=false,muted=false,hintShown=f
 var $=function(s){return document.querySelector(s)};
 var au=$("#au");
 
-/* ---------- 视图缩放（波形大小 / 行高，存 localStorage） ---------- */
-var wavew=150,rowh=26;
+/* ---------- 视图缩放（波形大小 / 行间距，存 localStorage） ---------- */
+var wavew=150,rowgap=8;
 try{
   var _w=parseInt(localStorage.getItem("sfx_wavew"),10);if(_w>=120&&_w<=800)wavew=_w;
-  var _r=parseInt(localStorage.getItem("sfx_rowh"),10);if(_r>=18&&_r<=72)rowh=_r;
+  var _g=parseInt(localStorage.getItem("sfx_rowgap"),10);if(_g>=0&&_g<=30)rowgap=_g;
 }catch(e){}
 function applyView(){
   var s=document.documentElement.style;
-  s.setProperty("--wavew",wavew+"px");s.setProperty("--rowh",rowh+"px");
-  $("#zw").value=wavew;$("#zh").value=rowh;
+  s.setProperty("--wavew",wavew+"px");s.setProperty("--rowgap",rowgap+"px");
+  $("#zw").value=wavew;$("#zh").value=rowgap;
 }
 $("#zw").addEventListener("input",function(){wavew=+this.value;try{localStorage.setItem("sfx_wavew",wavew);}catch(e){}applyView();});
-$("#zh").addEventListener("input",function(){rowh=+this.value;try{localStorage.setItem("sfx_rowh",rowh);}catch(e){}applyView();});
-$("#zreset").onclick=function(){wavew=150;rowh=26;try{localStorage.setItem("sfx_wavew",150);localStorage.setItem("sfx_rowh",26);}catch(e){}applyView();};
+$("#zh").addEventListener("input",function(){rowgap=+this.value;try{localStorage.setItem("sfx_rowgap",rowgap);}catch(e){}applyView();});
+$("#zreset").onclick=function(){wavew=150;rowgap=8;try{localStorage.setItem("sfx_wavew",150);localStorage.setItem("sfx_rowgap",8);}catch(e){}applyView();};
 applyView();
 
 function fmtSize(n){return n>1e9?(n/1e9).toFixed(1)+"G":n>1e6?(n/1e6).toFixed(1)+"M":n>1e3?Math.round(n/1e3)+"K":n+"B";}
