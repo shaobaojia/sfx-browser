@@ -39,6 +39,7 @@ GitHub: https://github.com/shaobaojia/sfx-browser （本目录即仓库）
 - **NAS 无 git**：仓库操作都在 Hermes 容器里对同一路径执行（已设 `git config --global --add safe.directory`）
 - 改文件走 `ssh nas "cat > '路径'" < 本地文件`（共享卷 write_file/patch 会被 Hermes 守卫拦）；批量推送用 `base64 -w0 本地文件 | ssh nas "base64 -d > 目标"`（最稳）
 - ⚠️ **用户状态在 `data/user.db`（独立小库），别混进 sfx.db**——build_index 重建索引是整文件 os.replace，塞进去的用户数据会被清掉；迁移逻辑=「上报成功才清 localStorage」+上报自带重试，改这段别退回"先清后传"
+- ⚠️ 编辑期 Hermes 偶报「文件被兄弟会话动过」——本库历史均为虚警；核实法：`diff <(ssh nas "cat 'NAS 路径'") 本地副本`，差异恰为本轮补丁即无事
 - 服务操作：`ssh nas 'export XDG_RUNTIME_DIR=/run/user/1000; systemctl --user restart sfx-browser'`
 - 前端快捷键（m/l/空格/方向键）在输入框内被有意屏蔽（防误触），属预期
 - 波形交互（v1.3.2）：缩略图尺寸=顶部「波形」滑杆（水平，120–800px，宽高 10:1）+「行间距」滑杆（垂直，0–30px，行 margin-bottom）；CSS 变量 --wavew/--rowgap，状态存服务端 user.db（键 sfx_wavew/sfx_rowgap；rAF 合并，松手才写）；拖动滑杆 body.vdrag=屏外行 content-visibility 跳过（contain-intrinsic-size 校准 -6px 保滚动条精确）；列表背景 #161b24（=条目 #0f1218 ×1.5 亮度），hover #1d2433。缩略图与面板波形支持点击跳播 + 拖动扫播（跨文件跳播用 pendingSeek/loadedmetadata）；播放头红线随播放走（rAF）；波形底图 960×96（cache 键 _v960；前端 URL 带 &r=2 破旧缓存）
