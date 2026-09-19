@@ -240,7 +240,7 @@ def do_search(q, limit):
 
 
 def wave_for(fid, mtime, src):
-    key = '%d_%d.png' % (fid, mtime)
+    key = '%d_%d_v960.png' % (fid, mtime)
     fp = os.path.join(WAVE_CACHE, key)
     if os.path.exists(fp):
         return fp
@@ -248,7 +248,7 @@ def wave_for(fid, mtime, src):
     fd, tmp = tempfile.mkstemp(dir=WAVE_CACHE, suffix='.png')
     os.close(fd)
     cmd = ['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-threads', '1', '-i', src,
-           '-filter_complex', 'showwavespic=s=480x48:colors=0x6ea8fe', '-frames:v', '1', tmp]
+           '-filter_complex', 'showwavespic=s=960x96:colors=0x6ea8fe', '-frames:v', '1', tmp]
     try:
         r = subprocess.run(cmd, timeout=90, capture_output=True)
     except subprocess.TimeoutExpired:

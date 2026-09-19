@@ -34,6 +34,7 @@ GitHub: https://github.com/shaobaojia/sfx-browser （本目录即仓库）
 - 改文件走 `ssh nas "cat > '路径'" < 本地文件`（共享卷 write_file/patch 会被 Hermes 守卫拦）；批量推送用 `base64 -w0 本地文件 | ssh nas "base64 -d > 目标"`（最稳）
 - 服务操作：`ssh nas 'export XDG_RUNTIME_DIR=/run/user/1000; systemctl --user restart sfx-browser'`
 - 前端快捷键（m/l/空格/方向键）在输入框内被有意屏蔽（防误触），属预期
+- 波形交互（v1.3）：缩略图尺寸=顶部「波形」滑杆（水平，120–800px，宽高 10:1）+「行高」滑杆（垂直，18–72px）；CSS 变量 --wavew/--rowh，localStorage: sfx_wavew/sfx_rowh。缩略图与面板波形支持点击跳播 + 拖动扫播（跨文件跳播用 pendingSeek/loadedmetadata）；播放头红线随播放走（rAF）；波形底图 960×96（cache 键 _v960；前端 URL 带 &r=2 破旧缓存）
 - 搜索索引存相对路径（相对库根）；波形色 0x6ea8fe
 - 端口：8093=本品；8008/9090/9119/9443/9999 已被占用
 - 全量重扫很便宜（纯元数据，几秒）；但任何“内容级”全库操作（解码/转码/分析）是小时级——别乱来

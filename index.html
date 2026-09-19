@@ -17,12 +17,18 @@ header{padding:12px 16px 8px;border-bottom:1px solid var(--line);flex:none}
 #chips span{padding:2px 10px;border:1px solid #2a3444;border-radius:999px;cursor:pointer;color:#93a1b8}
 #chips span:hover{border-color:#3b6fd4;color:#cfe0ff}
 #hint{color:var(--dim2)}
+#viewctl{display:flex;align-items:center;gap:10px;font-size:11px;color:var(--dim2)}
+#viewctl label{display:flex;align-items:center;gap:4px;cursor:pointer;white-space:nowrap}
+#viewctl input[type=range]{width:84px;accent-color:#6ea8fe}
+#viewctl .zr{cursor:pointer;color:var(--dim);padding:0 2px;font-size:13px}
+#viewctl .zr:hover{color:#cfe0ff}
 main{flex:1;display:flex;min-height:0}
 #list{flex:1;overflow:auto;padding:6px 8px 44px}
-.row{display:flex;align-items:center;gap:10px;padding:4px 8px;border-radius:6px;border:1px solid transparent}
+.row{display:flex;align-items:center;gap:10px;padding:2px 8px;border-radius:6px;border:1px solid transparent;min-height:var(--rowh,26px)}
 .row:hover{background:#161d2a}
 .row.sel{background:var(--sel);border-color:var(--selbd)}
-.row .w{width:150px;height:15px;flex:none;background:#0b0f16;border-radius:3px}
+.row .wbox{position:relative;flex:none;width:var(--wavew,150px);height:calc(var(--wavew,150px)/10);background:#0b0f16;border-radius:3px;overflow:hidden;cursor:crosshair;touch-action:none;user-select:none;-webkit-user-select:none}
+.row .wbox .w{width:100%;height:100%;display:block;pointer-events:none}
 .row .meta{flex:1;min-width:0;display:flex;flex-direction:column}
 .row .nm{font-size:13px;color:#e8eefb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .row .dr{font-size:11px;color:var(--dim2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -36,7 +42,13 @@ aside{width:340px;flex:none;border-left:1px solid var(--line);display:flex;flex-
 .card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px}
 #curName{font-size:13px;color:#e8eefb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #curMeta{font-size:11px;color:var(--dim2);margin:2px 0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#wave{width:100%;height:auto;display:none;background:#0b0f16;border-radius:4px;margin-bottom:8px}
+#wavebox{position:relative;display:none;background:#0b0f16;border-radius:4px;margin-bottom:2px;cursor:crosshair;touch-action:none;user-select:none;-webkit-user-select:none}
+#wavebox.on{display:block}
+#wavebox .w{width:100%;height:auto;display:block;pointer-events:none}
+.ph{position:absolute;top:0;bottom:0;left:0;width:2px;background:#ff5a5a;box-shadow:0 0 5px #ff5a5acc;display:none;pointer-events:none}
+.ph.on{display:block}
+#tread{font-size:11px;color:var(--dim);margin:0 0 8px;font-variant-numeric:tabular-nums}
+#tread b{color:#c6d2e6;font-weight:600}
 #pbtns{display:flex;gap:6px;flex-wrap:wrap}
 .btn{padding:3px 10px;border:1px solid #2a3444;border-radius:6px;cursor:pointer;color:#a9b8d0;font-size:12px;background:none}
 .btn:hover{border-color:#3b6fd4;color:#cfe0ff}
@@ -73,7 +85,7 @@ aside{width:340px;flex:none;border-left:1px solid var(--line);display:flex;flex-
     <div id="chips"></div>
     <div id="subinfo"></div>
   </div>
-  <div class="subbar"><div id="hint">↑↓ 自动试听 · 空格 暂停/继续 · 回车 入篮 · L 循环 · M 播放开关 · Esc 清空</div><div id="stats"></div></div>
+  <div class="subbar"><div id="hint">↑↓ 自动试听 · 空格 暂停/继续 · 回车 入篮 · L 循环 · M 播放开关 · Esc 清空 · 点波形跳播</div><div id="viewctl"><label>波形 <input type="range" id="zw" min="120" max="800" step="10" value="150"></label><label>行高 <input type="range" id="zh" min="18" max="72" step="2" value="26"></label><span class="zr" id="zreset" title="恢复默认大小">↺</span></div><div id="stats"></div></div>
 </header>
 <main>
   <div id="list"><div id="empty">输入关键词开始搜索<br>支持中文 / 英文 / 中英混合 · 例：耳鸣 · 金属 撞击 · door slam</div></div>
@@ -81,7 +93,8 @@ aside{width:340px;flex:none;border-left:1px solid var(--line);display:flex;flex-
     <div class="card" id="player">
       <div id="curName">—</div>
       <div id="curMeta">悬停或 ↑↓ 试听</div>
-      <img id="wave" alt="">
+      <div id="wavebox"><img id="wave" class="w" alt=""><i class="ph" id="wph"></i></div>
+      <div id="tread"><b id="tcur">0:00.0</b> / <span id="ttot">--:--</span></div>
       <div id="pbtns">
         <button class="btn" id="btnPlay">▶ 试听</button>
         <button class="btn" id="btnLoop">↻ 循环</button>
@@ -117,6 +130,22 @@ var CHIPS=["耳鸣","爆炸","转场","脚步","风","雨","金属","心跳","wh
 var results=[],sel=-1,curId=null,playSrc=null,loop=false,muted=false,hintShown=false,reqSeq=0,hoverT=0,stopT=0;
 var $=function(s){return document.querySelector(s)};
 var au=$("#au");
+
+/* ---------- 视图缩放（波形大小 / 行高，存 localStorage） ---------- */
+var wavew=150,rowh=26;
+try{
+  var _w=parseInt(localStorage.getItem("sfx_wavew"),10);if(_w>=120&&_w<=800)wavew=_w;
+  var _r=parseInt(localStorage.getItem("sfx_rowh"),10);if(_r>=18&&_r<=72)rowh=_r;
+}catch(e){}
+function applyView(){
+  var s=document.documentElement.style;
+  s.setProperty("--wavew",wavew+"px");s.setProperty("--rowh",rowh+"px");
+  $("#zw").value=wavew;$("#zh").value=rowh;
+}
+$("#zw").addEventListener("input",function(){wavew=+this.value;try{localStorage.setItem("sfx_wavew",wavew);}catch(e){}applyView();});
+$("#zh").addEventListener("input",function(){rowh=+this.value;try{localStorage.setItem("sfx_rowh",rowh);}catch(e){}applyView();});
+$("#zreset").onclick=function(){wavew=150;rowh=26;try{localStorage.setItem("sfx_wavew",150);localStorage.setItem("sfx_rowh",26);}catch(e){}applyView();};
+applyView();
 
 function fmtSize(n){return n>1e9?(n/1e9).toFixed(1)+"G":n>1e6?(n/1e6).toFixed(1)+"M":n>1e3?Math.round(n/1e3)+"K":n+"B";}
 function uncFor(rel){return UNC_BASE+rel.replace(/\//g,"\\");}
@@ -157,8 +186,8 @@ function render(resp){
   var frag=document.createDocumentFragment();
   results.forEach(function(it,i){
     var d=document.createElement("div");
-    d.className="row";d.dataset.i=i;
-    d.innerHTML='<img class="w" loading="lazy" alt="" src="/api/wave?id='+it.id+"&v="+it.mtime+'">'+
+    d.className="row";d.dataset.i=i;d.dataset.id=it.id;
+    d.innerHTML='<div class="wbox"><img class="w" loading="lazy" alt="" src="/api/wave?id='+it.id+"&v="+it.mtime+'&r=2"><i class="ph"></i></div>'+
       '<div class="meta"><div class="nm"></div><div class="dr"></div></div>'+
       '<div class="sz">'+fmtSize(it.size)+'</div>'+
       '<div class="acts"><a href="/api/audio?id='+it.id+"&dl=1"+'" title="下载">⬇</a><b class="cp" title="复制 UNC 路径">⧉</b><b class="add" title="入篮">＋</b></div>';
@@ -169,6 +198,7 @@ function render(resp){
   });
   list.appendChild(frag);
   paintSel();
+  phBind();
 }
 function paintSel(){
   document.querySelectorAll("#list .row").forEach(function(r){r.classList.toggle("sel",+r.dataset.i===sel)});
@@ -185,9 +215,13 @@ function playRow(i,toggle,src){
   var it=results[i];
   $("#curName").textContent=it.name;
   $("#curMeta").textContent=(it.dir?it.dir+" · ":"")+fmtSize(it.size);
-  var w=$("#wave");w.style.display="block";w.src="/api/wave?id="+it.id+"&v="+it.mtime;
+  var wb=$("#wavebox");wb.classList.add("on");
+  var w=$("#wave");var wsrc="/api/wave?id="+it.id+"&v="+it.mtime+"&r=2";
+  if(w.getAttribute("src")!==wsrc)w.src=wsrc;
   if(curId!==it.id){
     curId=it.id;playSrc=src||"click";
+    if(pend&&pend.id!==curId)pend=null;
+    $("#tcur").textContent="0:00.0";$("#ttot").textContent="--:--";
     if(muted){au.pause();if(src==="click")muteGate();}
     else{au.src="/api/audio?id="+it.id;au.play().catch(function(){showHint()});}
   }else{
@@ -196,16 +230,75 @@ function playRow(i,toggle,src){
     else if(toggle){au.paused?au.play().catch(function(){showHint()}):au.pause();}
     else if(au.paused){au.play().catch(function(){showHint()});}
   }
+  phBind();
   syncPlayBtn();
 }
 function stopAudio(){au.pause();syncPlayBtn();}
 function syncPlayBtn(){$("#btnPlay").textContent=au.paused?"▶ 试听":"⏸ 暂停";}
-au.addEventListener("play",syncPlayBtn);
-au.addEventListener("pause",syncPlayBtn);
+
+/* ---------- 播放头 / 时间读数 / 点击跳播 ---------- */
+var phEl=null,rafId=null,pend=null,drag=null,lastSeekT=0;
+function fmtTime(t){if(!isFinite(t)||t<0)t=0;var h=Math.floor(t/3600),m=Math.floor((t%3600)/60),s=t%60;var ss=(s<10?"0":"")+s.toFixed(1);return h>0?h+":"+("0"+m).slice(-2)+":"+ss:m+":"+ss;}
+function phBind(){
+  if(phEl){phEl.classList.remove("on");phEl=null;}
+  var wph=$("#wph");if(wph)wph.classList.remove("on");
+  if(muted||curId==null)return;
+  var box=document.querySelector('#list .row[data-id="'+curId+'"] .wbox');
+  if(box){phEl=box.querySelector(".ph");if(phEl)phEl.classList.add("on");}
+  if($("#wavebox").classList.contains("on")&&wph)wph.classList.add("on");
+  phPaint();
+}
+function phPaint(){
+  var frac=(curId!=null&&isFinite(au.duration)&&au.duration>0)?au.currentTime/au.duration:0;
+  if(phEl)phEl.style.left=(frac*100)+"%";
+  var wph=$("#wph");if(wph)wph.style.left=(frac*100)+"%";
+  if(curId!=null&&au.getAttribute("src")){
+    $("#tcur").textContent=fmtTime(au.currentTime);
+    $("#ttot").textContent=(isFinite(au.duration)&&au.duration>0)?fmtTime(au.duration):"--:--";
+  }
+}
+function tick(){phPaint();rafId=au.paused?null:requestAnimationFrame(tick);}
+function kick(){if(rafId==null&&!au.paused)rafId=requestAnimationFrame(tick);}
+function applyPend(){if(pend&&pend.id===curId&&isFinite(au.duration)&&au.duration>0){au.currentTime=pend.f*au.duration;pend=null;}}
+function dragSeek(e){
+  if(!drag)return;
+  var r=drag.box.getBoundingClientRect();
+  if(r.width<=0)return;
+  var frac=Math.min(1,Math.max(0,(e.clientX-r.left)/r.width));
+  var ph=drag.panel?$("#wph"):drag.box.querySelector(".ph");
+  if(ph){ph.classList.add("on");ph.style.left=(frac*100)+"%";}
+  if(!drag.panel)phEl=ph;
+  var now=performance.now();
+  if(now-lastSeekT<120)return;
+  lastSeekT=now;
+  if(drag.id!==curId||!(isFinite(au.duration)&&au.duration>0)){pend={id:drag.id,f:frac};return;}
+  au.currentTime=frac*au.duration;
+  if(au.paused)au.play().catch(function(){showHint()});
+}
+function chooseSeek(id,i,box,e){
+  if(muted){muteGate();return;}
+  if(curId!==id){
+    var idx=results.findIndex(function(x){return x.id===id});
+    if(idx<0)return;
+    playRow(idx,false,"wave");
+  }
+  playSrc="click";
+  drag={id:id,box:box};
+  dragSeek(e);
+}
+document.addEventListener("pointermove",function(e){if(drag)dragSeek(e);});
+document.addEventListener("pointerup",function(){drag=null;});
+document.addEventListener("pointercancel",function(){drag=null;});
+au.addEventListener("play",function(){syncPlayBtn();kick();phPaint();});
+au.addEventListener("pause",function(){syncPlayBtn();phPaint();});
+au.addEventListener("loadedmetadata",function(){applyPend();phPaint();});
+au.addEventListener("seeked",function(){phPaint();});
+au.addEventListener("emptied",function(){phPaint();});
 
 /* ---------- 列表交互 ---------- */
 var list=$("#list");
 list.addEventListener("mouseover",function(e){
+  if(drag)return;
   var row=e.target.closest(".row");if(!row)return;
   clearTimeout(stopT);
   var i=+row.dataset.i;
@@ -214,6 +307,7 @@ list.addEventListener("mouseover",function(e){
   hoverT=setTimeout(function(){playRow(i,false,"hover")},120);
 });
 list.addEventListener("mouseleave",function(){
+  if(drag)return;
   clearTimeout(hoverT);
   clearTimeout(stopT);
   stopT=setTimeout(function(){if(playSrc==="hover")stopAudio()},350);
@@ -224,7 +318,22 @@ list.addEventListener("click",function(e){
   if(e.target.closest(".cp")){copyText(uncFor(results[i].rel),"已复制路径");return;}
   if(e.target.closest(".add")){addBasket(results[i]);return;}
   if(e.target.closest("a"))return;
+  if(e.target.closest(".wbox"))return;
   playRow(i,true,"click");
+});
+list.addEventListener("pointerdown",function(e){
+  var box=e.target.closest(".wbox");if(!box)return;
+  var row=box.closest(".row");if(!row)return;
+  e.preventDefault();
+  chooseSeek(+row.dataset.id,+row.dataset.i,box,e);
+});
+$("#wavebox").addEventListener("pointerdown",function(e){
+  if(curId==null)return;
+  e.preventDefault();
+  if(muted){muteGate();return;}
+  playSrc="click";
+  drag={id:curId,box:this,panel:true};
+  dragSeek(e);
 });
 
 /* ---------- 键盘 ---------- */
@@ -322,6 +431,7 @@ function toggleMute(){
   if(muted){au.pause();toast("已关闭播放");muteHintShown=false;}
   else{toast("播放已打开");}
   syncMute();
+  phBind();
 }
 function muteGate(){
   if(!muted)return false;
