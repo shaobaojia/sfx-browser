@@ -1,0 +1,97 @@
+== 阶段1: 建索引（主库+隔离区）==
+  lib: 162420 文件  (2s)
+  q: 90344 文件  (4s)
+  索引名条目: 152932  (4s)
+
+== 阶段2: 逐成员核验 ==
+
+== 结果 ==
+
+### Cinetools Witchcraft【黑暗魔法巫术风火雷电咒语游戏技能音效素材】655544319933.zip
+  成员总数 1757 | 库内确认 1701 | 仅隔离区 8 | 同名不同大小 48 | 完全缺失 0
+  匹配落点 top:
+     [1647] 02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft
+     [8] ../音效_去重待删_20260919/魔法法术咒语技能释放音效
+     [1] 03_项目素材/LTT_V30All/WC_Conjure_DemonicInfusion2_CT.wav
+     [1] 03_项目素材/LTT_V30All/WC_Conjure_EvilBreath2_CT.wav
+     [1] 03_项目素材/LTT_V30All/WC_Acid_AcidBomb4_CT.wav
+     [1] 03_项目素材/LTT_V30All/WC_Earth_StoneThrow_CT.wav
+     [1] 03_项目素材/LTT_V30All/WC_Ice_FrozenStrike_CT.wav
+     [1] 03_项目素材/LTT_V30All/WC_Ice_IceArrow2_CT.wav
+  样例:
+     Cinetools Witchcraft/Designed/Conjure/WC_Conjure_BlindFury_CT.wav  ->  /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designed/Conjure/WC_Conjure_BlindFury_CT.wav
+     Cinetools Witchcraft/Designed/Conjure/WC_Conjure_CleanseConjure_CT.wav  ->  /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designed/Conjure/WC_Conjure_CleanseConjure_CT.wav
+     Cinetools Witchcraft/Designed/Conjure/WC_Conjure_CurseSpell2_CT.wav  ->  /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designed/Conjure/WC_Conjure_CurseSpell2_CT.wav
+     Cinetools Witchcraft/Designed/Conjure/WC_Conjure_CurseSpell3_CT.wav  ->  /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designed/Conjure/WC_Conjure_CurseSpell3_CT.wav
+  问题成员 (48) 前40:
+     [NAME_ONLY] Cinetools Witchcraft/Designed/Elemental/Earth Cast/WC_Earth_BoulderCast2_CT.wav (10309778 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designed/Elemental/Earth Cast/WC_Earth_BoulderCast2_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designed/Elemental/Earth Cast/WC_Earth_DestructionSpell5_CT.wav (6619934 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designed/Elemental/Earth Cast/WC_Earth_DestructionSpell5_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designed/Elemental/Fire Cast/WC_Fire_FireBall_CT.wav (5472044 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designed/Elemental/Fire Cast/WC_Fire_FireBall_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designed/Elemental/Fire Cast/WC_Fire_Firebolt_CT.wav (5465866 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designed/Elemental/Fire Cast/WC_Fire_Firebolt_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designed/Elemental/Fire Cast/WC_Fire_FlameCrash_CT.wav (4713248 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designed/Elemental/Fire Cast/WC_Fire_FlameCrash_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designed/Elemental/Fire Cast/WC_Fire_Fulmination_CT.wav (4694630 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designed/Elemental/Fire Cast/WC_Fire_Fulmination_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designed/Elemental/Fire Cast/WC_Fire_IceMelting_CT.wav (15952772 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designed/Elemental/Fire Cast/WC_Fire_IceMelting_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Atmosphere/WC_Atmos_FatFall_CT.wav (64929044 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Atmosphere/WC_Atmos_FatFall_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Atmosphere/WC_Atmos_PostApo_CT.wav (41773780 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Atmosphere/WC_Atmos_PostApo_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Atmosphere/WC_Atmos_WindyHalls_CT.wav (26559280 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Atmosphere/WC_Atmos_WindyHalls_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Bonus/Monsters & Creatures/MO_RageMonsterAttack2_CT.wav (1584044 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Bonus/Monsters & Creatures/MO_RageMonsterAttack2_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Bonus/Stingers/EON_Stinger_Aquaphone_fx_rise_LowKiller_CT.wav (13477808 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Bonus/Stingers/EON_Stinger_Aquaphone_fx_rise_LowKiller_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Drone/WC_Drone_Cymbalin_CT.wav (26368956 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Drone/WC_Drone_Cymbalin_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Elemental/Fire/WC_Fire_Burst_Fuel_crisp4_CT.wav (1468364 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Elemental/Fire/WC_Fire_Burst_Fuel_crisp4_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Elemental/Fire/WC_Fire_Burst_Fuel_short_CT.wav (5740520 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Elemental/Fire/WC_Fire_Burst_Fuel_short_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Elemental/Fire/WC_Fire_Movement_Flame_crispy_CT.wav (8051560 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Elemental/Fire/WC_Fire_Movement_Flame_crispy_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Elemental/Fire/WC_Fire_Sizzle_BurningOil_CT.wav (8291452 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Elemental/Fire/WC_Fire_Sizzle_BurningOil_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Elemental/Fire/WC_Fire_Sizzle_DrizzleWaterIntoOil4_CT.wav (25925824 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Elemental/Fire/WC_Fire_Sizzle_DrizzleWaterIntoOil4_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Elemental/Fire/WC_Fire_Whoosh_Tourch11_CT.wav (1543676 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Elemental/Fire/WC_Fire_Whoosh_Tourch11_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Elemental/Fire/WC_Fire_Whoosh_Tourch_longmovement3_CT.wav (3852248 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Elemental/Fire/WC_Fire_Whoosh_Tourch_longmovement3_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Elemental/Rock/WC_Rock_Fall_large3_CT.wav (6768044 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Elemental/Rock/WC_Rock_Fall_large3_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Elemental/Rock/WC_Rock_Slide_large2_CT.wav (6912044 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Elemental/Rock/WC_Rock_Slide_large2_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Elemental/Rock/WC_Rock_Slide_medium3_CT.wav (9216044 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Elemental/Rock/WC_Rock_Slide_medium3_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Elemental/Sand&Gravel&Pebble/WC_Sand&Gravel&Pebble_Debris3_CT.wav (4857488 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Elemental/Sand&Gravel&Pebble/WC_Sand&Gravel&Pebble_Debris3_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Piercer/WC_Piercer_Circuit_CT.wav (5517990 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Piercer/WC_Piercer_Circuit_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Piercer/WC_Piercer_NoiseWoosh_CT.wav (10784016 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Piercer/WC_Piercer_NoiseWoosh_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Piercer/WC_Piercer_TinnitusAuris_CT.wav (46434612 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Piercer/WC_Piercer_TinnitusAuris_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Sweep/WC_Sweep_Corrupt_CT.wav (9223000 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Sweep/WC_Sweep_Corrupt_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Sweep/WC_Sweep_DarkSwell_CT.wav (9371898 B) /volume1/主目录/Collection/素材&模板&音库/音效/03_项目素材/LTT_V30All/WC_Sweep_DarkSwell_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Sweep/WC_Sweep_EchoWoosh_CT.wav (4978840 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Sweep/WC_Sweep_EchoWoosh_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Sweep/WC_Sweep_GlassEnigma_CT.wav (4199532 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Sweep/WC_Sweep_GlassEnigma_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Sweep/WC_Sweep_Nasty_CT.wav (5545608 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Sweep/WC_Sweep_Nasty_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Sweep/WC_Sweep_SpringSuck_CT.wav (1656278 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Sweep/WC_Sweep_SpringSuck_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Texture/WC_Texture_ClassicTension_CT.wav (84203984 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Texture/WC_Texture_ClassicTension_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Texture/WC_Texture_StillAir_CT.wav (65452630 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Texture/WC_Texture_StillAir_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Voice/WC_Voice_GhostBreath3_CT.wav (2370142 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Voice/WC_Voice_GhostBreath3_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Voice/WC_Voice_GhostChoir_CT.wav (11486474 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Voice/WC_Voice_GhostChoir_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Voice/WC_Voice_Giant_CT.wav (7277134 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Voice/WC_Voice_Giant_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Designer Tools/Voice/WC_Voice_StumbleTalk_CT.wav (9017068 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Voice/WC_Voice_StumbleTalk_CT.wav
+     [NAME_ONLY] Cinetools Witchcraft/Pre-Designed/WC_Earth_RockCrumble2_CT.wav (1293646 B) /volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集/魔法法术咒语技能释放音效/Cinetools Witchcraft/Pre-Designed/WC_Earth_RockCrumble2_CT.wav
+     ...
+
+### Rock The Speakerbox - Broken.zip
+  成员总数 725 | 库内确认 722 | 仅隔离区 1 | 同名不同大小 2 | 完全缺失 0
+  匹配落点 top:
+     [539] 01_商业音效包/Rock The Speakerbox - Broken/Construction Kit
+     [178] 01_商业音效包/Rock The Speakerbox - Broken/Designed
+     [5] 01_商业音效包/Rock The Speakerbox - Broken/LookAE.com
+     [1] ../音效_去重待删_20260919/A Sound Effect - Animal Hyperrealism Vol II
+  样例:
+     Rock The Speakerbox - Broken/Construction Kit/BROKEN - CK - 1X1 WOOD DROP On Concrete Single -12 01.wav  ->  /volume1/主目录/Collection/素材&模板&音库/音效/01_商业音效包/Rock The Speakerbox - Broken/Construction Kit/BROKEN - CK - 1X1 WOOD DROP On Concrete Single -12 01.wav
+     Rock The Speakerbox - Broken/Construction Kit/BROKEN - CK - 1X1 WOOD DROP On Concrete Single -12 02.wav  ->  /volume1/主目录/Collection/素材&模板&音库/音效/01_商业音效包/Rock The Speakerbox - Broken/Construction Kit/BROKEN - CK - 1X1 WOOD DROP On Concrete Single -12 02.wav
+     Rock The Speakerbox - Broken/Construction Kit/BROKEN - CK - 1X1 WOOD DROP On Concrete Single -12 03.wav  ->  /volume1/主目录/Collection/素材&模板&音库/音效/01_商业音效包/Rock The Speakerbox - Broken/Construction Kit/BROKEN - CK - 1X1 WOOD DROP On Concrete Single -12 03.wav
+     Rock The Speakerbox - Broken/Construction Kit/BROKEN - CK - 1X1 WOOD DROP On Concrete Single -24 01.wav  ->  /volume1/主目录/Collection/素材&模板&音库/音效/01_商业音效包/Rock The Speakerbox - Broken/Construction Kit/BROKEN - CK - 1X1 WOOD DROP On Concrete Single -24 01.wav
+  问题成员 (2) 前40:
+     [NAME_ONLY] Rock The Speakerbox - Broken/Construction Kit/BROKEN - CK - DOOR Metal And Wood Shake.wav (4448572 B) /volume1/主目录/Collection/素材&模板&音库/音效/01_商业音效包/Rock The Speakerbox - Broken/Construction Kit/BROKEN - CK - DOOR Metal And Wood Shake.wav
+     [NAME_ONLY] Rock The Speakerbox - Broken/Construction Kit/BROKEN - CK - METAL Hollow Hit Rattle.wav (27119156 B) /volume1/主目录/Collection/素材&模板&音库/音效/01_商业音效包/Rock The Speakerbox - Broken/Construction Kit/BROKEN - CK - METAL Hollow Hit Rattle.wav
+
+### Sound Morph - Sinematic.zip
+  成员总数 432 | 库内确认 432 | 仅隔离区 0 | 同名不同大小 0 | 完全缺失 0
+  匹配落点 top:
+     [431] 03_项目素材/预告/Sound Morph - Sinematic
+     [1] 99_待整理/_命名冲突/03_项目素材
+  样例:
+     Sound Morph - Sinematic/1. Stutter Risers/Sinematic - Stutter Risers_01.wav  ->  /volume1/主目录/Collection/素材&模板&音库/音效/03_项目素材/预告/Sound Morph - Sinematic/1. Stutter Risers/Sinematic - Stutter Risers_01.wav
+     Sound Morph - Sinematic/1. Stutter Risers/Sinematic - Stutter Risers_02.wav  ->  /volume1/主目录/Collection/素材&模板&音库/音效/03_项目素材/预告/Sound Morph - Sinematic/1. Stutter Risers/Sinematic - Stutter Risers_02.wav
+     Sound Morph - Sinematic/1. Stutter Risers/Sinematic - Stutter Risers_03.wav  ->  /volume1/主目录/Collection/素材&模板&音库/音效/03_项目素材/预告/Sound Morph - Sinematic/1. Stutter Risers/Sinematic - Stutter Risers_03.wav
+     Sound Morph - Sinematic/1. Stutter Risers/Sinematic - Stutter Risers_04.wav  ->  /volume1/主目录/Collection/素材&模板&音库/音效/03_项目素材/预告/Sound Morph - Sinematic/1. Stutter Risers/Sinematic - Stutter Risers_04.wav
+
+已写 zipaudit_members.csv | 总耗时 38s
+DONE

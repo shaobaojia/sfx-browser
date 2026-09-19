@@ -1,0 +1,55 @@
+复核 50 件
+  [01] OK WC_Earth_BoulderCast2_CT.wav
+  [02] OK WC_Earth_DestructionSpell5_CT.wav
+  [03] OK WC_Fire_FireBall_CT.wav
+  [04] OK WC_Fire_Firebolt_CT.wav
+  [05] OK WC_Fire_FlameCrash_CT.wav
+  [06] OK WC_Fire_Fulmination_CT.wav
+  [07] OK WC_Fire_IceMelting_CT.wav
+  [08] OK WC_Atmos_FatFall_CT.wav
+  [09] OK WC_Atmos_PostApo_CT.wav
+  [10] OK WC_Atmos_WindyHalls_CT.wav
+  [11] OK MO_RageMonsterAttack2_CT.wav
+  [12] OK EON_Stinger_Aquaphone_fx_rise_LowKiller_CT.wav
+  [13] OK WC_Drone_Cymbalin_CT.wav
+  [14] OK WC_Fire_Burst_Fuel_crisp4_CT.wav
+  [15] OK WC_Fire_Burst_Fuel_short_CT.wav
+  [16] OK WC_Fire_Movement_Flame_crispy_CT.wav
+  [17] OK WC_Fire_Sizzle_BurningOil_CT.wav
+  [18] OK WC_Fire_Sizzle_DrizzleWaterIntoOil4_CT.wav
+  [19] OK WC_Fire_Whoosh_Tourch11_CT.wav
+  [20] OK WC_Fire_Whoosh_Tourch_longmovement3_CT.wav
+  [21] OK WC_Rock_Fall_large3_CT.wav
+  [22] OK WC_Rock_Slide_large2_CT.wav
+  [23] OK WC_Rock_Slide_medium3_CT.wav
+  [24] OK WC_Sand&Gravel&Pebble_Debris3_CT.wav
+  [25] OK WC_Piercer_Circuit_CT.wav
+  [26] OK WC_Piercer_NoiseWoosh_CT.wav
+  [27] OK WC_Piercer_TinnitusAuris_CT.wav
+  [28] OK WC_Sweep_Corrupt_CT.wav
+  [29] OK WC_Sweep_DarkSwell_CT.wav
+  [30] OK WC_Sweep_EchoWoosh_CT.wav
+  [31] OK WC_Sweep_GlassEnigma_CT.wav
+  [32] OK WC_Sweep_Nasty_CT.wav
+  [33] OK WC_Sweep_SpringSuck_CT.wav
+  [34] OK WC_Texture_ClassicTension_CT.wav
+  [35] OK WC_Texture_StillAir_CT.wav
+  [36] OK WC_Voice_GhostBreath3_CT.wav
+  [37] OK WC_Voice_GhostChoir_CT.wav
+  [38] OK WC_Voice_Giant_CT.wav
+  [39] OK WC_Voice_StumbleTalk_CT.wav
+  [40] OK WC_Earth_RockCrumble2_CT.wav
+  [41] OK WC_Earth_RockCrumble3_CT.wav
+  [42] OK WC_Earth_RockCrumble4_CT.wav
+  [43] OK WC_Earth_RockCrumble_CT.wav
+  [44] OK WC_Earth_RockDebris_CT.wav
+  [45] OK WC_Earth_RockFall2_CT.wav
+  [46] OK WC_Earth_RockFall_CT.wav
+  [47] OK WC_Fire_GasFlame3_CT.wav
+  [48] OK WC_Nature_Earthquake_Landslip_mega_CT.wav
+  [49] OK BROKEN - CK - DOOR Metal And Wood Shake.wav
+  [50] OK BROKEN - CK - METAL Hollow Hit Rattle.wav
+
+汇总: data块同尺寸 50/50 | 原生32bit逐样本一致 50/50
+全部通过：50/50 音频数据逐样本一致（原生采样率、32bit 精度）
+DONE
