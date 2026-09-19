@@ -2,3 +2,8 @@ data/*.db*
 cache/
 __pycache__/
 _smoke_export/
+
+dedup/*.json
+dedup/*.progress
+dedup/*.log
+dedup/*.csv
