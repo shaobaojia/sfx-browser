@@ -1,0 +1,340 @@
+总文件: 162431
+
+== 顶层构成（136 项）==
+   20124 个 /     53.39 GiB ｜ [Blastwave.FX]Collection
+   57679 个 /     36.77 GiB ｜ 音效
+   27039 个 /     28.38 GiB ｜ Bluezone Corporation(76)
+    1758 个 /     23.99 GiB ｜ LTT_V30All
+    1701 个 /     22.62 GiB ｜ 魔法法术咒语技能释放音效
+    1752 个 /     16.14 GiB ｜ 气氛音乐音效
+    2220 个 /     16.02 GiB ｜ Multiply Sound Film Score Bundle
+     724 个 /      9.59 GiB ｜ Rock The Speakerbox - Broken
+     443 个 /      8.80 GiB ｜ [Tonsturm]02 Electricity
+     436 个 /      7.63 GiB ｜ 预告
+    1509 个 /      7.59 GiB ｜ Boom Library - Close Combat Bundle
+       2 个 /      7.49 GiB ｜ (根级文件)
+    4497 个 /      6.82 GiB ｜ Wind
+    2107 个 /      6.05 GiB ｜ 布斯的音效库
+    1396 个 /      5.77 GiB ｜ Sound Morph - Matter Mayhem
+    1969 个 /      5.39 GiB ｜ 电影级音效
+     394 个 /      5.16 GiB ｜ [Tonsturm]01 Breaking Glass
+     285 个 /      4.46 GiB ｜ A Sound Effect - Animal Hyperrealism Vol II
+     427 个 /      3.00 GiB ｜ A Sound Effect - Rocks Momentum
+   19303 个 /      2.80 GiB ｜ [Sound.Ideas]The SFX Kit For Game
+     378 个 /      1.97 GiB ｜ [Hollywood.Edge]The Edge Edition
+     293 个 /      1.80 GiB ｜ [Hollywood.Edge]The Eerie Edition Sound FX_可怕的
+     477 个 /      1.60 GiB ｜ [Sound.Ideas]The Underwater Sound Effects Series
+     114 个 /      1.21 GiB ｜ [Sound.Ideas]Thunder Sound Effects
+     438 个 /      1.17 GiB ｜ 临时
+      60 个 /      0.85 GiB ｜ Backgrounds
+    4014 个 /      0.84 GiB ｜ [Samplesourcer]Collecyion
+     145 个 /      0.81 GiB ｜ 脚步声02
+     199 个 /      0.77 GiB ｜ [Sound.Ideas]The Metropolis Science Fiction Toolkit
+     110 个 /      0.77 GiB ｜ 脚步声
+      99 个 /      0.77 GiB ｜ 飞机02
+     102 个 /      0.76 GiB ｜ US02
+     100 个 /      0.76 GiB ｜ US03
+      46 个 /      0.75 GiB ｜ 汽车
+      44 个 /      0.75 GiB ｜ 环境音
+      99 个 /      0.74 GiB ｜ 鸟，动物
+      97 个 /      0.74 GiB ｜ US05
+     100 个 /      0.74 GiB ｜ [Sound.Ideas]Drone Archeology
+      99 个 /      0.72 GiB ｜ 26.Sci Fi,Beeps,Computers,Industry,Chemistry,Lab,Hospital
+     130 个 /      0.72 GiB ｜ Pro Sound Effect
+      90 个 /      0.72 GiB ｜ US01
+      57 个 /      0.71 GiB ｜ 飞机
+      99 个 /      0.71 GiB ｜ 34.Airplane,Helicopter,Train,Boat,Car,Motorcycle
+     103 个 /      0.71 GiB ｜ US04
+      99 个 /      0.69 GiB ｜ 7 Cars
+      98 个 /      0.69 GiB ｜ 欢呼、鼓掌
+      51 个 /      0.68 GiB ｜ 4 Water
+      98 个 /      0.68 GiB ｜ 27.Vehicles,Machines,Construction,Power Tools,Industry
+      78 个 /      0.68 GiB ｜ 21.Modern Aircraft,Helicopters,Airport Amb
+     103 个 /      0.66 GiB ｜ 火
+      33 个 /      0.65 GiB ｜ 15 Interior Crowds & Ambiences
+      25 个 /      0.63 GiB ｜ 1 Nature Backgrounds
+      99 个 /      0.62 GiB ｜ 31.Water
+      37 个 /      0.62 GiB ｜ 47.Traffic City Rural
+     101 个 /      0.61 GiB ｜ wb05
+      38 个 /      0.61 GiB ｜ 49.Nature Ambiences
+      97 个 /      0.60 GiB ｜ 42.Recreation
+      63 个 /      0.59 GiB ｜ 48.Room Tone,Ambience,Industry
+      51 个 /      0.59 GiB ｜ 6 Planes & Trains
+      94 个 /      0.57 GiB ｜ 25.Household
+     154 个 /      0.57 GiB ｜ Period Vehicles
+      28 个 /      0.56 GiB ｜ 5 Rain,Thunder,Fire,Bubbles
+      36 个 /      0.55 GiB ｜ 45.Airports,Travel
+      73 个 /      0.54 GiB ｜ 14 Crowds,Kids,Babies,Heartbeats
+      48 个 /      0.54 GiB ｜ 46.Rain,Wind
+      44 个 /      0.53 GiB ｜ 3 Wind
+      67 个 /      0.50 GiB ｜ 22.Historical Aircraft
+     331 个 /      0.50 GiB ｜ [WHO02]
+      84 个 /      0.50 GiB ｜ 19 Beeps,Bells,Buzzers,Rumbles,Tools
+      47 个 /      0.48 GiB ｜ 8 Traffic,Sirens,Motors,Busses
+      89 个 /      0.48 GiB ｜ 12 Sports & Boats
+     101 个 /      0.47 GiB ｜ wb04
+      84 个 /      0.45 GiB ｜ 37.Crowd,Sports Crowds,Int
+       3 个 /      0.45 GiB ｜ [Sound.Ideas]The Metropolis Science Fiction Toolkit Vol.2
+     445 个 /      0.44 GiB ｜ [WHO03]
+      98 个 /      0.43 GiB ｜ 卡通（华纳兄弟电影） (2)
+      94 个 /      0.43 GiB ｜ Vehicles
+     101 个 /      0.41 GiB ｜ 卡通（华纳兄弟电影）
+      91 个 /      0.41 GiB ｜ 36.Air,Steam,Hiss,Whooshes,Industry Machines,Hand Tools
+     533 个 /      0.40 GiB ｜ [WHO05]
+      97 个 /      0.40 GiB ｜ 卡通（华纳兄弟电影） (3)
+      99 个 /      0.38 GiB ｜ 29.Automobiles,Motorcycles
+      98 个 /      0.38 GiB ｜ 30.Sports
+      92 个 /      0.38 GiB ｜ 41.Computers,Electronics
+      92 个 /      0.37 GiB ｜ 28.Crashes,Creak,Scraping,Impacts,Fire,Еxplosions,Footsteps
+      89 个 /      0.35 GiB ｜ 16 Household
+     131 个 /      0.35 GiB ｜ Home & Office
+      99 个 /      0.33 GiB ｜ 17 Telephones,Cameras,Clocks
+      97 个 /      0.33 GiB ｜ 20 Electronic,Sci-Fi
+      93 个 /      0.32 GiB ｜ 32.Household
+     292 个 /      0.32 GiB ｜ Sound Design - Sci-Fi
+      13 个 /      0.32 GiB ｜ Period Backgrounds
+      93 个 /      0.31 GiB ｜ 43.SciFi,Eerie,Horror
+      94 个 /      0.31 GiB ｜ 50.Designed Sounds
+      63 个 /      0.30 GiB ｜ 电影音效
+      97 个 /      0.30 GiB ｜ 44.Scrapes & Scratches
+      31 个 /      0.28 GiB ｜ Natural Elements
+     112 个 /      0.26 GiB ｜ 38.Foley;Cloth,Nylon,Leather,Velcro,Zippers,Bag
+      99 个 /      0.26 GiB ｜ 23.Modern Military;Heavy Artillery,Gun
+     446 个 /      0.24 GiB ｜ [WHO04]
+      95 个 /      0.24 GiB ｜ 39.Human;Body Sounds
+     188 个 /      0.23 GiB ｜ [WHO01]
+      58 个 /      0.23 GiB ｜ 2 Birds & Animals
+      93 个 /      0.22 GiB ｜ 35.Wet Movement,Bubbles,Squeak,Impact,Crash,Pops
+     100 个 /      0.22 GiB ｜ 40.Pistol,Machine Gun,Bullet,Grenade
+      86 个 /      0.21 GiB ｜ 18 Doors,Squeaks,Creaks
+      36 个 /      0.20 GiB ｜ Vocals & Wallas
+      77 个 /      0.19 GiB ｜ Animals
+      78 个 /      0.19 GiB ｜ 24.Historical Military
+     629 个 /      0.19 GiB ｜ Vintage Cartoon
+      95 个 /      0.18 GiB ｜ 13 Humans Coughs,Laughs,Grunts,Screams,Moans,Farts
+      81 个 /      0.16 GiB ｜ 33.Doors
+      55 个 /      0.12 GiB ｜ Sound Design - Fantasy
+      84 个 /      0.12 GiB ｜ Explosions - 5.1 Surround
+     171 个 /      0.12 GiB ｜ 转场常用音效
+      91 个 /      0.12 GiB ｜ 9 Guns,Ricochets,Explosions,Fireworks
+      87 个 /      0.09 GiB ｜ 11 Crashes,Impacts & Swishes
+      49 个 /      0.09 GiB ｜ Explosions
+      60 个 /      0.09 GiB ｜ Impacts & Destruction Sweeteners
+      75 个 /      0.08 GiB ｜ 10 Body Sounds
+     103 个 /      0.07 GiB ｜ [WHOBonus]
+      70 个 /      0.07 GiB ｜ Vocals - Monster
+      37 个 /      0.07 GiB ｜ Sound Design - Horror
+      32 个 /      0.06 GiB ｜ Sports & Recreation
+      44 个 /      0.06 GiB ｜ Vocals - Humanoid
+      36 个 /      0.06 GiB ｜ Electronics
+      75 个 /      0.05 GiB ｜ Weapons & Explosions
+      75 个 /      0.04 GiB ｜ Period Combat
+      93 个 /      0.04 GiB ｜ Weapons & Firearms
+      25 个 /      0.03 GiB ｜ Impacts
+     135 个 /      0.03 GiB ｜ Hand To Hand Combat
+      15 个 /      0.02 GiB ｜ Period Devices
+      13 个 /      0.02 GiB ｜ Hits & Tones
+      15 个 /      0.02 GiB ｜ Thunder & Lightning
+      48 个 /      0.02 GiB ｜ Ricochets - Hits - Whiz Bys
+      26 个 /      0.01 GiB ｜ Title Sequence Effects
+
+== 音效/ 第二层（36 项）==
+   20370 个 /     29.14 GiB ｜ 音效/音效
+   26045 个 /      2.92 GiB ｜ 音效/音效素材1
+    6576 个 /      2.31 GiB ｜ 音效/音效素材2
+    4570 个 /      1.76 GiB ｜ 音效/音效素材3
+      28 个 /      0.15 GiB ｜ 音效/LTT_V30All
+       5 个 /      0.08 GiB ｜ 音效/网络下载
+       2 个 /      0.07 GiB ｜ 音效/Natural Elements
+       4 个 /      0.05 GiB ｜ 音效/[Tonsturm]01 Breaking Glass
+      18 个 /      0.04 GiB ｜ 音效/Pro Sound Effect
+       2 个 /      0.04 GiB ｜ 音效/19 Beeps,Bells,Buzzers,Rumbles,Tools
+       5 个 /      0.03 GiB ｜ 音效/[Blastwave.FX]Collection
+       8 个 /      0.03 GiB ｜ 音效/Sound Morph - Matter Mayhem
+       2 个 /      0.03 GiB ｜ 音效/14 Crowds,Kids,Babies,Heartbeats
+       3 个 /      0.02 GiB ｜ 音效/44.Scrapes & Scratches
+       1 个 /      0.02 GiB ｜ 音效/49.Nature Ambiences
+       2 个 /      0.02 GiB ｜ 音效/43.SciFi,Eerie,Horror
+       2 个 /      0.01 GiB ｜ 音效/50.Designed Sounds
+       6 个 /      0.01 GiB ｜ 音效/[WHO05]
+       3 个 /      0.01 GiB ｜ 音效/33.Doors
+       1 个 /      0.01 GiB ｜ 音效/37.Crowd,Sports Crowds,Int
+       3 个 /      0.01 GiB ｜ 音效/31.Water
+       1 个 /      0.00 GiB ｜ 音效/2 Birds & Animals
+       4 个 /      0.00 GiB ｜ 音效/11 Crashes,Impacts & Swishes
+       2 个 /      0.00 GiB ｜ 音效/Explosions - 5.1 Surround
+       3 个 /      0.00 GiB ｜ 音效/Hits & Tones
+       1 个 /      0.00 GiB ｜ 音效/7 Cars
+       3 个 /      0.00 GiB ｜ 音效/[WHO03]
+       1 个 /      0.00 GiB ｜ 音效/32.Household
+       1 个 /      0.00 GiB ｜ 音效/4 Water
+       1 个 /      0.00 GiB ｜ 音效/[WHOBonus]
+       1 个 /      0.00 GiB ｜ 音效/39.Human;Body Sounds
+       1 个 /      0.00 GiB ｜ 音效/18 Doors,Squeaks,Creaks
+       1 个 /      0.00 GiB ｜ 音效/40.Pistol,Machine Gun,Bullet,Grenade
+       1 个 /      0.00 GiB ｜ 音效/Sound Design - Sci-Fi
+       1 个 /      0.00 GiB ｜ 音效/Period Combat
+       1 个 /      0.00 GiB ｜ 音效/声音素材 免费下载 - 爱给网.html
+
+== 同名文件夹（≥2处 & >100MiB）TOP25 ==
+  [ 24.14 GiB / 2处] ltt_v30all
+         1758个   23.99GiB ← LTT_V30All
+           28个    0.15GiB ← 音效/LTT_V30All
+  [  3.34 GiB / 4处] designed
+          178个    2.90GiB ← Rock The Speakerbox - Broken/Designed
+           23个    0.25GiB ← A Sound Effect - Rocks Momentum/A Sound Effect - Glacier Ice/Designed
+            6个    0.19GiB ← A Sound Effect - Rocks Momentum/A Sound Effect - Rocks Momentum/Designed
+            1个    0.00GiB ← 音效/音效/BD音效库/极品音效库/未来科幻科技感/未来科幻科技感/1/Designed
+  [  3.03 GiB / 5处] sounds
+          105个    0.90GiB ← Bluezone Corporation(76)/[Bluezone.Corporation]Abyss Deep Atmospheric Sounds and
+          124个    0.83GiB ← Bluezone Corporation(76)/[Bluezone.Corporation]Exoplanet Alien Soundscapes and S
+           97个    0.78GiB ← Bluezone Corporation(76)/[Bluezone.Corporation]Deadspace Sci Fi Ambiences Drones
+           98个    0.52GiB ← Bluezone Corporation(76)/[Bluezone.Corporation]Deadspace Sci Fi Ambiences Drones
+  [  1.88 GiB / 4处] cd2
+           99个    0.70GiB ← [Hollywood.Edge]The Eerie Edition Sound FX_可怕的/CD2
+           19个    0.61GiB ← [Sound.Ideas]Thunder Sound Effects/CD2/CD2
+          249个    0.52GiB ← [Sound.Ideas]The Underwater Sound Effects Series/CD2
+           52个    0.06GiB ← 音效/音效/BD音效库/附赠音效库（转场+撞击+音效+环境音）/音效/音效/高品质汽车音效/CD2
+  [  1.77 GiB / 4处] cd1
+           93个    0.59GiB ← [Sound.Ideas]Thunder Sound Effects/CD1/CD1
+          100个    0.58GiB ← [Hollywood.Edge]The Eerie Edition Sound FX_可怕的/CD1
+           97个    0.54GiB ← [Sound.Ideas]The Underwater Sound Effects Series/CD1
+           52个    0.06GiB ← 音效/音效/BD音效库/附赠音效库（转场+撞击+音效+环境音）/音效/音效/高品质汽车音效/CD1
+  [  1.75 GiB / 2处] tonsturm_01_breaking_glass_ms_192khz
+           99个    1.74GiB ← [Tonsturm]01 Breaking Glass/TONSTURM_01_Breaking_Glass_MS_192kHz
+            1个    0.01GiB ← 音效/[Tonsturm]01 Breaking Glass/TONSTURM_01_Breaking_Glass_MS_192kHz
+  [  1.73 GiB / 2处] tonsturm_01_breaking_glass_decoded_ms_to_lr_192khz
+           97个    1.70GiB ← [Tonsturm]01 Breaking Glass/TONSTURM_01_Breaking_Glass_Decoded_MS_to_LR_192kHz
+            2个    0.04GiB ← 音效/[Tonsturm]01 Breaking Glass/TONSTURM_01_Breaking_Glass_Decoded_MS_to_LR_192kH
+  [  1.58 GiB / 2处] [blastwave.fx]imaging elements 5.1 library stereo 
+           94个    1.55GiB ← [Blastwave.FX]Collection/[Blastwave.FX]Imaging Elements 5.1 Library Stereo Mixdo
+            2个    0.03GiB ← 音效/[Blastwave.FX]Collection/[Blastwave.FX]Imaging Elements 5.1 Library Stereo Mi
+  [  1.54 GiB / 3处] sound-effects-and-textures
+          203个    0.67GiB ← Bluezone Corporation(76)/[Bluezone.Corporation]Tripod Invasion/Tpod-wav/sound-ef
+          253个    0.44GiB ← Bluezone Corporation(76)/[Bluezone.Corporation]Dark Cinematic Textures and Sound
+          253个    0.44GiB ← Bluezone Corporation(76)/[Bluezone.Corporation]Dark Cinematic Textures and Sound
+  [  1.31 GiB / 4处] 飞机
+           57个    0.71GiB ← 飞机
+           80个    0.50GiB ← 音效/音效/BD音效库/附赠音效库（转场+撞击+音效+环境音）/音效/音效/交通类/飞机
+           41个    0.09GiB ← Wind/百万剪辑狮的音效库/载具音效/飞机
+           26个    0.00GiB ← 音效/音效素材1/飞机
+  [  1.23 GiB / 2处] noise
+          194个    1.22GiB ← [Blastwave.FX]Collection/[Blastwave.FX]Buzzsaw 2/Buzzsaw2/Noise
+           31个    0.00GiB ← 音效/音效/BD音效库/极品音效库/Designer Sound FX/Designer Sound FX/Noise/Noise
+  [  1.18 GiB / 2处] 08. debris - stone
+          291个    1.17GiB ← Sound Morph - Matter Mayhem/08. Debris - Stone
+            3个    0.01GiB ← 音效/Sound Morph - Matter Mayhem/08. Debris - Stone
+  [  1.13 GiB / 3处] cd3
+          131个    0.54GiB ← [Sound.Ideas]The Underwater Sound Effects Series/CD3
+           92个    0.52GiB ← [Hollywood.Edge]The Eerie Edition Sound FX_可怕的/CD3
+           52个    0.06GiB ← 音效/音效/BD音效库/附赠音效库（转场+撞击+音效+环境音）/音效/音效/高品质汽车音效/CD3
+  [  1.12 GiB / 29处] sound-effects
+          156个    0.14GiB ← Bluezone Corporation(76)/[Bluezone.Corporation]Cinematic Session Industrial Samp
+          136个    0.12GiB ← Bluezone Corporation(76)/[Bluezone.Corporation]Blaster FX/BFx-wav/sound-effects
+          156个    0.12GiB ← Bluezone Corporation(76)/[Bluezone.Corporation]Cinematic Session Industrial Samp
+          155个    0.11GiB ← Bluezone Corporation(76)/[Bluezone.Corporation]Dubstep FX/Dtp-wav/sound-effects
+  [  1.03 GiB / 4处] phrases-and-atmospheres
+          136个    0.51GiB ← Bluezone Corporation(76)/[Bluezone.Corporation]The Thin Blue Line/phrases-and-at
+           94个    0.27GiB ← Bluezone Corporation(76)/[Bluezone.Corporation]Dark Atmospheres & SFX 01/Dark-At
+           94个    0.24GiB ← Bluezone Corporation(76)/[Bluezone.Corporation]Dark Atmospheres & SFX 02/DASFX-0
+           12个    0.02GiB ← Bluezone Corporation(76)/[Bluezone.Corporation]Austral Drum and Bass/phrases-and
+  [  1.03 GiB / 2处] atmosphere
+           19个    1.03GiB ← 魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Atmosphere
+            3个    0.00GiB ← 音效/音效素材1/电影电视音效全集/VOL-091/NEW_YORK_DANCE_VOL_1/LOOPS/ONE_SHOTS/ATMOSPHERE
+  [  0.98 GiB / 2处] _(wavs)_fire
+           70个    0.92GiB ← 音效/音效/BD音效库/极品音效库/魔法&科幻/魔法&科幻/科幻魔法音效/_(WAVs)_Elemental_(Sweetner_Layers)/_(WAVs)
+           18个    0.06GiB ← 音效/音效/BD音效库/极品音效库/魔法&科幻/魔法&科幻/科幻魔法音效/_(WAVs)_Elemental_(Designed)/_(WAVs)_Fire
+  [  0.87 GiB / 2处] tonsturm_01_breaking_glass_decoded_ms_to_lr_96khz
+           98个    0.86GiB ← [Tonsturm]01 Breaking Glass/TONSTURM_01_Breaking_Glass_Decoded_MS_to_LR_96kHz
+            1个    0.00GiB ← 音效/[Tonsturm]01 Breaking Glass/TONSTURM_01_Breaking_Glass_Decoded_MS_to_LR_96kHz
+  [  0.82 GiB / 3处] 汽车
+           46个    0.75GiB ← 汽车
+           33个    0.06GiB ← 音效/音效/BD音效库/附赠音效库（转场+撞击+音效+环境音）/音效/音效/交通类/汽车
+           26个    0.01GiB ← Wind/百万剪辑狮的音效库/载具音效/汽车/汽车
+  [  0.78 GiB / 3处] sound-effects-and-atmospheres
+          114个    0.38GiB ← Bluezone Corporation(76)/[Bluezone.Corporation]Ambient Injection Evolving Energy
+          100个    0.37GiB ← Bluezone Corporation(76)/[Bluezone.Corporation]Lightning Blue/Light-wav/sound-ef
+           25个    0.02GiB ← Bluezone Corporation(76)/[Bluezone.Corporation]Arctic Drum And Bass/sound-effect
+  [  0.76 GiB / 3处] 4 water
+           51个    0.68GiB ← 4 Water
+            2个    0.07GiB ← Pro Sound Effect/4 Water
+            1个    0.00GiB ← 音效/4 Water
+  [  0.74 GiB / 2处] atmospheres
+           12个    0.42GiB ← 气氛音乐音效/Anticipation SFX/05 - Atmospheres/Atmospheres
+           11个    0.31GiB ← 气氛音乐音效/Archetype SFX/06 - Atmospheres/Atmospheres
+  [  0.73 GiB / 2处] 26.sci fi,beeps,computers,industry,chemistry,lab,h
+           99个    0.72GiB ← 26.Sci Fi,Beeps,Computers,Industry,Chemistry,Lab,Hospital
+            1个    0.01GiB ← Pro Sound Effect/26.Sci Fi,Beeps,Computers,Industry,Chemistry,Lab,Hospital
+  [  0.72 GiB / 9处] whooshes
+           48个    0.44GiB ← Boom Library - Close Combat Bundle/Triune Sound- Fighting SFX Pack 电影真实武打搏斗动作音效合
+           27个    0.11GiB ← 气氛音乐音效/Anticipation SFX/03 - Whooshes/Whooshes
+           48个    0.07GiB ← 魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Bonus/Whooshes
+           19个    0.06GiB ← 气氛音乐音效/Archetype SFX/03 - Whooshes/Whooshes
+  [  0.72 GiB / 3处] 49.nature ambiences
+           38个    0.61GiB ← 49.Nature Ambiences
+            5个    0.09GiB ← Pro Sound Effect/49.Nature Ambiences
+            1个    0.02GiB ← 音效/49.Nature Ambiences
+
+== 连续同名套娃目录: 953 个 / 内含文件 28038 ==
+     1147个 ｜ 音效/音效/BD音效库/附赠音效库（转场+撞击+音效+环境音）/音效/音效/其他类
+      590个 ｜ 音效/音效素材3/音效素材3/综合音效
+      443个 ｜ 音效/音效素材3/音效素材3/特酷音效系列/日常生活
+      402个 ｜ 音效/音效/BD音效库/附赠音效库（转场+撞击+音效+环境音）/音效/音效/实用类/循环/002
+      328个 ｜ 音效/音效/BD音效库/附赠音效库（转场+撞击+音效+环境音）/音效/音效/日常生活声音
+      327个 ｜ 音效/音效/BD音效库/极品音效库/Designer Sound FX/Designer Sound FX/人类的声音/HumanElements
+      312个 ｜ 音效/音效/BD音效库/附赠音效库（转场+撞击+音效+环境音）/音效/音效/ScienceFiction
+      301个 ｜ 音效/音效/BD音效库/附赠音效库（转场+撞击+音效+环境音）/音效/音效/工业2
+      293个 ｜ 音效/音效/BD音效库/附赠音效库（转场+撞击+音效+环境音）/音效/音效/交通工具
+      262个 ｜ 音效/音效/BD音效库/附赠音效库（转场+撞击+音效+环境音）/音效/音效/冲击
+      262个 ｜ 音效/音效/BD音效库/附赠音效库（转场+撞击+音效+环境音）/音效/音效/Sports
+      259个 ｜ 音效/音效/BD音效库/极品音效库/Designer Sound FX/Designer Sound FX/人类的声音/CommercialFemale
+
+== 含「备用」目录: 16 个 / 文件 155 / 0.05 GiB ==
+      119个    0.03GiB ｜ 音效/音效/BD音效库/附赠音效库（转场+撞击+音效+环境音）/音效/音效/杂项备用
+        2个    0.01GiB ｜ 音效/音效/BD音效库/极品音效库/质量一般的音效（备用）/质量一般的音效（备用）/2/工厂里机器声
+        1个    0.00GiB ｜ 音效/音效/BD音效库/极品音效库/质量一般的音效（备用）/质量一般的音效（备用）/2/国外顶级片头音效
+        3个    0.00GiB ｜ 音效/音效/BD音效库/极品音效库/质量一般的音效（备用）/质量一般的音效（备用）/1/风声
+        2个    0.00GiB ｜ 音效/音效/BD音效库/极品音效库/质量一般的音效（备用）/质量一般的音效（备用）/2/精选音效
+        1个    0.00GiB ｜ 音效/音效/BD音效库/极品音效库/质量一般的音效（备用）/质量一般的音效（备用）/1/电流
+        1个    0.00GiB ｜ 音效/音效/BD音效库/极品音效库/质量一般的音效（备用）/质量一般的音效（备用）/1/变形金刚音效
+        4个    0.00GiB ｜ 音效/音效/BD音效库/极品音效库/质量一般的音效（备用）/质量一般的音效（备用）/1/飞行类
+
+== 含「质量一般」目录: 14 个 / 文件 27 / 0.02 GiB ==
+        2个    0.01GiB ｜ 音效/音效/BD音效库/极品音效库/质量一般的音效（备用）/质量一般的音效（备用）/2/工厂里机器声
+        1个    0.00GiB ｜ 音效/音效/BD音效库/极品音效库/质量一般的音效（备用）/质量一般的音效（备用）/2/国外顶级片头音效
+        3个    0.00GiB ｜ 音效/音效/BD音效库/极品音效库/质量一般的音效（备用）/质量一般的音效（备用）/1/风声
+        2个    0.00GiB ｜ 音效/音效/BD音效库/极品音效库/质量一般的音效（备用）/质量一般的音效（备用）/2/精选音效
+        1个    0.00GiB ｜ 音效/音效/BD音效库/极品音效库/质量一般的音效（备用）/质量一般的音效（备用）/1/电流
+        1个    0.00GiB ｜ 音效/音效/BD音效库/极品音效库/质量一般的音效（备用）/质量一般的音效（备用）/1/变形金刚音效
+        4个    0.00GiB ｜ 音效/音效/BD音效库/极品音效库/质量一般的音效（备用）/质量一般的音效（备用）/1/飞行类
+        1个    0.00GiB ｜ 音效/音效/BD音效库/极品音效库/质量一般的音效（备用）/质量一般的音效（备用）/1/车发动声
+
+== 疑似下载垃圾命名目录: 4 个 ==
+        1个    3.50GiB ｜ 预告/15. Sound Morph - Sinematic【史诗黑暗大气转场冲击电影音效】653968306123
+        5个    0.08GiB ｜ 音效/网络下载
+        2个    0.00GiB ｜ Wind/百万剪辑狮的音效库/操作音效/复古/跳跃/更多免费资源下载
+        1个    0.00GiB ｜ 音效/音效/BD音效库/极品音效库/魔法&科幻/魔法&科幻/蒸汽朋克工业风武器开枪对战音效/_(WAVs)_B_Eva/更多免费资源下载
+
+== 关键包散落分布 ==
+  Blastwave   : 2706处    53.4GiB ｜ [Blastwave.FX]Collection/[Blastwave.FX]Zombie Apocalyps(165); [Blastwave.FX]Collection/[Blastwave.FX]Zombie Apocalyps(181); [Blast
+  Bluezone    : 847处    28.4GiB ｜ Bluezone Corporation(76)/[Bluezone.Corporation]Eerie Am(240); Bluezone Corporation(76)/[Bluezone.Corporation]Abyss De(105); Bluezo
+  Boom        : 16处     7.7GiB ｜ Boom Library - Close Combat Bundle/Close Combat Constru(236); Boom Library - Close Combat Bundle/Close Combat Constru(165); Boom L
+  Sound.Ideas : 141处     7.6GiB ｜ [Sound.Ideas]Drone Archeology(100); [Sound.Ideas]Thunder Sound Effects/CD2/CD2(19); [Sound.Ideas]Thunder Sound Effects/CD1/CD1(93)
+  Sound Morph : 43处    13.2GiB ｜ 预告/15. Sound Morph - Sinematic【史诗黑暗大气转场冲击电影音效】653968306(1); Sound Morph - Matter Mayhem/17. Metal Objects(311); Sound Morph - Matt
+  Pro Sound   : 40处     0.8GiB ｜ Pro Sound Effect/49.Nature Ambiences(5); Pro Sound Effect/3 Wind(6); Pro Sound Effect/38.Foley;Cloth,Nylon,Leather,Velcro,Zi(22)
+  Wind        : 259处     9.0GiB ｜ 46.Rain,Wind(48); 3 Wind(44); Wind/百万剪辑狮的音效库/操作音效/复古/Status(226)
+  Multiply    : 185处    16.0GiB ｜ Multiply Sound Film Score Bundle/Multiply Sound Film Sc(12); Multiply Sound Film Score Bundle/Multiply Sound Film Sc(12); Multiply
+  Sample      : 433处     3.0GiB ｜ Bluezone Corporation(76)/[Bluezone.Corporation]Hard Tec(147); Bluezone Corporation(76)/[Bluezone.Corporation]Hard Tec(147); Bluezo
+  LTT         :  2处    24.1GiB ｜ LTT_V30All(1758); 音效/LTT_V30All(28)
+  布斯          : 12处     6.0GiB ｜ 布斯的音效库/气氛音效(371); 布斯的音效库/环境音效(526); 布斯的音效库/上升 Risers(287)
+  气氛          : 106处    19.8GiB ｜ 布斯的音效库/气氛音效(371); 气氛音乐音效/Idyllic/01 - Original(20); 气氛音乐音效/Idyllic/05 - Undertones(20)
+  电影级         : 63处     5.4GiB ｜ 电影级音效/VELOCITY（速度）/Atmospheric（大气）(48); 电影级音效/ToolKit（工具包）/Mechanical（机械）(107); 电影级音效/IMPACT（冲击）/Dramatic_Hits（风格化）(40)
+  魔法          : 106处    26.9GiB ｜ 魔法法术咒语技能释放音效(1); 魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Textur(40); 魔法法术咒语技能释放音效/Cinetools Witchcraft/Designer Tools/Ele
+  预告          : 23处     7.7GiB ｜ 预告/15. Sound Morph - Sinematic【史诗黑暗大气转场冲击电影音效】653968306(1); 预告/Sound Morph - Sinematic/Battery 4 Kits(5); 预告/Sound Morph - Sinemat
+  音效素材        : 1789处     7.0GiB ｜ 音效/音效素材3/音效素材3/气氛(100); 音效/音效素材1/风雨雷电高音质音效(20); 音效/音效素材2/精选音效(378)
+  BD音效库       : 574处    29.1GiB ｜ 音效/音效/BD音效库/极品音效库/Mechanicals Construction Kit/Mechanic(237); 音效/音效/BD音效库/极品音效库/Mechanicals Construction Kit/Mechanic(139); 音效/音效/
+  极品          : 426处    23.1GiB ｜ 音效/音效/BD音效库/极品音效库/Mechanicals Construction Kit/Mechanic(237); 音效/音效/BD音效库/极品音效库/Mechanicals Construction Kit/Mechanic(139); 音效/音效/
+  临时          : 14处     1.2GiB ｜ 临时(316); 临时/腾格里-绿灯版音效(78); 临时/参考音乐(5)
+
+== 文件所在深度分布(含文件名层): [(0, 2), (1, 11499), (2, 8853), (3, 32029), (4, 41770), (5, 24984), (6, 16581), (7, 12194), (8, 11684), (9, 2833), (10, 2)]
+根级散文件: 2 ｜ 音效/ 根级: 1

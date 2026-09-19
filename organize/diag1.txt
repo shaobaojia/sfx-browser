@@ -1,0 +1,53 @@
+DIAGTEST-20260919
+== /volume1/主目录/Hermes/read/Projects/sfx-browser/organize ==
+total 72
+drwxr-xr-x 2 shaobaojia admin  4096 Sep 19 09:26 .
+drwxrwxrwx 8 shaobaojia admin  4096 Sep 19 09:08 ..
+-rw-r--r-- 1 shaobaojia admin    85 Sep 19 09:26 diag1.txt
+-rw-r--r-- 1 shaobaojia admin    96 Sep 19 09:24 dry.log
+-rw-r--r-- 1 shaobaojia admin   119 Sep 19 09:24 organize_dry.json
+-rw-r--r-- 1 shaobaojia admin 12425 Sep 19 09:23 organize_execute.py
+-rw-r--r-- 1 shaobaojia admin   840 Sep 19 09:23 organize_rollback.py
+-rw-r--r-- 1 shaobaojia admin   410 Sep 19 09:23 org_guard.py
+-rw-r--r-- 1 shaobaojia admin 26207 Sep 19 09:08 recon_20260919.txt
+== dry.log head 50 ==
+ASSERT-FAIL:
+   Pro Sound Effect/4 Water/x.wav -> None
+   音效/Pro Sound Effect/x.wav -> None
+== dry.log tail 120 ==
+ASSERT-FAIL:
+   Pro Sound Effect/4 Water/x.wav -> None
+   音效/Pro Sound Effect/x.wav -> None
+== dry.json ==
+{"guard_ok": false, "asserts": ["('Pro Sound Effect/4 Water/x.wav', None)", "('音效/Pro Sound Effect/x.wav', None)"]}
+== plan wc ==
+== LIB top ==
+10 Body Sounds
+11 Crashes,Impacts & Swishes
+12 Sports & Boats
+13 Fast Whoosh A.wav
+13 Humans Coughs,Laughs,Grunts,Screams,Moans,Farts
+14 Crowds,Kids,Babies,Heartbeats
+15 Interior Crowds & Ambiences
+16 Household
+17 Telephones,Cameras,Clocks
+18 Doors,Squeaks,Creaks
+19 Beeps,Bells,Buzzers,Rumbles,Tools
+1 Nature Backgrounds
+20 Electronic,Sci-Fi
+21.Modern Aircraft,Helicopters,Airport Amb
+22.Historical Aircraft
+23.Modern Military;Heavy Artillery,Gun
+24.Historical Military
+25.Household
+26.Sci Fi,Beeps,Computers,Industry,Chemistry,Lab,Hospital
+27.Vehicles,Machines,Construction,Power Tools,Industry
+28.Crashes,Creak,Scraping,Impacts,Fire,Еxplosions,Footsteps
+29.Automobiles,Motorcycles
+2 Birds & Animals
+30.Sports
+31.Water
+== LIB topcount ==
+137
+== LIB files ==
+162431

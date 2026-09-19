@@ -1,0 +1,9 @@
+progress 20000/162431 ok=20000 conflict=0 err=0
+progress 40000/162431 ok=39899 conflict=101 err=0
+progress 60000/162431 ok=59899 conflict=101 err=0
+progress 80000/162431 ok=79899 conflict=101 err=0
+progress 100000/162431 ok=99899 conflict=101 err=0
+progress 120000/162431 ok=119792 conflict=208 err=0
+progress 140000/162431 ok=139790 conflict=210 err=0
+progress 160000/162431 ok=159790 conflict=210 err=0
+ORG-DONE {"planned": 162431, "ok": 162219, "conflict": 212, "errors": 0, "pruned_dirs": 7701, "elapsed_s": 12.1}

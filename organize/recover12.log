@@ -1,0 +1,66 @@
+full_md5 记录: 150232
+隔离区记录: 90343
+
+== 逐文件求解 ==
+
+LOST: Pro Sound Effect/10 Body Sounds/63 Two Single Body Falls On Gravel.wav
+   x 无精确哈希记录 → 内容孤本（未被哈希过）
+   同名其它记录数: 0
+
+LOST: Pro Sound Effect/12 Sports & Boats/15 Wooden Bat Drops Onto Dirt Surface #1.wav
+   x 无精确哈希记录 → 内容孤本（未被哈希过）
+   同名其它记录数: 0
+
+LOST: Pro Sound Effect/19 Beeps,Bells,Buzzers,Rumbles,Tools/48 Very Low Frequency, Ominous, Underwater Rumble.wav
+   x 无精确哈希记录 → 内容孤本（未被哈希过）
+   同名其它记录数: 2
+      ~ 音效/19 Beeps,Bells,Buzzers,Rumbles,Tools/48 Very Low Frequency, Ominous, Underwater Rumble.wav f02084462645
+      ~ 音效/Pro Sound Effect/19 Beeps,Bells,Buzzers,Rumbles,Tools/48 Very Low Frequency, Ominous, Underwater  f02084462645
+
+LOST: Pro Sound Effect/19 Beeps,Bells,Buzzers,Rumbles,Tools/49 Avalanche Rumble With Rocks Rolling And Debris.wav
+   x 无精确哈希记录 → 内容孤本（未被哈希过）
+   同名其它记录数: 2
+      ~ 音效/19 Beeps,Bells,Buzzers,Rumbles,Tools/49 Avalanche Rumble With Rocks Rolling And Debris.wav a1fdbf2dd72c
+      ~ 音效/Pro Sound Effect/19 Beeps,Bells,Buzzers,Rumbles,Tools/49 Avalanche Rumble With Rocks Rolling And  a1fdbf2dd72c
+
+LOST: Pro Sound Effect/24.Historical Military/46 Sword ; Single Swish.wav
+   md5: 5d895b5f0737152e01050260e4c9d91d
+   同 md5 路径数: 1
+
+LOST: Pro Sound Effect/32.Household/85 Toilet Paper From Roll,Pulling Off.wav
+   x 无精确哈希记录 → 内容孤本（未被哈希过）
+   同名其它记录数: 2
+      ~ LTT_V30All/85 Toilet Paper From Roll,Pulling Off.wav 2ead13715281
+      ~ 音效/Pro Sound Effect/32.Household/85 Toilet Paper From Roll,Pulling Off.wav 2ead13715281
+
+LOST: Pro Sound Effect/38.Foley;Cloth,Nylon,Leather,Velcro,Zippers,Bag/06 Cloth,Grabs With Heavy,Rustle.wav
+   x 无精确哈希记录 → 内容孤本（未被哈希过）
+   同名其它记录数: 0
+
+LOST: Pro Sound Effect/38.Foley;Cloth,Nylon,Leather,Velcro,Zippers,Bag/28 Cloth Whoosh With Snap For Impact.wav
+   x 无精确哈希记录 → 内容孤本（未被哈希过）
+   同名其它记录数: 0
+
+LOST: Pro Sound Effect/38.Foley;Cloth,Nylon,Leather,Velcro,Zippers,Bag/32 Cloth Flaps, Shaking With Whoosh.wav
+   x 无精确哈希记录 → 内容孤本（未被哈希过）
+   同名其它记录数: 0
+
+LOST: Pro Sound Effect/38.Foley;Cloth,Nylon,Leather,Velcro,Zippers,Bag/49 Cloth,Canvass Jacket,On,Off.wav
+   x 无精确哈希记录 → 内容孤本（未被哈希过）
+   同名其它记录数: 0
+
+LOST: Pro Sound Effect/50.Designed Sounds/22 Skiing On Snow Steady With Maneuvers,Wind Whistle.wav
+   x 无精确哈希记录 → 内容孤本（未被哈希过）
+   同名其它记录数: 2
+      ~ LTT_V30All/22 Skiing On Snow Steady With Maneuvers,Wind Whistle.wav 332562e8b136
+      ~ 音效/LTT_V30All/22 Skiing On Snow Steady With Maneuvers,Wind Whistle.wav 332562e8b136
+
+LOST: 音效/50.Designed Sounds/22 Skiing On Snow Steady With Maneuvers,Wind Whistle.wav
+   x 无精确哈希记录 → 内容孤本（未被哈希过）
+   同名其它记录数: 2
+      ~ LTT_V30All/22 Skiing On Snow Steady With Maneuvers,Wind Whistle.wav 332562e8b136
+      ~ 音效/LTT_V30All/22 Skiing On Snow Steady With Maneuvers,Wind Whistle.wav 332562e8b136
+
+== 汇总 ==
+   no-record 11
+   unique-lost 1

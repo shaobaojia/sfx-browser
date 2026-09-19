@@ -1,0 +1,103 @@
+===== 1. 修正 moved.csv（标记12个conflict-lost）=====
+标记 conflict-lost: 12
+   Pro Sound Effect/10 Body Sounds/63 Two Single Body Falls On Gravel.wav
+   Pro Sound Effect/12 Sports & Boats/15 Wooden Bat Drops Onto Dirt Surface #1.wav
+   Pro Sound Effect/19 Beeps,Bells,Buzzers,Rumbles,Tools/48 Very Low Frequency, Ominous, Underwater Rumble.wav
+   Pro Sound Effect/19 Beeps,Bells,Buzzers,Rumbles,Tools/49 Avalanche Rumble With Rocks Rolling And Debris.wav
+   Pro Sound Effect/24.Historical Military/46 Sword ; Single Swish.wav
+   Pro Sound Effect/32.Household/85 Toilet Paper From Roll,Pulling Off.wav
+   Pro Sound Effect/38.Foley;Cloth,Nylon,Leather,Velcro,Zippers,Bag/06 Cloth,Grabs With Heavy,Rustle.wav
+   Pro Sound Effect/38.Foley;Cloth,Nylon,Leather,Velcro,Zippers,Bag/28 Cloth Whoosh With Snap For Impact.wav
+   Pro Sound Effect/38.Foley;Cloth,Nylon,Leather,Velcro,Zippers,Bag/32 Cloth Flaps, Shaking With Whoosh.wav
+   Pro Sound Effect/38.Foley;Cloth,Nylon,Leather,Velcro,Zippers,Bag/49 Cloth,Canvass Jacket,On,Off.wav
+   Pro Sound Effect/50.Designed Sounds/22 Skiing On Snow Steady With Maneuvers,Wind Whistle.wav
+   音效/50.Designed Sounds/22 Skiing On Snow Steady With Maneuvers,Wind Whistle.wav
+moved=162219 conflict=200 conflict-lost=12
+
+===== 2. 回滚演练 =====
+restored=162419 skipped(missing)=0 conflicts=0 lost-skip=12 dry=True
+
+===== 3. 快照/文件系统探测 =====
+/dev/bcache0   ext4 7658517924 4135732928 3522768612  55% /volume1
+FOUND: /volume1/主目录/#recycle
+1917 1917 .2019 .2160p .BluRay .H265 .HDR .10bit
+A A计划 Project.A .1983
+Boris_Assets_nas.library
+CG软件安装包
+Collection
+Hermes
+PotPlayer_Capture
+Projects
+.
+..
+#recycle
+.sync
+ERROR: not a btrfs filesystem: /volume1
+ERROR: can't access '/volume1'
+
+===== 4. 重建索引 =====
+scanned 5000 ...
+scanned 10000 ...
+scanned 15000 ...
+scanned 20000 ...
+scanned 25000 ...
+scanned 30000 ...
+scanned 35000 ...
+scanned 40000 ...
+scanned 45000 ...
+scanned 50000 ...
+scanned 55000 ...
+scanned 60000 ...
+scanned 65000 ...
+scanned 70000 ...
+scanned 75000 ...
+scanned 80000 ...
+scanned 85000 ...
+scanned 90000 ...
+scanned 95000 ...
+scanned 100000 ...
+scanned 105000 ...
+scanned 110000 ...
+scanned 115000 ...
+scanned 120000 ...
+scanned 125000 ...
+scanned 130000 ...
+scanned 135000 ...
+scanned 140000 ...
+scanned 145000 ...
+scanned 150000 ...
+scanned 155000 ...
+OK indexed 158383 files in 3.8s -> /volume1/主目录/Hermes/read/Projects/sfx-browser/data/sfx.db (43.2MB)
+
+real	0m4.158s
+user	0m2.972s
+sys	0m1.163s
+
+===== 5. 索引核验 =====
+python3: can't open file '/volume1/主目录/Hermes/read/Projects/sfx-browser/check_index.py': [Errno 2] No such file or directory
+
+===== 6. 桶计数 =====
+01_商业音效包 : 88677 个文件
+02_中文音效合集 : 70902 个文件
+03_项目素材 : 2192 个文件
+99_待整理 : 648 个文件
+TOTAL: 162419  (预期 162419)
+顶层项数: 4
+冲突区: 200 个
+
+===== 7. 空间 =====
+188G	/volume1/主目录/Collection/素材&模板&音库/音效/01_商业音效包
+91G	/volume1/主目录/Collection/素材&模板&音库/音效/02_中文音效合集
+29G	/volume1/主目录/Collection/素材&模板&音库/音效/03_项目素材
+25G	/volume1/主目录/Collection/素材&模板&音库/音效/99_待整理
+331G	/volume1/主目录/Collection/素材&模板&音库/音效
+
+===== 8. 映射表 =====
+wrote /volume1/主目录/Hermes/read/Projects/sfx-browser/organize/整理映射表.md groups: 58 rows: 180 total files: 162419
+-rw-r--r-- 1 shaobaojia admin 12112 Sep 19 09:38 整理映射表.md
+
+===== 9. 服务抽查 =====
+HTTP: 200
+{"total": 1114, "shown": 300, "results": [{"id": 151889, "rel": "02_中文音效合集/音效素材2/机械/EDOOR1.WAV", "name": "EDOOR1.WAV", "dir": "02_中文音效合集/音效素材2/机械", "ext": ".wav", "size": 28616, "mtime": 1789681024, "total": 1114
+
+===== 完成 =====

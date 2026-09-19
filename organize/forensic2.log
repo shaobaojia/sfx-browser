@@ -1,0 +1,66 @@
+== fullhash 顶层键 ==
+   'summary' dict 7
+   'clusters' list 62536
+   'errors' list 0
+  探测 clusters : list, 首元素类型 dict
+    首元素: {"md5": "618e68a9ea02ac9228a59a380fbada39", "size": 436456942, "count": 2, "waste": 436456942, "dirs": 2, "members": ["LTT_V30All/第一幕乌兰补配-栗栗-20220106.wav", "音效/LTT_V30All/第一幕乌兰补配-栗栗-20220106.wav"]}
+    dict键: ['md5', 'size', 'count', 'waste', 'dirs', 'members']
+簇数: 62536  样例簇键: '618e68a9ea02ac9228a59a380fbada39'  成员数: 2
+路径索引: 150043
+路径样例: 'LTT_V30All/第一幕乌兰补配-栗栗-20220106.wav'
+
+== dedup moved.csv 表头: ['rel', 'size_bytes']
+  样例: ['音效/LTT_V30All/第一幕乌兰补配-栗栗-20220106.wav', '436456942']
+  样例: ['音效/LTT_V30All/A03A04-乌兰-栗栗-20220426.wav', '325959114']
+
+== 恢复源搜索 ==
+
+LOST: Pro Sound Effect/10 Body Sounds/63 Two Single Body Falls On Gravel.wav
+   源: None
+   哈希:  | 不在fullhash
+
+LOST: Pro Sound Effect/12 Sports & Boats/15 Wooden Bat Drops Onto Dirt Surface #1.wav
+   源: None
+   哈希:  | 不在fullhash
+
+LOST: Pro Sound Effect/19 Beeps,Bells,Buzzers,Rumbles,Tools/48 Very Low Frequency, Ominous, Underwater Rumble.wav
+   源: None
+   哈希:  | 不在fullhash
+
+LOST: Pro Sound Effect/19 Beeps,Bells,Buzzers,Rumbles,Tools/49 Avalanche Rumble With Rocks Rolling And Debris.wav
+   源: None
+   哈希:  | 不在fullhash
+
+LOST: Pro Sound Effect/24.Historical Military/46 Sword ; Single Swish.wav
+   源: None
+   哈希:  | 不在fullhash
+
+LOST: Pro Sound Effect/32.Household/85 Toilet Paper From Roll,Pulling Off.wav
+   源: None
+   哈希:  | 不在fullhash
+
+LOST: Pro Sound Effect/38.Foley;Cloth,Nylon,Leather,Velcro,Zippers,Bag/06 Cloth,Grabs With Heavy,Rustle.wav
+   源: None
+   哈希:  | 不在fullhash
+
+LOST: Pro Sound Effect/38.Foley;Cloth,Nylon,Leather,Velcro,Zippers,Bag/28 Cloth Whoosh With Snap For Impact.wav
+   源: None
+   哈希:  | 不在fullhash
+
+LOST: Pro Sound Effect/38.Foley;Cloth,Nylon,Leather,Velcro,Zippers,Bag/32 Cloth Flaps, Shaking With Whoosh.wav
+   源: None
+   哈希:  | 不在fullhash
+
+LOST: Pro Sound Effect/38.Foley;Cloth,Nylon,Leather,Velcro,Zippers,Bag/49 Cloth,Canvass Jacket,On,Off.wav
+   源: None
+   哈希:  | 不在fullhash
+
+LOST: Pro Sound Effect/50.Designed Sounds/22 Skiing On Snow Steady With Maneuvers,Wind Whistle.wav
+   源: None
+   哈希:  | 不在fullhash
+
+LOST: 音效/50.Designed Sounds/22 Skiing On Snow Steady With Maneuvers,Wind Whistle.wav
+   源: None
+   哈希:  | 不在fullhash
+
+可恢复: 0 / 12

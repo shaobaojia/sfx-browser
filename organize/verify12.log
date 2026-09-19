@@ -1,0 +1,55 @@
+== 隔离区同名文件 ==
+  Q: 音效/Pro Sound Effect/19 Beeps,Bells,Buzzers,Rumbles,Tools/49 Avalanche Rumble With Rocks Rolling And Debris.wav | 20521244 B | md5=a1fdbf2dd72c12161df39e3e42e655a3
+  Q: 音效/Pro Sound Effect/19 Beeps,Bells,Buzzers,Rumbles,Tools/48 Very Low Frequency, Ominous, Underwater Rumble.wav | 25032380 B | md5=f02084462645a8d0153ac16d07c34724
+  Q: 音效/Pro Sound Effect/32.Household/85 Toilet Paper From Roll,Pulling Off.wav | 2439068 B | md5=2ead137152815cc29cd4bf48d93d5b4f
+  Q: 音效/LTT_V30All/22 Skiing On Snow Steady With Maneuvers,Wind Whistle.wav | 4988798 B | md5=332562e8b136f5fd0147ebc18b16c978
+
+== 现库同名文件（目标/冲突区版本）==
+  L: 01_商业音效包/Pro Sound Effect/24.Historical Military/46 Sword ; Single Swish.wav | 1089282 B | md5=1db73139b68c4cb39c03791ad5131a8b
+  L: 01_商业音效包/Pro Sound Effect/38.Foley;Cloth,Nylon,Leather,Velcro,Zippers,Bag/32 Cloth Flaps, Shaking With Whoosh.wav | 2001918 B | md5=59bd94eec5f0535cf2144e1821385117
+  L: 01_商业音效包/Pro Sound Effect/38.Foley;Cloth,Nylon,Leather,Velcro,Zippers,Bag/28 Cloth Whoosh With Snap For Impact.wav | 2046522 B | md5=e68f976739e4819a7b991ad13a33935b
+  L: 01_商业音效包/Pro Sound Effect/38.Foley;Cloth,Nylon,Leather,Velcro,Zippers,Bag/49 Cloth,Canvass Jacket,On,Off.wav | 10409376 B | md5=5cbf35cc63971a5a3fcf129ea676ce34
+  L: 01_商业音效包/Pro Sound Effect/38.Foley;Cloth,Nylon,Leather,Velcro,Zippers,Bag/06 Cloth,Grabs With Heavy,Rustle.wav | 1209228 B | md5=728957b5330a4b45d9f613cea5286606
+  L: 01_商业音效包/Pro Sound Effect/12 Sports & Boats/15 Wooden Bat Drops Onto Dirt Surface #1.wav | 1092372 B | md5=6740391b9738977d2042dda1f6b66dbb
+  L: 01_商业音效包/Pro Sound Effect/10 Body Sounds/63 Two Single Body Falls On Gravel.wav | 1126780 B | md5=8cc4e7e33cc68dc40370590224d7b789
+  L: 01_商业音效包/Pro Sound Effect/19 Beeps,Bells,Buzzers,Rumbles,Tools/49 Avalanche Rumble With Rocks Rolling And Debris.wav | 20610940 B | md5=ea0e0adcd36fb05e57e803f6877e37ac
+  L: 01_商业音效包/Pro Sound Effect/19 Beeps,Bells,Buzzers,Rumbles,Tools/48 Very Low Frequency, Ominous, Underwater Rumble.wav | 25120924 B | md5=f779dbab94741e9c1a78754990d0ab26
+  L: 01_商业音效包/Pro Sound Effect/32.Household/85 Toilet Paper From Roll,Pulling Off.wav | 2446542 B | md5=f59a9ec05ace8759cf5f1b6a15b113c6
+  L: 01_商业音效包/Pro Sound Effect/50.Designed Sounds/22 Skiing On Snow Steady With Maneuvers,Wind Whistle.wav | 5018300 B | md5=a5683686fdcff94c00082a6192ad49a4
+  L: 99_待整理/_命名冲突/01_商业音效包/Pro Sound Effect/24.Historical Military/46 Sword ; Single Swish.wav | 1105042 B | md5=36d9d968f8b030b149956bf57e635f7a
+  L: 99_待整理/_命名冲突/01_商业音效包/Pro Sound Effect/38.Foley;Cloth,Nylon,Leather,Velcro,Zippers,Bag/32 Cloth Flaps, Shaking With Whoosh.wav | 1994540 B | md5=274d7667e2f2ca81b85a6f5ca75ed6df
+  L: 99_待整理/_命名冲突/01_商业音效包/Pro Sound Effect/38.Foley;Cloth,Nylon,Leather,Velcro,Zippers,Bag/28 Cloth Whoosh With Snap For Impact.wav | 2034524 B | md5=71de48fc947d5b868d6a326abbc71c9f
+  L: 99_待整理/_命名冲突/01_商业音效包/Pro Sound Effect/38.Foley;Cloth,Nylon,Leather,Velcro,Zippers,Bag/49 Cloth,Canvass Jacket,On,Off.wav | 10416598 B | md5=6f88557ae0789adcbed8327e0fb593c9
+  L: 99_待整理/_命名冲突/01_商业音效包/Pro Sound Effect/38.Foley;Cloth,Nylon,Leather,Velcro,Zippers,Bag/06 Cloth,Grabs With Heavy,Rustle.wav | 1203346 B | md5=963742413d4ddc9156c7d7922fe4c015
+  L: 99_待整理/_命名冲突/01_商业音效包/Pro Sound Effect/12 Sports & Boats/15 Wooden Bat Drops Onto Dirt Surface #1.wav | 1063148 B | md5=6fd6615c1c155f4cd28de8cf16298f3e
+  L: 99_待整理/_命名冲突/01_商业音效包/Pro Sound Effect/10 Body Sounds/63 Two Single Body Falls On Gravel.wav | 1110188 B | md5=5360b38182bb966569b101b96a9041cf
+  L: 99_待整理/_命名冲突/01_商业音效包/Pro Sound Effect/19 Beeps,Bells,Buzzers,Rumbles,Tools/49 Avalanche Rumble With Rocks Rolling And Debris.wav | 20521244 B | md5=a1fdbf2dd72c12161df39e3e42e655a3
+  L: 99_待整理/_命名冲突/01_商业音效包/Pro Sound Effect/19 Beeps,Bells,Buzzers,Rumbles,Tools/48 Very Low Frequency, Ominous, Underwater Rumble.wav | 25032380 B | md5=f02084462645a8d0153ac16d07c34724
+  L: 99_待整理/_命名冲突/01_商业音效包/Pro Sound Effect/32.Household/85 Toilet Paper From Roll,Pulling Off.wav | 2449960 B | md5=d48719de520998d188dc36ea30b5220d
+  L: 99_待整理/_命名冲突/01_商业音效包/Pro Sound Effect/50.Designed Sounds/22 Skiing On Snow Steady With Maneuvers,Wind Whistle.wav | 4997534 B | md5=ec33516747ce6fc85bfa5ca1bafe99de
+  L: 03_项目素材/LTT_V30All/32 Cloth Flaps, Shaking With Whoosh.wav | 2010870 B | md5=a02380f2ed7b2bf0f96584df3bb0b863
+  L: 03_项目素材/LTT_V30All/28 Cloth Whoosh With Snap For Impact.wav | 2055282 B | md5=7b813c82a4b7763bd7626aad2c1acc36
+  L: 03_项目素材/LTT_V30All/49 Cloth,Canvass Jacket,On,Off.wav | 10344220 B | md5=060e000fe06205c790e0aa8c9c45f441
+  L: 03_项目素材/LTT_V30All/22 Skiing On Snow Steady With Maneuvers,Wind Whistle.wav | 4988798 B | md5=332562e8b136f5fd0147ebc18b16c978
+  L: 03_项目素材/LTT_V30All/85 Toilet Paper From Roll,Pulling Off.wav | 2439068 B | md5=2ead137152815cc29cd4bf48d93d5b4f
+  L: 03_项目素材/LTT_V30All/06 Cloth,Grabs With Heavy,Rustle.wav | 1192508 B | md5=b35ab99d77000234b3157d4b4d02f74b
+
+== full_md5.csv 命中 ==
+   Pro Sound Effect/24.Historical Military/46 Sword ; Single Swish.wav,1077260,5d895b5f0737152e01050260e4c9d91d
+   "音效/Pro Sound Effect/19 Beeps,Bells,Buzzers,Rumbles,Tools/48 Very Low Frequency, Ominous, Underwater Rumble.wav",25032380,f02084462645a8d0153ac16d07c34724
+   "音效/Pro Sound Effect/19 Beeps,Bells,Buzzers,Rumbles,Tools/49 Avalanche Rumble With Rocks Rolling And Debris.wav",20521244,a1fdbf2dd72c12161df39e3e42e655a3
+   "音效/Pro Sound Effect/32.Household/85 Toilet Paper From Roll,Pulling Off.wav",2439068,2ead137152815cc29cd4bf48d93d5b4f
+
+== 汇总 ==
+  63 Two Single Body Falls On Gravel.wav | 隔离区副本=0 现库版本=2
+  15 Wooden Bat Drops Onto Dirt Surface #1.wav | 隔离区副本=0 现库版本=2
+  48 Very Low Frequency, Ominous, Underwater Rumble.wav | 隔离区副本=1 现库版本=2
+  49 Avalanche Rumble With Rocks Rolling And Debris.wav | 隔离区副本=1 现库版本=2
+  46 Sword ; Single Swish.wav | 隔离区副本=0 现库版本=2
+  85 Toilet Paper From Roll,Pulling Off.wav | 隔离区副本=1 现库版本=3
+  06 Cloth,Grabs With Heavy,Rustle.wav | 隔离区副本=0 现库版本=3
+  28 Cloth Whoosh With Snap For Impact.wav | 隔离区副本=0 现库版本=3
+  32 Cloth Flaps, Shaking With Whoosh.wav | 隔离区副本=0 现库版本=3
+  49 Cloth,Canvass Jacket,On,Off.wav | 隔离区副本=0 现库版本=3
+  22 Skiing On Snow Steady With Maneuvers,Wind Whistle.wav | 隔离区副本=1 现库版本=3
+  22 Skiing On Snow Steady With Maneuvers,Wind Whistle.wav | 隔离区副本=1 现库版本=3
