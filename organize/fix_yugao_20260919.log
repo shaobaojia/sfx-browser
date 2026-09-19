@@ -1,0 +1,50 @@
+== 预告修正 2026-09-19 10:25:17 ==
+== 预告修正 ==
+1) 移动: rc=0 | renamed '/volume1/主目录/Collection/素材&模板&音库/音效/03_项目素材/预告/Sound Morph - Sinematic' -> '/volume1/主目录/Collection/素材&模板&音库/音效/01_商业音效包/Sound Morph - Sinematic'
+2) unrar 测试: rc=0
+3) 解压: rc=0
+   Extracting  /volume1/主目录/Collection/素材&模板&音库/音效/01_商业音效包/Visual Tone - Essential Flow Sound Effects/Transitions/68 Wind-swept Whoosh.wav      99%  OK 
+   Extracting  /volume1/主目录/Collection/素材&模板&音库/音效/01_商业音效包/Visual Tone - Essential Flow Sound Effects/Transitions/69 Heavy Flap.wav      99%  OK 
+   Extracting  /volume1/主目录/Collection/素材&模板&音库/音效/01_商业音效包/Visual Tone - Essential Flow Sound Effects/Transitions/70 Bass Gleam.wav      99%  OK 
+   Extracting  /volume1/主目录/Collection/素材&模板&音库/音效/01_商业音效包/Visual Tone - Essential Flow Sound Effects/Transitions/71 Windy Flag_Fabric.wav      99%  OK 
+   Extracting  /volume1/主目录/Collection/素材&模板&音库/音效/01_商业音效包/Visual Tone - Essential Flow Sound Effects/VT - Essential Flow SFX License Agreement.pdf      99%  OK 
+   All OK
+4) 提取核验: 134 件 / 343486297 B（rar 清单 343486297 B）
+   字节级一致 ✓
+5) rar sha256=5170ae20838c52ca0d0075c7e296a6ae629016153ff3413c61830402b22ba725
+   已删 rar
+6) 预告 剩余: []
+   空壳已移除
+7) 映射表已追加维护段
+8) 终态:
+   01/ A Sound Effect - Animal Hyperrealism Vol II
+   01/ A Sound Effect - Rocks Momentum
+   01/ Bluezone Corporation(76)
+   01/ Boom Library - Close Combat Bundle
+   01/ Multiply Sound Film Score Bundle
+   01/ Pro Sound Effect
+   01/ Rock The Speakerbox - Broken
+   01/ Sound Morph - Matter Mayhem
+   01/ Sound Morph - Sinematic
+   01/ Visual Tone - Essential Flow Sound Effects
+   01/ Wind
+   01/ [Blastwave.FX]Collection
+   01/ [Hollywood.Edge]The Edge Edition
+   01/ [Hollywood.Edge]The Eerie Edition Sound FX_可怕的
+   01/ [Samplesourcer]Collecyion
+   01/ [Sound.Ideas]Drone Archeology
+   01/ [Sound.Ideas]The Metropolis Science Fiction Toolkit
+   01/ [Sound.Ideas]The Metropolis Science Fiction Toolkit Vol.2
+   01/ [Sound.Ideas]The SFX Kit For Game
+   01/ [Sound.Ideas]The Underwater Sound Effects Series
+   01/ [Sound.Ideas]Thunder Sound Effects
+   01/ [Tonsturm]01 Breaking Glass
+   01/ [Tonsturm]02 Electricity
+   01/ [WHO01]
+   01/ [WHO02]
+   01/ [WHO03]
+   01/ [WHO04]
+   01/ [WHO05]
+   01/ [WHOBonus]
+   03/ LTT_V30All
+----------
