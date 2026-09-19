@@ -52,7 +52,7 @@ header{padding:12px 16px 8px;border-bottom:1px solid var(--line);flex:none}
 #crumb #cclear{cursor:pointer;color:#7c8798;margin-left:2px;padding:1px 4px}
 #crumb #cclear:hover{color:#ff9a9a}
 .sright{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-#zsort{background:var(--panel);color:#a9b8d0;border:1px solid #2a3444;border-radius:6px;font-size:12px;padding:2px 6px;font-family:inherit;outline:none}
+#zsort,#zfmt{background:var(--panel);color:#a9b8d0;border:1px solid #2a3444;border-radius:6px;font-size:12px;padding:2px 6px;font-family:inherit;outline:none}
 #more{display:none;padding:12px;text-align:center}
 #more.on{display:block}
 #crumbsel{display:none;position:fixed;z-index:35;min-width:280px;max-width:430px;max-height:52vh;overflow:auto;background:#121826;border:1px solid #2a3444;border-radius:10px;box-shadow:0 12px 40px #000000aa;padding:6px}
@@ -131,7 +131,7 @@ aside{width:340px;flex:none;border-left:1px solid var(--line);display:flex;flex-
   </div>
   <div class="subbar">
     <div id="chips"></div>
-    <div class="sright"><div id="subinfo"></div><div>排序 <select id="zsort"><option value="">默认</option><option value="name">路径</option><option value="size">大小</option><option value="mtime">时间</option><option value="rand">随机</option></select></div></div>
+    <div class="sright"><div id="subinfo"></div><div>格式 <select id="zfmt"><option value="">全部</option><option value="wav">WAV</option><option value="mp3">MP3</option><option value="wma">WMA</option><option value="aiff">AIFF</option></select></div><div>排序 <select id="zsort"><option value="">默认</option><option value="name">路径</option><option value="size">大小</option><option value="mtime">时间</option><option value="rand">随机</option></select></div></div>
   </div>
   <div class="subbar" id="crumbbar"><div id="crumb"></div></div>
   <div class="subbar"><div id="hint">↑↓ 自动试听 · 空格 暂停/继续 · 回车 入篮 · L 循环 · M 播放开关 · Esc 清空 · 点波形跳播</div><div id="viewctl"><label>波形 <input type="range" id="zw" min="120" max="800" step="10" value="150"></label><label>行间距 <input type="range" id="zh" min="0" max="30" step="2" value="8"></label><span class="zr" id="zreset" title="恢复默认大小">↺</span></div><div id="stats"></div></div>
@@ -521,7 +521,7 @@ var DirPick = {
 
 /* ---------- Search：搜索 / 目录浏览（列表渲染 + 分页 + 排序） ---------- */
 var Search = {
-  results: [],sel: -1,reqSeq: 0,sort: "",
+  results: [],sel: -1,reqSeq: 0,sort: "",fmt: "",
   EMPTY_HTML: $("#empty").innerHTML,
   refresh: function(fresh){
     var q=$("#q").value.trim(),seq=++this.reqSeq;
@@ -532,7 +532,7 @@ var Search = {
     }
     var offset=fresh?0:this.results.length;
     if(!fresh)$("#morebtn").textContent="加载中…";
-    var url="/api/search?q="+encodeURIComponent(q)+"&dir="+encodeURIComponent(DirPick.curDir)+"&offset="+offset+"&sort="+encodeURIComponent(this.sort);
+    var url="/api/search?q="+encodeURIComponent(q)+"&dir="+encodeURIComponent(DirPick.curDir)+"&offset="+offset+"&sort="+encodeURIComponent(this.sort)+"&fmt="+encodeURIComponent(this.fmt);
     api(url).then(function(resp){
       if(seq!==Search.reqSeq)return;
       var items=resp.results||[],startI;
@@ -568,7 +568,7 @@ var Search = {
   updateInfo: function(total,shown){
     var q=$("#q").value.trim(),parts=[];
     if(DirPick.curDir)parts.push("📁 "+DirPick.curDir.split("/").pop());
-    if(q||DirPick.curDir){parts.push("共 "+total.toLocaleString()+" 条");if(shown<total)parts.push("已显示 "+shown.toLocaleString());}
+    if(q||DirPick.curDir){parts.push("共 "+total.toLocaleString()+" 条");if(shown<total)parts.push("已显示 "+shown.toLocaleString());if(this.fmt)parts.push("格式 "+this.fmt.toUpperCase());}
     $("#subinfo").textContent=parts.join(" · ");
   },
   setMore: function(show,total,shown){
@@ -591,10 +591,12 @@ var Search = {
     if(r)r.scrollIntoView({block:"nearest"});
   },
   select: function(i){this.sel=i;this.paintSel();this.ensureVisible();},
-  setSort: function(v){this.sort=v;this.refresh(true);}
+  setSort: function(v){this.sort=v;this.refresh(true);},
+  setFmt: function(v){this.fmt=v;this.refresh(true);}
 };
 $("#morebtn").onclick=function(){Search.refresh(false);};
 $("#zsort").addEventListener("change",function(){Search.setSort(this.value);});
+$("#zfmt").addEventListener("change",function(){Search.setFmt(this.value);});
 
 /* ---------- Player：播放器（试听 / 播放头 / 点击跳播 / 拖动扫播） ---------- */
 var Player = {

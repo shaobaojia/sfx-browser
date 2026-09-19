@@ -64,6 +64,28 @@ except Exception as e:
     check('search set', False, repr(e))
 
 try:
+    def getj2(path):
+        s, h, b = get(path)
+        return json.loads(b)
+
+    r0 = getj2('/api/search?q=wind')
+    t_all = r0['total']
+    rw = getj2('/api/search?q=wind&fmt=wav')
+    ok_ext = len(rw['results']) > 0 and all((x.get('ext') or '') == '.wav' for x in rw['results'])
+    check('格式筛选 wav', 0 < rw['total'] < t_all and ok_ext, 'wind: %d→%d' % (t_all, rw['total']))
+    d = urllib.parse.quote('01_商业音效包/Lens Distortions')
+    rb = getj2('/api/search?dir=' + d + '&limit=100&fmt=wav')
+    okb = all((x.get('ext') or '') == '.wav' for x in rb['results'])
+    check('格式筛选+目录浏览', 0 < rb['total'] < 2464 and okb, 'LD wav=%d/2464' % rb['total'])
+    ra = getj2('/api/search?q=wind&fmt=aiff')
+    oka = all((x.get('ext') or '') in ('.aif', '.aiff') for x in ra['results'])
+    check('格式筛选 aiff 合并', oka and ra['total'] <= t_all, 'wind aiff=%d' % ra['total'])
+    rbad = getj2('/api/search?q=wind&fmt=exe')
+    check('格式非法参数回退', rbad['total'] == t_all, 'total=%d' % rbad['total'])
+except Exception as e:
+    check('格式筛选', False, repr(e))
+
+try:
     def getj(path):
         s, h, b = get(path)
         return json.loads(b)

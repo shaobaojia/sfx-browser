@@ -265,12 +265,19 @@ def _int(qs, key, default, lo=None, hi=None):
     return v
 
 
-def do_search(q, limit, offset=0, direc='', sort=''):
+FMTS = {'wav': ('.wav',), 'mp3': ('.mp3',), 'wma': ('.wma',), 'aiff': ('.aif', '.aiff')}
+
+
+def do_search(q, limit, offset=0, direc='', sort='', fmt=''):
     toks = [t for t in q.split() if t.strip()]
     conds, params = [], []
     if direc:
         conds.append("rel LIKE ? ESCAPE '\\'")
         params.append(pref_pat(direc))
+    if fmt in FMTS:
+        exts = FMTS[fmt]
+        conds.append('ext IN (' + ','.join(['?'] * len(exts)) + ')')
+        params += exts
     groups = []
     for t in toks:
         ex = expand_token(t)
@@ -504,7 +511,7 @@ def export_files(ids, dest):
 
 
 class Handler(BaseHTTPRequestHandler):
-    server_version = 'sfx-browser/1.4'
+    server_version = 'sfx-browser/1.5'
     protocol_version = 'HTTP/1.1'
     timeout = 60
 
@@ -600,9 +607,10 @@ class Handler(BaseHTTPRequestHandler):
                 sort = qs.get('sort', [''])[0]
                 if sort not in ('name', 'size', 'mtime', 'rand'):
                     sort = ''
+                fmt = qs.get('fmt', [''])[0]
                 limit = _int(qs, 'limit', 300, 1, 1000)
                 offset = _int(qs, 'offset', 0, 0)
-                total, res = do_search(q, limit, offset, direc, sort)
+                total, res = do_search(q, limit, offset, direc, sort, fmt)
                 if q or direc:
                     print('search q=%r dir=%r -> %d (offset %d)' % (q, direc, total, offset))
                 return self.json({'total': total, 'shown': len(res), 'offset': offset, 'results': res})
